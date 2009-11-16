@@ -1,0 +1,305 @@
+<subjectList>
+<subject>
+<name>Niclas</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>1</desiredVariation>
+<mealParameters>
+<mealTime>1</mealTime>
+<mealCost>3</mealCost>
+<mealDifficulty>1</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 mg</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+</preferences>
+<refusedCategories>
+</refusedCategories>
+<refusedIngredients>
+</refusedIngredients>
+</subject>
+<subject>
+<name>Bertil</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>1</desiredVariation>
+<mealParameters>
+<mealTime>1</mealTime>
+<mealCost>1</mealCost>
+<mealDifficulty>1</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 mg</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+<preference><recipe>Chicken Broccoli Parmesan</recipe><rating>2</rating></preference>
+<preference><recipe>Pasta with Mushroom-Zucchini Sauce</recipe><rating>3</rating></preference>
+</preferences>
+<refusedCategories>
+</refusedCategories>
+<refusedIngredients>
+<refusedIngredient>red pepper</refusedIngredient>
+</refusedIngredients>
+</subject>
+<subject>
+<name>Fredrik</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>1</desiredVariation>
+<mealParameters>
+<mealTime>1</mealTime>
+<mealCost>1</mealCost>
+<mealDifficulty>1</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 mg</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+<preference><recipe>PORK CHOP CASSEROLE</recipe><rating>3</rating></preference>
+</preferences>
+<refusedCategories>
+<refusedCategory>pasta_noodles</refusedCategory>
+</refusedCategories>
+<refusedIngredients>
+<refusedIngredient>fettucine</refusedIngredient>
+</refusedIngredients>
+</subject>
+<subject>
+<name>Johan</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>1</desiredVariation>
+<mealParameters>
+<mealTime>1</mealTime>
+<mealCost>1</mealCost>
+<mealDifficulty>1</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 mg</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+<preference><recipe>Laxspett</recipe><rating>5</rating></preference>
+<preference><recipe>Lätt brunch med äggröra, rökt skinka och paprika (mikrovågsugn)</recipe><rating>2</rating></preference>
+<preference><recipe>Falusoppa med grönsaker</recipe><rating>2</rating></preference>
+<preference><recipe>Svampröra med bacon</recipe><rating>2</rating></preference>
+<preference><recipe>Klar bondsoppa med pesto</recipe><rating>3</rating></preference>
+<preference><recipe>Biffstroganoff med saltgurka</recipe><rating>1</rating></preference>
+<preference><recipe>Baconsallad med jordgubbar</recipe><rating>3</rating></preference>
+<preference><recipe>Omelett med kräftstjärtar och sockerärtor</recipe><rating>4</rating></preference>
+<preference><recipe>Lövbiff med bananfyllning</recipe><rating>3</rating></preference>
+<preference><recipe>Kokt kotlett med grönsaker</recipe><rating>2</rating></preference>
+<preference><recipe>Grön salamipasta</recipe><rating>4</rating></preference>
+<preference><recipe>Lapskojs</recipe><rating>1</rating></preference>
+</preferences>
+<refusedCategories>
+</refusedCategories>
+<refusedIngredients>
+<refusedIngredient>vitlök</refusedIngredient>
+<refusedIngredient>jordnötter</refusedIngredient>
+<refusedIngredient>vitlöksklyfta</refusedIngredient>
+</refusedIngredients>
+</subject>
+<subject>
+<name>Anna</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>1</desiredVariation>
+<mealParameters>
+<mealTime>1</mealTime>
+<mealCost>1</mealCost>
+<mealDifficulty>1</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 mg</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+<preference><recipe>Coco-Nut Macadamia Pancakes</recipe><rating>4</rating></preference>
+<preference><recipe>Chicken Broccoli Parmesan</recipe><rating>1</rating></preference>
+<preference><recipe>Fast pizza</recipe><rating>2</rating></preference>
+<preference><recipe>Chicken Olivia</recipe><rating>2</rating></preference>
+<preference><recipe>Pasta with Mushroom-Zucchini Sauce</recipe><rating>2</rating></preference>
+<preference><recipe>Vegetable Casserole</recipe><rating>2</rating></preference>
+<preference><recipe>Eggs with Caviar</recipe><rating>2</rating></preference>
+<preference><recipe>CROCK POT B B Q</recipe><rating>3</rating></preference>
+</preferences>
+<refusedCategories>
+</refusedCategories>
+<refusedIngredients>
+<refusedIngredient>garlic</refusedIngredient>
+</refusedIngredients>
+</subject>
+<subject>
+<name>David</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>3</desiredVariation>
+<mealParameters>
+<mealTime>2</mealTime>
+<mealCost>3</mealCost>
+<mealDifficulty>3</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 mg</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+<preference><recipe>Helstekt ryggbiff med rödvinssky och varm potatissallad</recipe><rating>4</rating></preference>
+<preference><recipe>Baconsallad med jordgubbar</recipe><rating>1</rating></preference>
+<preference><recipe>Stekta ankbröst med balsamicomarinerade frukter</recipe><rating>5</rating></preference>
+<preference><recipe>Lapskojs</recipe><rating>2</rating></preference>
+</preferences>
+<refusedCategories>
+<refusedCategory>shellfish</refusedCategory>
+<refusedCategory>bread_cakes</refusedCategory>
+<refusedCategory>fish</refusedCategory>
+<refusedCategory>pulses_soya</refusedCategory>
+<refusedCategory>vegetables</refusedCategory>
+</refusedCategories>
+<refusedIngredients>
+</refusedIngredients>
+</subject>
+<subject>
+<name>Cecilia</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>1</desiredVariation>
+<mealParameters>
+<mealTime>1</mealTime>
+<mealCost>1</mealCost>
+<mealDifficulty>1</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 mg</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+</preferences>
+<refusedCategories>
+</refusedCategories>
+<refusedIngredients>
+</refusedIngredients>
+</subject>
+<subject>
+<name>Emma</name>
+<importance>1</importance>
+<desiredAvailability>1</desiredAvailability>
+<desiredVariation>1</desiredVariation>
+<mealParameters>
+<mealTime>1</mealTime>
+<mealCost>1</mealCost>
+<mealDifficulty>1</mealDifficulty>
+</mealParameters>
+<nutrition>
+<minCarbohydrates>0 g</minCarbohydrates>
+<maxCarbohydrates>130 g</maxCarbohydrates>
+<minEnergyContent>1800 kcal</minEnergyContent>
+<maxEnergyContent>2400 kcal</maxEnergyContent>
+<minFat>20 g</minFat>
+<maxFat>35 g</maxFat>
+<minProtein>46 g</minProtein>
+<maxProtein>63 g</maxProtein>
+<minCholesterol>0 mg</minCholesterol>
+<maxCholesterol>200 mg</maxCholesterol>
+<minNatrium>0 mg</minNatrium>
+<maxNatrium>120 g</maxNatrium>
+<minCalcium>800 mg</minCalcium>
+<maxCalcium>1200 mg</maxCalcium>
+</nutrition>
+<preferences>
+</preferences>
+<refusedCategories>
+</refusedCategories>
+<refusedIngredients>
+</refusedIngredients>
+</subject>
+</subjectList>
