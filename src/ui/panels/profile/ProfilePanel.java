@@ -10,7 +10,7 @@ public class ProfilePanel extends JPanel {
    private static final long serialVersionUID = -3037636351809756514L;
 
    // private final static String LIKES = "Jag gillar";
-   // private final static String DISLIKES = "Jag ogillar";
+   // private final static String DISLIKES = "Jag gillar inte";
    // private final static String FAMILY = "Min familj";
    // private final static String ALLERGIES = "Allergier";
    // private final static String PREFERENCES = "Inställningar";
