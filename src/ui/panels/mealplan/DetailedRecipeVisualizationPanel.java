@@ -109,7 +109,7 @@ public class DetailedRecipeVisualizationPanel extends JPanel implements
       p.add("Tillagning", new JScrollPane(cookingInstructions,
             ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
-      p.add("N√§ringsv√§rden", new JScrollPane(nutritionInfo,
+      p.add("Näringsvärden", new JScrollPane(nutritionInfo,
             ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 
@@ -147,7 +147,7 @@ public class DetailedRecipeVisualizationPanel extends JPanel implements
       p.add(new JLabel("Tillagningstid:"));
       p.add(timeLabel);
 
-      p.add(new JLabel("Sv√•righetsgrad:"));
+      p.add(new JLabel("Svårighetsgrad:"));
       p.add(difficultyLabel);
 
       return p;
