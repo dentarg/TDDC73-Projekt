@@ -11,7 +11,6 @@ import dataObjects.Recipe;
  */
 public class IgnoreSorter implements RecipeSorter {
 
-   @Override
    public Comparator<Recipe> getComparator() {
       return null;
    }

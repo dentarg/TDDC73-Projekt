@@ -109,7 +109,7 @@ public class DetailedRecipeVisualizationPanel extends JPanel implements
       p.add("Tillagning", new JScrollPane(cookingInstructions,
             ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
-      p.add("Näringsvärden", new JScrollPane(nutritionInfo,
+      p.add("N√§ringsv√§rden", new JScrollPane(nutritionInfo,
             ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 
@@ -147,7 +147,7 @@ public class DetailedRecipeVisualizationPanel extends JPanel implements
       p.add(new JLabel("Tillagningstid:"));
       p.add(timeLabel);
 
-      p.add(new JLabel("Svårighetsgrad:"));
+      p.add(new JLabel("Sv√•righetsgrad:"));
       p.add(difficultyLabel);
 
       return p;
@@ -212,7 +212,6 @@ public class DetailedRecipeVisualizationPanel extends JPanel implements
     * (non-Javadoc)
     * @see model.RecipeSelectionListener#valueChanged(ui.components.RecipePicker)
     */
-   @Override
    public void valueChanged(RecipePicker e) {
       setDisplayedRecipe(e.getSelectedRecipe());
    }

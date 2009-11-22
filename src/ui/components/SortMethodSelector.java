@@ -46,7 +46,6 @@ public class SortMethodSelector extends JComboBox implements ActionListener {
       listModel = model;
       RequirementManager.setModel(model);
       addActionListener(new ActionListener() {
-         @Override
          public void actionPerformed(ActionEvent e) {
             SearchStringMealSuggestionFilter f = listModel
                   .copyRestrictingLastFilter();

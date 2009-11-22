@@ -37,7 +37,6 @@ public class IngredientCategoryTransferable implements Transferable {
     * (non-Javadoc)
     * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
     */
-   @Override
    public IngredientCategory getTransferData(DataFlavor flavor)
          throws UnsupportedFlavorException, IOException {
       if (flavor == FLAVOR) {
@@ -51,7 +50,6 @@ public class IngredientCategoryTransferable implements Transferable {
     * (non-Javadoc)
     * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
     */
-   @Override
    public DataFlavor[] getTransferDataFlavors() {
       DataFlavor[] flavors = { FLAVOR };
       return flavors;
@@ -61,7 +59,6 @@ public class IngredientCategoryTransferable implements Transferable {
     * (non-Javadoc)
     * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
     */
-   @Override
    public boolean isDataFlavorSupported(DataFlavor flavor) {
       if (flavor == FLAVOR) {
          return true;

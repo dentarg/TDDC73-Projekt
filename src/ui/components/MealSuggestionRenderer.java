@@ -15,7 +15,6 @@ import dataObjects.Recipe;
  */
 public class MealSuggestionRenderer implements ListCellRenderer {
 
-   @Override
    public Component getListCellRendererComponent(JList list, Object value,
          int index, boolean isSelected, boolean cellHasFocus) {
       Recipe selectedRecipe = (Recipe) value;

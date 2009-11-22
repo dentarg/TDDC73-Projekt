@@ -34,7 +34,6 @@ public class GradeSorter implements RecipeSorter {
        * (non-Javadoc)
        * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
        */
-      @Override
       public int compare(Recipe r1, Recipe r2) {
          Preference p1 = m.get(r1.getName());
          Preference p2 = m.get(r2.getName());
@@ -55,7 +54,6 @@ public class GradeSorter implements RecipeSorter {
     * (non-Javadoc)
     * @see model.sorters.RecipeSorter#getComparator()
     */
-   @Override
    public Comparator<Recipe> getComparator() {
       return new ValuationComparator();
    }
