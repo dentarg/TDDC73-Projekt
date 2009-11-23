@@ -10,6 +10,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import model.MealSuggestionListModel;
 import ui.panels.forum.ForumPanel;
@@ -64,7 +66,11 @@ public class MainFrame extends JFrame {
     * different parts of the application.
     */
    private void createComponents() {
-
+	   try {
+		   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	   } catch(Exception e) {
+		   
+	   }
       setLayout(new BorderLayout());
       setMinimumSize(new Dimension(800, 600));
 
