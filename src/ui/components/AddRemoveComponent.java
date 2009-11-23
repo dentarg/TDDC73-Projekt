@@ -468,6 +468,10 @@ public class AddRemoveComponent extends JPanel {
             setSelected(o);
     }
 
+    public List<Object> getSelected() {
+        return selectionList.getSelection();
+    }
+
     /** 
      * Lägger till en lyssnare som informeras då element väljs och tas bort.
      */
