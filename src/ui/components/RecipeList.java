@@ -50,7 +50,6 @@ public class RecipeList extends JList implements RecipePicker, ListSelectionList
     * (non-Javadoc)
     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
     */
-   @Override
    public void valueChanged(ListSelectionEvent e) {
       RecipeSelectionListener[] tmp = listeners.getListeners(RecipeSelectionListener.class);
       for( int idx = tmp.length-1; idx >= 0; idx--){
@@ -63,7 +62,6 @@ public class RecipeList extends JList implements RecipePicker, ListSelectionList
     * (non-Javadoc)
     * @see ui.components.RecipePicker#getSelectedRecipe()
     */
-   @Override
    public Recipe getSelectedRecipe() {
       return (Recipe) this.getSelectedValue();
    }
@@ -72,7 +70,6 @@ public class RecipeList extends JList implements RecipePicker, ListSelectionList
     * (non-Javadoc)
     * @see ui.components.RecipePicker#registerNewRecipeListener(model.RecipeSelectionListener)
     */
-   @Override
    public void registerNewRecipeListener(RecipeSelectionListener l) {
       listeners.add(RecipeSelectionListener.class, l);
    }

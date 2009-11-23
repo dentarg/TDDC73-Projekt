@@ -376,7 +376,6 @@ public class MealOrganizerPanel extends JPanel implements RecipePicker {
        * (non-Javadoc)
        * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
        */
-      @Override
       public void actionPerformed(ActionEvent e) {
          if (scrollDelta == 3)
             scroll(daysShown);
@@ -563,7 +562,6 @@ public class MealOrganizerPanel extends JPanel implements RecipePicker {
     * (non-Javadoc)
     * @see ui.components.RecipePicker#getSelectedRecipe()
     */
-   @Override
    public Recipe getSelectedRecipe() {
       return currentSelection;
    }
@@ -572,7 +570,6 @@ public class MealOrganizerPanel extends JPanel implements RecipePicker {
     * (non-Javadoc)
     * @see ui.components.RecipePicker#registerNewRecipeListener(model.RecipeSelectionListener)
     */
-   @Override
    public void registerNewRecipeListener(RecipeSelectionListener l) {
       listeners.add(RecipeSelectionListener.class, l);
    }

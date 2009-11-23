@@ -212,7 +212,6 @@ public class DetailedRecipeVisualizationPanel extends JPanel implements
     * (non-Javadoc)
     * @see model.RecipeSelectionListener#valueChanged(ui.components.RecipePicker)
     */
-   @Override
    public void valueChanged(RecipePicker e) {
       setDisplayedRecipe(e.getSelectedRecipe());
    }

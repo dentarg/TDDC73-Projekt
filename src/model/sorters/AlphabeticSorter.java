@@ -18,7 +18,6 @@ public class AlphabeticSorter implements RecipeSorter {
        * (non-Javadoc)
        * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
        */
-      @Override
       public int compare(Recipe r1, Recipe r2) {
          return c.compare(r1.getName(), r2.getName());
       }
@@ -29,7 +28,6 @@ public class AlphabeticSorter implements RecipeSorter {
     * (non-Javadoc)
     * @see model.sorters.RecipeSorter#getComparator()
     */
-   @Override
    public Comparator<Recipe> getComparator() {
       return new AlphabeticComparator();
    }
