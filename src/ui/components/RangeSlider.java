@@ -3,16 +3,24 @@ package ui.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
 
+import javax.naming.directory.InvalidAttributesException;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -116,7 +124,7 @@ public class RangeSlider extends JSlider {
          * @param b RangeSlider
          */
         public RangeSliderUI(RangeSlider b) {
-            super(b);
+        	super(b);
         }
         
         /**
@@ -241,6 +249,7 @@ public class RangeSlider extends JSlider {
                     paintLowerThumb(g);
                 }
             }
+            paintTitle(g);
         }
         
         /**
@@ -311,6 +320,35 @@ public class RangeSlider extends JSlider {
         }
 
         /**
+         * Used to controll if the title already has been painted
+         * Added by Magnus Andersson 091124
+         */
+        private boolean titlePainted = false;
+        /**
+         * Paints the title for the component
+         * Added by Magnus Andersson 091124
+         */
+        private void paintTitle(Graphics g) {
+        	if(!titlePainted) {
+        		
+        		if(slider.getName() != null && slider.getSize().height < 75) {
+        			try {
+						throw new InvalidAttributesException(
+							"The size of this component should be 75 or bigger to be able to display the title"
+						);
+					} catch (InvalidAttributesException e) {
+						e.printStackTrace();
+					}
+				}
+        		if(slider.getSize().height >= 75 && slider.getName() != null) {
+	            	FontMetrics fm = g.getFontMetrics();
+	            	String title = slider.getName();
+	            	int width = fm.charsWidth(title.toCharArray(), 0, title.length());
+	            	g.drawString(title, (slider.getSize().width/ 2)-(width)/2, fm.getHeight());
+        		}
+        	}
+        }
+        /**
          * Paints the thumb for the lower value using the specified graphics object.
          */
         private void paintLowerThumb(Graphics g) {
@@ -372,10 +410,11 @@ public class RangeSlider extends JSlider {
          * Returns a Shape representing a thumb.
          */
         private Shape createThumbShape(int width, int height) {
-            // Use circular shape.
-        	Rectangle2D shape = new Rectangle2D.Double(0, 0, width, height);
-            //Ellipse2D shape = new Ellipse2D.Double(0, 0, width, height);
-            return shape;
+            Polygon p = new Polygon();
+            p.addPoint(width/2+1, height);
+            p.addPoint(0, 0);
+            p.addPoint(width, 0);
+        	return p;
         }
         
         /** 

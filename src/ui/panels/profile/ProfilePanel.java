@@ -64,7 +64,7 @@ public class ProfilePanel extends JPanel {
    }
 
    private JComponent createPreferencesTab(){
-	   JPanel panel = new JPanel();
+	   PreferencesPanel panel = new PreferencesPanel();
 	   return panel;
    }
 
