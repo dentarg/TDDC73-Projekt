@@ -13,6 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ui.components.RangeSlider;
+import ui.components.RangeSlider.Slider;
 
 import dataObjects.Subject;
 
@@ -35,29 +36,19 @@ public class PreferencesPanel extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.LEFT, 60, 20));
 		
 		RangeSlider s = new RangeSlider();
+		Slider slider = s.getSlider();
 		
-		s.setMajorTickSpacing(10);
-		s.setMinorTickSpacing(5);
-		s.setPaintTicks(true);
-		s.setPaintLabels(true);
-		s.setSnapToTicks(true);
-		s.setName("Kalorier (kJ)");
-		s.setFocusable(false);
-		Dimension d = new Dimension(300, 75);
+		slider.setMajorTickSpacing(10);
+		slider.setMinorTickSpacing(5);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		slider.setSnapToTicks(true);
+		slider.setName("Kalorier (kJ)");
+		slider.setFocusable(false);
+		Dimension d = new Dimension(500, 75);
 		s.setPreferredSize(d);
 		add(s);
-
-		s = new RangeSlider();
-		s.setName("Fett (gram)");
-		s.setMajorTickSpacing(10);
-		s.setMinorTickSpacing(5);
-		s.setPaintTicks(true);
-		s.setPaintLabels(true);
-		s.setSnapToTicks(true);
-		s.setFocusable(false);
-		d = new Dimension(300, 75);
-		s.setPreferredSize(d);
-		add(s);
+		
 	}
 
 }
