@@ -69,7 +69,8 @@ public class ProfilePanel extends JPanel {
    }
 
    private JComponent createNutritionTab(){
-	   JPanel panel = new JPanel();
+	   JPanel panel = new NutritionPanel();
+	   
 	   return panel;
    }
    
