@@ -3,8 +3,7 @@ package ui.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.FontMetrics;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -12,51 +11,92 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
 
-import javax.naming.directory.InvalidAttributesException;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicSliderUI;
 
-public class RangeSlider extends JPanel {
+public class RangeSlider extends JPanel implements DocumentListener, ChangeListener {
 	
 	private Slider slider;
+	private JTextField lowerField;
+	private JTextField upperField;
 	
+	private String title;
+
 	public RangeSlider() {
+		setSlider(new Slider());
+		slider.setMajorTickSpacing(10);
+		slider.setMinorTickSpacing(5);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		slider.setSnapToTicks(true);
+		init();
+	}
+	
+	public RangeSlider(String title) {
+		setTitle(title);
 		setSlider(new Slider());
 		init();
 	}
 	
-	public RangeSlider(int min, int max) {
+	public RangeSlider(String title, int min, int max) {
+		setTitle(title);
 		setSlider(new Slider(min, max));
 		init();
 	}
 	
+
+	
 	private void init() {
-		this.setBorder(BorderFactory.createTitledBorder("Hell yeah!"));
-		setLayout(new FlowLayout());
-		JTextField field = new JTextField();
-		field.setPreferredSize(new Dimension(30, 20));
-		field.setText("15");
-		add(field);
+		TitledBorder tb = BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.GRAY),
+				title,
+				TitledBorder.CENTER,
+				TitledBorder.CENTER,
+				new Font("Arial", Font.BOLD, 15)
+			);
+		
+		setBorder(tb);
+		
+		
+		
+		lowerField = new JTextField();
+		lowerField.setPreferredSize(new Dimension(30, 20));
+		lowerField.setText(slider.getValue() + "");
+		lowerField.getDocument().addDocumentListener(this);
+		
+		upperField = new JTextField();
+		upperField.setPreferredSize(new Dimension(30, 20));
+		upperField.setText(slider.getUpperValue() + "");
+		upperField.getDocument().addDocumentListener(this);
+		
+		
+		slider.addChangeListener(this);
+
+		
+		slider.setFocusable(false);
+		
+		add(lowerField);
 		add(slider);
-		add(field);
+		add(upperField);
 
 	}
-	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getTitle() {
+		return title;
+	}
 	public void setSlider(RangeSlider.Slider slider) {
 		this.slider = slider;
 	}
@@ -64,6 +104,53 @@ public class RangeSlider extends JPanel {
 	public RangeSlider.Slider getSlider() {
 		return slider;
 	}
+
+	
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		int intValue;
+		String stringValue;
+		if(e.getDocument().equals(lowerField.getDocument())) {
+			stringValue = lowerField.getText(); 
+		} else {
+			stringValue = upperField.getText();
+		}
+		
+		try {
+			intValue = Integer.parseInt(stringValue);
+		} catch(NumberFormatException ex) {
+			intValue = 0;
+		}
+		
+		slider.removeChangeListener(this);
+		if(e.getDocument().equals(lowerField.getDocument())) {
+			slider.setValue(intValue);
+		} else {
+			slider.setUpperValue(intValue);
+		}
+		slider.addChangeListener(this);
+		
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		changedUpdate(e);
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		lowerField.getDocument().removeDocumentListener(this);
+		lowerField.setText(slider.getValue() + "");
+		upperField.setText(slider.getUpperValue() + "");
+		lowerField.getDocument().addDocumentListener(this);
+	}
+	
 	
 	public class Slider extends JSlider {	
 
@@ -141,11 +228,21 @@ public class RangeSlider extends JPanel {
 			setExtent(newExtent);
 		}
 
+		/**
+		 * Get both the lower and upper value
+		 * Lower is placed at 0 and upper at 1 in the array
+		 * @return int[] both upper and lower value for this slider
+		 */
+		public int[] getCombinedValues() {
+			int[] values = new int[]{getValue(), getUpperValue()};
+			return values;
+		}
+
 
 		protected class RangeSliderUI extends BasicSliderUI {
 
 			/** Color of selected range. */
-			private Color rangeColor = Color.LIGHT_GRAY;
+			private Color rangeColor = Color.GREEN;
 
 			/** Location and size of thumb for upper value. */
 			private Rectangle upperThumbRect;
@@ -314,7 +411,7 @@ public class RangeSlider extends JPanel {
 
 					// Draw selected range.
 					g.setColor(rangeColor);
-					for (int y = 0; y <= 3; y++) {
+					for (int y = 0; y <= 7; y++) {
 						g.drawLine(lowerX - trackBounds.x, y, upperX - trackBounds.x, y);
 					}
 
@@ -719,4 +816,5 @@ public class RangeSlider extends JPanel {
 			}
 		}
 	}
+	
 }
