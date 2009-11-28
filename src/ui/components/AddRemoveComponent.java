@@ -307,11 +307,15 @@ public class AddRemoveComponent extends JPanel {
             positionCompletionWindow();
         }
 
-        public List<Object> getSelection() {
+        public List<Object> getObjects() {
             List<Object> objects = new ArrayList<Object>();
             for(Row row : rows)
                 objects.add(row.getObject());
             return objects;
+        }
+
+        public Object getSelectedObject() {
+            return selectedRow == null ? null : selectedRow.getObject();
         }
 
         private void layoutListPanel() {
@@ -354,9 +358,6 @@ public class AddRemoveComponent extends JPanel {
         contents = new ArrayList<Object>();
 
         listeners = new ArrayList<AddRemoveListener>();
-
-        // !!!
-        //setBorder(BorderFactory.createLineBorder(Color.black));
 
         //
         // Initialisera completion-fönstret
@@ -407,7 +408,7 @@ public class AddRemoveComponent extends JPanel {
 
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                addToSelection();
+                addToSelectionList();
             }
         });
 
@@ -428,6 +429,20 @@ public class AddRemoveComponent extends JPanel {
             public void ancestorRemoved(AncestorEvent e) {}
         });
 
+        textField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(completionList.getSelectedCompletion() == null ||
+                   !completionWindow.isVisible()) {
+                    addToSelectionList();
+                }
+                else {
+                    Object o = completionList.getSelectedCompletion();
+                    if(o != null)
+                        updateText(o);
+                }
+            }
+        });
+
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -443,18 +458,6 @@ public class AddRemoveComponent extends JPanel {
                     case KeyEvent.VK_KP_UP:
                         completionList.selectPreviousRow();
                         break;
-
-                    case KeyEvent.VK_ENTER:
-                        if(completionList.getSelectedCompletion() == null ||
-                           !completionWindow.isVisible()) {
-                            addToSelection();
-                        }
-                        else {
-                            Object o = completionList.getSelectedCompletion();
-                            if(o != null)
-                                updateText(o);
-                            break;
-                        }
                 }
             }
         });
@@ -476,12 +479,10 @@ public class AddRemoveComponent extends JPanel {
 
     /**
      * Väljer ett objekt (så att det flyttas till listan med valda element
-     * ovanför textrutan). Om elementet inte finns med i urvalsmängden läggs det
-     * även till där.
+     * ovanför textrutan)
      */
     public void setSelected(Object o) {
-        if(!contents.contains(o))
-            insertSorted(o);
+        assert contents.contains(o) : "Attempt to select object without first adding it";
 
         selectionList.add(o);
         contents.remove(o);
@@ -490,16 +491,18 @@ public class AddRemoveComponent extends JPanel {
     }
 
     /**
-     * Väljer alla element i en lista. Element som inte finns med
-     * i urvalsmängden sedan tidigare läggs till.
+     * Väljer alla element i en lista
      */
     public void setSelected(List<Object> objects) {
         for(Object o : objects)
             setSelected(o);
     }
 
+    /**
+     * Returnerar en lista med alla element som valts.
+     */
     public List<Object> getAdded() {
-        return selectionList.getSelection();
+        return selectionList.getObjects();
     }
 
     /** 
@@ -514,6 +517,10 @@ public class AddRemoveComponent extends JPanel {
      */
     public void removeAddRemoveListener(AddRemoveListener listener) {
         listeners.remove(listener);
+    }
+
+    public Object getSelectedObject() {
+        return selectionList.getSelectedObject();
     }
 
     private void notifyObserversAdded(Object o) {
@@ -537,7 +544,7 @@ public class AddRemoveComponent extends JPanel {
     }
 
     // selectByString?
-    private void addToSelection() {
+    private void addToSelectionList() {
         Object selected = null;
 
         // Is the object in the list?
