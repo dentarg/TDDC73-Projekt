@@ -1,3 +1,5 @@
+package tests;
+
 import ui.components.*;
 import java.awt.image.BufferedImage;
 
