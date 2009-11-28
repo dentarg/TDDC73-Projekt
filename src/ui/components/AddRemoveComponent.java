@@ -56,7 +56,8 @@ public class AddRemoveComponent extends JPanel {
 
     private static final int ROW_HEIGHT = IMAGE_HEIGHT + IMAGE_VERTICAL_PADDING;
 
-    private static final Color selectionBgColor = new Color(57, 112, 205);
+    private static final Color selectionColor = new Color(57, 112, 205);
+    private static final Color selectionListBackgroundColor = Color.WHITE;
 
     class CompletionList extends JComponent {
         private List<Object> contents;
@@ -157,7 +158,7 @@ public class AddRemoveComponent extends JPanel {
 
             // Rita markör
             if(selectionIndex != -1) {
-                g.setColor(selectionBgColor);
+                g.setColor(selectionColor);
 
                 g.fillRect(0, selectionIndex * ROW_HEIGHT,
                            getSize().width, ROW_HEIGHT);
@@ -206,6 +207,8 @@ public class AddRemoveComponent extends JPanel {
 
         private List<Row> rows;
 
+        Row selectedRow;
+
         class Row extends JPanel {
             private Object object;
 
@@ -234,20 +237,43 @@ public class AddRemoveComponent extends JPanel {
                 add(textLabel);
 
                 JButton removeButton = new JButton(REMOVE_BUTTON_TEXT);
-                add( Box.createHorizontalStrut(TEXT_REMOVE_BUTTON_PADDING) );
+                add( Box.createHorizontalGlue() );
                 add(removeButton);
+
+                addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        if(selectedRow != Row.this) {
+                            if(selectedRow != null)
+                                selectedRow.setBackground(selectionListBackgroundColor);
+
+                            setBackground(selectionColor);
+                            selectedRow = Row.this;
+
+                            AddRemoveComponent.this.notifyObserversSelected(Row.this.object);
+                        }
+                    }
+                });
 
                 removeButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         rows.remove(Row.this);
                         AddRemoveComponent.this.insertSorted(Row.this.object);
+
+                        if(Row.this == selectedRow) {
+                            selectedRow = null;
+                            AddRemoveComponent.this.notifyObserversSelectedObjectRemoved(Row.this.object);
+                        }
+
                         layoutListPanel();
                         positionCompletionWindow();
-                        AddRemoveComponent.this.notifyObserversDeselected(Row.this.getObject());
+
+                        AddRemoveComponent.this.notifyObserversRemoved(Row.this.getObject());
                     }
                 });
 
-
+                setBorder(BorderFactory.createRaisedBevelBorder());
+                setBackground(selectionListBackgroundColor);
             }
 
             public Object getObject() {
@@ -257,6 +283,7 @@ public class AddRemoveComponent extends JPanel {
 
         public SelectionList() {
             rows = new ArrayList<Row>();
+            selectedRow = null;
 
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         }
@@ -290,13 +317,16 @@ public class AddRemoveComponent extends JPanel {
         private void layoutListPanel() {
             removeAll();
 
+            for(Row row : rows)
+                add(row);
+
+            /*
             if(rows.size() > 0) {
                 add(rows.get(0));
             }
-            for(int i = 1; i < rows.size(); ++i) {
-                add( Box.createVerticalStrut(IMAGE_VERTICAL_PADDING/2) );
+            for(int i = 0; i < rows.size(); ++i)
                 add(rows.get(i));
-            }
+            */
 
             add( Box.createVerticalStrut(SELECTION_LIST_TEXT_FIELD_PADDING) );
 
@@ -456,7 +486,7 @@ public class AddRemoveComponent extends JPanel {
         selectionList.add(o);
         contents.remove(o);
 
-        notifyObserversSelected(o);
+        notifyObserversAdded(o);
     }
 
     /**
@@ -468,7 +498,7 @@ public class AddRemoveComponent extends JPanel {
             setSelected(o);
     }
 
-    public List<Object> getSelected() {
+    public List<Object> getAdded() {
         return selectionList.getSelection();
     }
 
@@ -486,14 +516,24 @@ public class AddRemoveComponent extends JPanel {
         listeners.remove(listener);
     }
 
+    private void notifyObserversAdded(Object o) {
+        for(AddRemoveListener listener : listeners)
+            listener.objectAdded(o);
+    }
+
+    private void notifyObserversRemoved(Object o) {
+        for(AddRemoveListener listener : listeners)
+            listener.objectRemoved(o);
+    }
+
     private void notifyObserversSelected(Object o) {
         for(AddRemoveListener listener : listeners)
             listener.objectSelected(o);
     }
 
-    private void notifyObserversDeselected(Object o) {
+    private void notifyObserversSelectedObjectRemoved(Object o) {
         for(AddRemoveListener listener : listeners)
-            listener.objectDeselected(o);
+            listener.selectedObjectRemoved(o);
     }
 
     // selectByString?
@@ -511,7 +551,7 @@ public class AddRemoveComponent extends JPanel {
 
         if(selected != null) {
             contents.remove(selected);
-            notifyObserversSelected(selected);
+            notifyObserversAdded(selected);
         }
     }
 
