@@ -602,9 +602,11 @@ public class AddRemoveComponent extends JPanel {
      * Placerar kompletteringslistan under textfältet.
      */
     private void positionCompletionWindow() {
-        Point loc = textField.getLocationOnScreen();
-        loc.y += textField.getSize().height;
-        completionWindow.setLocation(loc);
+        if(textField.isVisible()) {
+            Point loc = textField.getLocationOnScreen();
+            loc.y += textField.getSize().height;
+            completionWindow.setLocation(loc);
+        }
     }
 
     /**
