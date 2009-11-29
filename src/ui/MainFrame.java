@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -12,13 +13,19 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import model.MealSuggestionListModel;
 import ui.panels.forum.ForumPanel;
 import ui.panels.mealplan.PlannerPanel;
 import ui.panels.profile.ProfilePanel;
 import dataAccess.RecipeDA;
 import dataObjects.Recipe;
+import dataObjects.Session;
+import dataObjects.Subject;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  * The main frame of the application.
@@ -27,84 +34,139 @@ import dataObjects.Recipe;
  */
 public class MainFrame extends JFrame {
 
-   private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-   /**
-    * @param args
-    *           all arguments are ignored
-    */
-   public static void main(String[] args) {
-      SwingUtilities.invokeLater(new Runnable() {
-         public void run() {
-            new MainFrame();
-         }
-      });
+    /**
+     * @param args
+     *           all arguments are ignored
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
 
-   }
+            public void run() {
+                new MainFrame();
+            }
+        });
 
-   /**
-    * The list model for tsearch results
-    */
-   private final MealSuggestionListModel searchMealModel = new MealSuggestionListModel();
 
-   /**
-    * The list model for the plan.
-    */
-   private final MealSuggestionListModel planMealModel   = new MealSuggestionListModel();
+    }
+    /**
+     * The list model for tsearch results
+     */
+    private final MealSuggestionListModel searchMealModel = new MealSuggestionListModel();
+    /**
+     * The list model for the plan.
+     */
+    private final MealSuggestionListModel planMealModel = new MealSuggestionListModel();
 
-   /**
-    * Creates a new interface.
-    */
-   public MainFrame() {
-      super("Concept UI for mealplanner");
-      setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-      createComponents();
-   }
+    /**
+     * Creates a new interface.
+     */
+    public MainFrame() {
+        super("Concept UI for mealplanner");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        createLoginFrame();
+        setEnabled(false);
+        createComponents();
+    }
 
-   /**
-    * Creates the main part of the GUI, the tabbed pane that contains the
-    * different parts of the application.
-    */
-   private void createComponents() {
-	   try {
-		   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	   } catch(Exception e) {
-		   
-	   }
-      setLayout(new BorderLayout());
-      setMinimumSize(new Dimension(800, 600));
+    /**
+     * Creates a login window
+     */
+    public void createLoginFrame() {
+        final JFrame loginFrame = new JFrame("Logga in");
+        final JTextField nameField = new JTextField();
+        final JButton loginButton = new JButton("Logga in");
+        final JLabel loginLabel = new JLabel("Användarnamn:");
 
-      Container contentPane = getContentPane();
-      JTabbedPane tabbedPane = new JTabbedPane();
-      tabbedPane.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
-      // tabbedPane.setPreferredSize(new Dimension(790, 570));
-      tabbedPane.add("Måltidsplan", createMealPlanPanel());
-      tabbedPane.add("Min profil", new ProfilePanel());
-      tabbedPane.add("Forum", new ForumPanel());
-      contentPane.add(tabbedPane, BorderLayout.CENTER);
-      pack();
 
-      setVisible(true);
-   }
 
-   /**
-    * Create the panel for the Meal plan tab.
-    * @return The resulting panel.
-    */
-   private JComponent createMealPlanPanel() {
-      createFood();
-      return new PlannerPanel(searchMealModel, planMealModel);
-   }
+        Container container = loginFrame.getContentPane();
+        container.setLayout(new BorderLayout(5, 5));
+        loginButton.addActionListener(new ActionListener() {
 
-   /**
-    * Sets the recipes that are available for the search model.
-    */
-   private void createFood() {
-      RecipeDA recDA = new RecipeDA();
-      ArrayList<Recipe> recipes = recDA.getAllRecipes();
-      for (Recipe recipe : recipes) {
-         searchMealModel.addRecipe(recipe);
-      }
-   }
+            public void actionPerformed(ActionEvent ae) {
+                if (nameField.getText().compareTo("") != 0) {
+                    Session session = Session.getInstance();
+                    session.getInstance().setUser(new Subject(nameField.getText()));
+                    setEnabled(true);
+                    loginFrame.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
+                }
+            }
+        });
+        container.add(loginButton, BorderLayout.SOUTH);
+        container.add(loginLabel, BorderLayout.NORTH);
+        nameField.setPreferredSize(new Dimension(100, 20));
+        nameField.addActionListener(new ActionListener() {
 
+            public void actionPerformed(ActionEvent ae) {
+                if (nameField.getText().compareTo("") != 0) {
+                    Session session = Session.getInstance();
+                    session.setUser(new Subject(nameField.getText()));
+                    setEnabled(true);
+                    loginFrame.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
+                }
+            }
+        });
+        container.add(nameField, BorderLayout.CENTER);
+        loginFrame.pack();
+        loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        loginFrame.setVisible(true);
+        loginFrame.requestFocus();
+        loginFrame.setAlwaysOnTop(true);
+        loginFrame.setLocationRelativeTo(this);
+
+
+
+
+    }
+
+    /**
+     * Creates the main part of the GUI, the tabbed pane that contains the
+     * different parts of the application.
+     */
+    private void createComponents() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+        }
+        setLayout(new BorderLayout());
+        setMinimumSize(new Dimension(800, 600));
+
+        Container contentPane = getContentPane();
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
+        // tabbedPane.setPreferredSize(new Dimension(790, 570));
+        tabbedPane.add("Måltidsplan", createMealPlanPanel());
+        tabbedPane.add("Min profil", new ProfilePanel());
+        tabbedPane.add("Forum", new ForumPanel());
+        contentPane.add(tabbedPane, BorderLayout.CENTER);
+        pack();
+
+        setVisible(true);
+    }
+
+    /**
+     * Create the panel for the Meal plan tab.
+     * @return The resulting panel.
+     */
+    private JComponent createMealPlanPanel() {
+        createFood();
+        return new PlannerPanel(searchMealModel, planMealModel);
+    }
+
+    /**
+     * Sets the recipes that are available for the search model.
+     */
+    private void createFood() {
+        RecipeDA recDA = new RecipeDA();
+        ArrayList<Recipe> recipes = recDA.getAllRecipes();
+        for (Recipe recipe : recipes) {
+            searchMealModel.addRecipe(recipe);
+        }
+    }
 }
