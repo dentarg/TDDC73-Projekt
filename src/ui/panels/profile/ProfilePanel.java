@@ -6,7 +6,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 
 public class ProfilePanel extends JPanel {
 
@@ -20,7 +19,7 @@ public class ProfilePanel extends JPanel {
    private final static String NUTRITION = "Näringsvärden";
    private final static String WISHLIST = "Önskelista";
 
-   public ProfilePanel() {
+   public ProfilePanel(JLabel loggedInUserLabel) {
       setLayout(new BorderLayout());
 
       JTabbedPane tabPane = new JTabbedPane();
@@ -34,13 +33,7 @@ public class ProfilePanel extends JPanel {
       tabPane.add(NUTRITION, createNutritionTab());
       tabPane.add(WISHLIST, createWishlistTab());
       
-      add(createUserInfoLabel(), BorderLayout.SOUTH);
-   }
-   
-   private JComponent createUserInfoLabel() {
-	   String user = "John Doe";
-	   JLabel label = new JLabel("Inloggad som " + user, SwingConstants.RIGHT);
-	   return label;
+      add(loggedInUserLabel, BorderLayout.NORTH);
    }
 
    private JComponent createOverviewTab(){

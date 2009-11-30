@@ -218,7 +218,9 @@ public class Subject {
    public String getName() {
       return name;
    }
-
+   public void setName(String name) {
+	   this.name = name;
+   }
    /**
     * Gets the preferences of a subject.
     * 

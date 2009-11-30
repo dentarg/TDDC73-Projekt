@@ -12,11 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import model.MealSuggestionListModel;
 import ui.panels.forum.ForumPanel;
 import ui.panels.mealplan.PlannerPanel;
 import ui.panels.profile.ProfilePanel;
+import ui.panels.profile.loggedInUserLabel;
 import dataAccess.RecipeDA;
 import dataObjects.Recipe;
 import dataObjects.Session;
@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeListener;
 
 /**
  * The main frame of the application.
@@ -78,8 +79,7 @@ public class MainFrame extends JFrame {
         final JTextField nameField = new JTextField();
         final JButton loginButton = new JButton("Logga in");
         final JLabel loginLabel = new JLabel("Användarnamn:");
-
-
+        Session.getInstance().setUser(new Subject("Placeholder"));
 
         Container container = loginFrame.getContentPane();
         container.setLayout(new BorderLayout(5, 5));
@@ -87,8 +87,7 @@ public class MainFrame extends JFrame {
 
             public void actionPerformed(ActionEvent ae) {
                 if (nameField.getText().compareTo("") != 0) {
-                    Session session = Session.getInstance();
-                    session.getInstance().setUser(new Subject(nameField.getText()));
+                    Session.getInstance().getUser().setName((nameField.getText()));
                     setEnabled(true);
                     loginFrame.dispose();
                 } else {
@@ -119,10 +118,6 @@ public class MainFrame extends JFrame {
         loginFrame.requestFocus();
         loginFrame.setAlwaysOnTop(true);
         loginFrame.setLocationRelativeTo(this);
-
-
-
-
     }
 
     /**
@@ -142,7 +137,9 @@ public class MainFrame extends JFrame {
         tabbedPane.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
         // tabbedPane.setPreferredSize(new Dimension(790, 570));
         tabbedPane.add("Måltidsplan", createMealPlanPanel());
-        tabbedPane.add("Min profil", new ProfilePanel());
+        JLabel loggedInUserLabel = new loggedInUserLabel();
+        tabbedPane.addChangeListener((ChangeListener) loggedInUserLabel);
+        tabbedPane.add("Min profil", new ProfilePanel(loggedInUserLabel));
         tabbedPane.add("Forum", new ForumPanel());
         contentPane.add(tabbedPane, BorderLayout.CENTER);
         pack();
