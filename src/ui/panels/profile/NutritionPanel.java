@@ -96,7 +96,6 @@ public class NutritionPanel extends JPanel implements ChangeListener {
 		add(scrollPane);
 	}
 
-	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		RangeSlider.Slider s = (RangeSlider.Slider)arg0.getSource();
 		if(!s.getValueIsAdjusting()) {
