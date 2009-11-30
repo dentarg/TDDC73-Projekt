@@ -31,6 +31,10 @@ public class CostMap extends DifficultyMap {
       costStringMap.put(3, "high");
    }
 
+   public String getValue(int k) {
+	   return costStringMap.get(k);
+   }
+
    public CostMap() {
    }
 

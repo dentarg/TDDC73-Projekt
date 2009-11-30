@@ -26,10 +26,18 @@ public class DifficultyMap extends TreeMap<String, ArrayList<MealDate>> {
 
    private TreeMap<Integer, String>  diffStringMap;
 
+   public String getValue(int k) {
+	   return diffStringMap.get(k);
+   }
+
    /**
     * Creates a new wmpty object
     */
    public DifficultyMap() {
+	   diffStringMap = new TreeMap<Integer, String>();
+	   diffStringMap.put(1, "easy");
+	   diffStringMap.put(2, "medium");
+	   diffStringMap.put(3, "hard");
    }
 
    /**
