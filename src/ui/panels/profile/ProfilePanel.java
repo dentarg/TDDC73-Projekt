@@ -3,9 +3,11 @@ package ui.panels.profile;
 import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
 public class ProfilePanel extends JPanel {
 
@@ -19,12 +21,13 @@ public class ProfilePanel extends JPanel {
    private final static String NUTRITION = "Näringsvärden";
    private final static String WISHLIST = "Önskelista";
 
-   public ProfilePanel(JLabel loggedInUserLabel) {
-      setLayout(new BorderLayout());
+   private JFrame mainFrame;
 
+   public ProfilePanel() {
+      setLayout(new BorderLayout());
+      mainFrame = (JFrame)getParent();
       JTabbedPane tabPane = new JTabbedPane();
       add(tabPane);
-           
       tabPane.add(OVERVIEW, createOverviewTab());
       tabPane.add(DISLIKES, createDislikesTab());
       tabPane.add(GROUPS, createGroupsTab());
@@ -33,7 +36,13 @@ public class ProfilePanel extends JPanel {
       tabPane.add(NUTRITION, createNutritionTab());
       tabPane.add(WISHLIST, createWishlistTab());
       
-      add(loggedInUserLabel, BorderLayout.NORTH);
+      add(createUserInfoLabel(), BorderLayout.SOUTH);
+   }
+   
+   private JComponent createUserInfoLabel() {
+	   String user = "John Doe";
+	   JLabel label = new JLabel("Inloggad som " + user, SwingConstants.RIGHT);
+	   return label;
    }
 
    private JComponent createOverviewTab(){
@@ -42,7 +51,7 @@ public class ProfilePanel extends JPanel {
    }
 
    private JComponent createDislikesTab(){
-	   JPanel panel = new JPanel();
+	   JPanel panel = new DislikePanel();
 	   return panel;
    }
 
