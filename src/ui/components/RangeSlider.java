@@ -106,7 +106,6 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 	}
 
 	
-	@Override
 	public void changedUpdate(DocumentEvent e) {
 		int intValue;
 		String stringValue;
@@ -132,18 +131,15 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 		
 	}
 
-	@Override
 	public void insertUpdate(DocumentEvent e) {
 		changedUpdate(e);
 		
 	}
 
-	@Override
 	public void removeUpdate(DocumentEvent e) {
 		
 	}
 
-	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		lowerField.getDocument().removeDocumentListener(this);
 		lowerField.setText(slider.getValue() + "");
