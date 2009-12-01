@@ -16,11 +16,9 @@ import dataObjects.units.MilliGramMeasurement;
  */
 public class Subject {
    private int                     desiredAvailability;
-   private int                     minCost;
-   private int					   maxCost;
    private int                     desiredDifficulty;
-   private int                     minTime;
-   private int					   maxTime;
+   private int                     desiredCost;
+   private int                     desiredTime;
    private int                     desiredVariation;
    private Map<String, Preference> generatedPreferenceMap;
    private int                     importance;
@@ -43,9 +41,6 @@ public class Subject {
    private ArrayList<String>       refusedCategoriesList;
    private ArrayList<String>       refusedIngredientsList;
    private ArrayList<Group>		groups;
-   
-   private int desiredTime;
-   private int desiredCost;
 
    /**
     * Create a new subject.
@@ -56,10 +51,6 @@ public class Subject {
    public Subject(String name) {
       this.name = name;
       desiredDifficulty = -1;
-      minTime = 10;
-      maxTime = 45;
-      minCost = 10;
-      maxCost = 50;
       desiredAvailability = 2;
       desiredVariation = 2;
       minCarbohydrates = new GramMeasurement(0f);
@@ -206,26 +197,8 @@ public class Subject {
       return desiredAvailability;
    }
 
-   public int getMinCost() {
-      return minCost;
-   }
-   
-   public int getMaxCost()
-   {
-	   return maxCost;
-   }
-
    public int getDesiredDifficulty() {
       return desiredDifficulty;
-   }
-
-   public int getMinTime() {
-      return minTime;
-   }
-   
-   public int getMaxTime()
-   {
-	   return maxTime;
    }
 
    public int getDesiredVariation() {
@@ -378,15 +351,6 @@ public class Subject {
 	      this.desiredTime = desiredTime;
 	   }
    
-   public void setMinCost(int desiredCost) {
-      this.minCost = desiredCost;
-   }
-
-   public void setMaxCost(int desiredCost) 
-   {
-	   this.maxCost = desiredCost;
-   }
-   
    public void setDesiredDifficulty(int desiredDifficulty) {
       this.desiredDifficulty = desiredDifficulty;
    }
@@ -401,15 +365,6 @@ public class Subject {
       } else {
          this.desiredDifficulty = -1;
       }
-   }
-
-   public void setMaxTime(int desiredTime) {
-      this.maxTime = desiredTime;
-   }
-
-   public void setMinTime(int desiredTime) 
-   {
-	   this.minTime = desiredTime;
    }
    
    public void setDesiredVariation(int desiredVariation) {

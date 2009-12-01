@@ -27,7 +27,7 @@ public class OverviewPanel extends JPanel {
 		this.user.addRefusedIngredient("Vatten");
 		this.user.addRefusedIngredient("Allt annat");
 		this.user.addRefusedIngredient("Cider");
-		this.user.createGroup("Vänner");
+		this.user.createGroup("VÃ¤nner");
 		this.user.createGroup("Familj");
 		this.user.createGroup("Fest");
 		*/
@@ -107,9 +107,9 @@ public class OverviewPanel extends JPanel {
 		personalLabel.setFont(label);
 		TextArea personalArea = new TextArea("", 2, 50, TextArea.SCROLLBARS_NONE);
 		personalArea.setEditable(false);
-		personalArea.setText("Kostnad: " + + this.user.getMinCost() + "-" + this.user.getMaxCost());
-		personalArea.append("\nTid: " + this.user.getMinTime() + "-" + this.user.getMaxTime());
-		personalArea.append("\nSvårighetsgrad: " + this.user.getDesiredDifficulty());
+		personalArea.setText("Kostnad: " + + this.user.getDesiredCost());
+		personalArea.append("\nTid: " + this.user.getDesiredTime());
+		personalArea.append("\nSvÃ¥righetsgrad: " + this.user.getDesiredDifficulty());
 		personal.add(personalLabel);
 		personal.add(personalArea);
 		
