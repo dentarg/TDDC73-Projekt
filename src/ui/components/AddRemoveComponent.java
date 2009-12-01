@@ -373,10 +373,6 @@ public class AddRemoveComponent extends JPanel {
         //
         // Initialisera övriga komponenter
         //
-        JPanel textFieldAndButtonPanel = new JPanel();
-        textFieldAndButtonPanel.setLayout(new BoxLayout(textFieldAndButtonPanel, BoxLayout.LINE_AXIS));
-
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         // Sökfält och lägg-till-knapp
         textField = new JTextField();
