@@ -39,7 +39,7 @@ public class ProfilePanel extends JPanel {
    }
 
    private JComponent createOverviewTab(){
-	   JPanel panel = new JPanel();
+	   JPanel panel = new OverviewPanel();
 	   return panel;
    }
 
