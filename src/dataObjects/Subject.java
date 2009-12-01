@@ -167,7 +167,7 @@ public class Subject {
 		for(int i = 0; i<numberOfGroups; i++)
 		{
 			Group group = this.groups.get(i);
-			ArrayList<User> userList = group.getMembers();
+			ArrayList<Subject> userList = group.getMembers();
 			int numberOfMembers = group.getNumberOfMembers();
 			
 			for(int j = 0; i<numberOfMembers; j++)
