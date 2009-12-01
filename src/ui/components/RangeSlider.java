@@ -71,12 +71,12 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 		
 		
 		lowerField = new JTextField();
-		lowerField.setPreferredSize(new Dimension(30, 20));
+		lowerField.setPreferredSize(new Dimension(40, 20));
 		lowerField.setText(slider.getValue() + "");
 		lowerField.getDocument().addDocumentListener(this);
 		
 		upperField = new JTextField();
-		upperField.setPreferredSize(new Dimension(30, 20));
+		upperField.setPreferredSize(new Dimension(40, 20));
 		upperField.setText(slider.getUpperValue() + "");
 		upperField.getDocument().addDocumentListener(this);
 		
@@ -205,6 +205,10 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 					getMaximum(), getValueIsAdjusting());
 		}
 
+		public void setValue(Float value) {
+			setValue(value.intValue());
+		}
+
 		/**
 		 * Returns the upper value in the range.
 		 */
@@ -223,6 +227,10 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 			// Set extent to set upper value.
 			setExtent(newExtent);
 		}
+		
+		public void setUpperValue(Float value) {
+			setUpperValue(value.intValue());
+		}
 
 		/**
 		 * Get both the lower and upper value
@@ -238,7 +246,7 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 		protected class RangeSliderUI extends BasicSliderUI {
 
 			/** Color of selected range. */
-			private Color rangeColor = Color.GREEN;
+			private Color rangeColor = Color.DARK_GRAY;
 
 			/** Location and size of thumb for upper value. */
 			private Rectangle upperThumbRect;
