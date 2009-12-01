@@ -24,7 +24,6 @@ public class ConstraintSorter implements RecipeSorter {
        * (non-Javadoc)
        * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
        */
-      @Override
       public int compare(Recipe r1, Recipe r2) {
          float val1 = 0;
          float val2 = 0;
@@ -45,7 +44,6 @@ public class ConstraintSorter implements RecipeSorter {
     * (non-Javadoc)
     * @see model.sorters.RecipeSorter#getComparator()
     */
-   @Override
    public Comparator<Recipe> getComparator() {
       return new ValuationComparator();
    }

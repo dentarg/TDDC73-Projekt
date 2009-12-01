@@ -63,7 +63,6 @@ public class MealSuggestionListModel extends TransferHandler implements
     * javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener
     * )
     */
-   @Override
    public void addListDataListener(ListDataListener l) {
       listeners.add(l);
    }
@@ -187,7 +186,6 @@ public class MealSuggestionListModel extends TransferHandler implements
     * (non-Javadoc)
     * @see javax.swing.ListModel#getElementAt(int)
     */
-   @Override
    public Object getElementAt(int index) {
       return filteredList.get(index);
    }
@@ -219,7 +217,6 @@ public class MealSuggestionListModel extends TransferHandler implements
     * (non-Javadoc)
     * @see javax.swing.ListModel#getSize()
     */
-   @Override
    public int getSize() {
       return filteredList.size();
    }
@@ -263,7 +260,6 @@ public class MealSuggestionListModel extends TransferHandler implements
     * (non-Javadoc)
     * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
     */
-   @Override
    public void removeListDataListener(ListDataListener l) {
       listeners.remove(l);
    }

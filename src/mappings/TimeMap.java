@@ -22,10 +22,18 @@ public class TimeMap extends TreeMap<String, List<MealDate>> {
    /** maps values to strings */
    TreeMap<Integer, String>  timeMinuteMap;
 
+   public String getValue(int k) {
+	   return timeMinuteMap.get(k);
+   }
+
    /**
     * Creates an empty map.
     */
    public TimeMap() {
+	   timeMinuteMap = new TreeMap<Integer, String>();
+	   timeMinuteMap.put(1, "short");
+	   timeMinuteMap.put(2, "medium");
+	   timeMinuteMap.put(3, "high");
    }
 
    /**
