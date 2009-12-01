@@ -35,6 +35,8 @@ import javax.swing.event.ChangeListener;
  */
 public class MainFrame extends JFrame {
 
+	public static MainFrame mainFrame;
+	
     private static final long serialVersionUID = 1L;
 
     /**
@@ -48,8 +50,6 @@ public class MainFrame extends JFrame {
                 new MainFrame();
             }
         });
-
-
     }
     /**
      * The list model for tsearch results
@@ -137,14 +137,15 @@ public class MainFrame extends JFrame {
         tabbedPane.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
         // tabbedPane.setPreferredSize(new Dimension(790, 570));
         tabbedPane.add("Måltidsplan", createMealPlanPanel());
-        JLabel loggedInUserLabel = new loggedInUserLabel();
-        tabbedPane.addChangeListener((ChangeListener) loggedInUserLabel);
+        loggedInUserLabel loggedInUserLabel = new loggedInUserLabel();
+        tabbedPane.addChangeListener(loggedInUserLabel);
         tabbedPane.add("Min profil", new ProfilePanel(loggedInUserLabel));
         tabbedPane.add("Forum", new ForumPanel());
         contentPane.add(tabbedPane, BorderLayout.CENTER);
         pack();
 
         setVisible(true);
+        mainFrame = this;
     }
 
     /**

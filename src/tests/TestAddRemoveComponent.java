@@ -58,7 +58,7 @@ class TestAddRemoveComponent {
         JFrame frame = new JFrame(frameTitle);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        addRemoveComponent = new AddRemoveComponent(frame);
+        addRemoveComponent = new AddRemoveComponent();
 
         BufferedImage horseImage = null;
         BufferedImage ballImage = null;
