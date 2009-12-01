@@ -56,10 +56,10 @@ public class Subject {
    public Subject(String name) {
       this.name = name;
       desiredDifficulty = -1;
-      minTime = -1;
-      maxTime = -1;
-      minCost = -1;
-      maxCost = -1;
+      minTime = 10;
+      maxTime = 45;
+      minCost = 10;
+      maxCost = 50;
       desiredAvailability = 2;
       desiredVariation = 2;
       minCarbohydrates = new GramMeasurement(0f);
@@ -159,6 +159,19 @@ public class Subject {
 				this.groups.remove(i);
 			}
 		}
+	}
+	
+	public ArrayList<String> getGroupNames()
+	{
+		int length = this.groups.size();
+		ArrayList<String> names = new ArrayList<String>();
+		
+		for(int i = 0; i<length; i++)
+		{
+			names.add(this.groups.get(i).getName());
+		}
+		
+		return names;
 	}
 	
 	/**
