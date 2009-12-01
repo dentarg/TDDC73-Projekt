@@ -40,6 +40,7 @@ public class Subject {
    private Map<String, Preference> preferenceMap;
    private ArrayList<String>       refusedCategoriesList;
    private ArrayList<String>       refusedIngredientsList;
+   private ArrayList<Group>		groups;
 
    /**
     * Create a new subject.
@@ -73,6 +74,7 @@ public class Subject {
       generatedPreferenceMap = new HashMap<String, Preference>();
       refusedIngredientsList = new ArrayList<String>();
       refusedCategoriesList = new ArrayList<String>();
+      groups = new ArrayList<Group>();
    }
 
    /**
@@ -121,6 +123,65 @@ public class Subject {
       refusedIngredientsList.add(ingredientName);
    }
 
+   /**
+    * Creates a new group and adds it to the list of groups.
+    * 
+    *  @param name
+    *  			Name of the group.
+    */
+   public void createGroup(String name)
+	{
+		Group g = new Group(name);
+		g.addUser(this);
+		this.groups.add(g);		
+	}
+	
+   /**
+    * Removes a group from the user's list of groups.
+    * 
+    * @param name
+    * 			Name of the group.
+    */
+	public void removeGroup(String name)
+	{
+		int length = this.groups.size();
+		for(int i = 0; i<length; i++)
+		{
+			if(name == this.groups.get(i).getName())
+			{
+				this.groups.remove(i);
+			}
+		}
+	}
+	
+	/**
+	    * Checks if a user is a member of the specified group.
+	    * 
+	    * @param g
+	    * 			The group to search in.
+	    */
+	public Boolean isMemberOf(Group g)
+	{
+		int numberOfGroups = this.groups.size();
+			
+		for(int i = 0; i<numberOfGroups; i++)
+		{
+			Group group = this.groups.get(i);
+			ArrayList<User> userList = group.getMembers();
+			int numberOfMembers = group.getNumberOfMembers();
+			
+			for(int j = 0; i<numberOfMembers; j++)
+			{
+				if(this == userList.get(j))
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+   
    public int getDesiredAvailability() {
       return desiredAvailability;
    }

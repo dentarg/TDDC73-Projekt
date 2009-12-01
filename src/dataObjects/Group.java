@@ -14,15 +14,15 @@ import java.util.ArrayList;
 public class Group 
 {
 	private String name;
-	private ArrayList<User> members;
+	private ArrayList<Subject> members;
 	
 	public Group(String name)
 	{
 		this.name = name;
-		this.members = new ArrayList<User>();		
+		this.members = new ArrayList<Subject>();		
 	}
 
-	public void removeUser(User user)
+	public void removeUser(Subject user)
 	{
 		int length = this.members.size();
 		for(int i = 0; i<length; i++)
@@ -39,12 +39,12 @@ public class Group
 		return this.members.size();
 	}
 	
-	public ArrayList<User> getMembers()
+	public ArrayList<Subject> getMembers()
 	{
 		return this.members;
 	}
 	
-	public void addUser(User user)
+	public void addUser(Subject user)
 	{
 		this.members.add(user);
 	}
