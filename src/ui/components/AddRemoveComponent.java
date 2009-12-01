@@ -37,6 +37,8 @@ import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 
+import ui.MainFrame;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -354,7 +356,7 @@ public class AddRemoveComponent extends JPanel {
 
     private DocumentListener textChangeListener;
 
-    public AddRemoveComponent(JFrame frame) {
+    public AddRemoveComponent() {
         contents = new ArrayList<Object>();
 
         listeners = new ArrayList<AddRemoveListener>();
@@ -363,7 +365,7 @@ public class AddRemoveComponent extends JPanel {
         // Initialisera completion-fönstret
         //
         completionList = new CompletionList();
-        completionWindow = new JWindow(frame);
+        completionWindow = new JWindow(MainFrame.mainFrame);
 
         Container windowPanel = completionWindow.getContentPane();
 

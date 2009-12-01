@@ -21,6 +21,6 @@ public class loggedInUserLabel extends JLabel implements ChangeListener {
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		setText("Inloggad som " + user);
+		setText("Inloggad som: " + user);
 	}
 }

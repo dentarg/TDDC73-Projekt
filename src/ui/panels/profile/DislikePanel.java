@@ -81,10 +81,10 @@ public class DislikePanel extends JPanel {
         jLabel2.setFont(new java.awt.Font("DejaVu Sans", 0, 18));
         jLabel2.setText("Sånt du ogillar:");
 
-        jTextField1 = new AddRemoveComponent(new JFrame());
+        jTextField1 = new AddRemoveComponent();
 
 
-        jTextField2 = new AddRemoveComponent(new JFrame());
+        jTextField2 = new AddRemoveComponent();
 
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
