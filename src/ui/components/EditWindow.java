@@ -65,7 +65,7 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		groupList = createGroupList();
 		
 		subjectPanel.add(groupList, BorderLayout.CENTER);
-		subjectList = new AddRemoveComponent(false, true);
+		subjectList = new AddRemoveComponent();
 		subjectList.addAddRemoveListener(new AddRemoveListener() {
 
 			public void objectAdded(Object o) {
@@ -73,7 +73,9 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 				
 			}
 
-			public void objectRemoved(Object o, boolean wasSelected) {
+			@Override
+			public void objectRemoved(Object o) {
+
 				System.out.println(o);
 				
 			}
@@ -82,6 +84,13 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 				System.out.println(o);
 				
 			}
+
+			@Override
+			public void selectedObjectRemoved(Object o) {
+				System.out.println(o);
+				
+			}
+
 			
 		});
 		Subject s = Session.getInstance().getUser();
