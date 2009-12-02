@@ -1,9 +1,13 @@
 package ui.panels.profile;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -36,14 +40,13 @@ public class NutritionPanel extends JPanel {
 	private void init() {
 		
 		JPanel sliderHolder = new JPanel();
-		sliderHolder.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 10));
-		sliderHolder.setPreferredSize(new Dimension(780, 500));
+		sliderHolder.setLayout(new GridLayout(0, 1));
 		
 		RangeSlider s;
 		Slider slider;
 		s = new RangeSlider("Kalcium (mg)", 0, 1500);
 		slider = s.getSlider();
-		Dimension d = new Dimension(500, 10);
+		Dimension d = new Dimension(500, 50);
 		slider.setPreferredSize(d);
 		slider.setValue(user.getMinCalcium().getGrams()*1000);
 		slider.setUpperValue(user.getMaxCalcium().getGrams()*1000);
@@ -154,13 +157,6 @@ public class NutritionPanel extends JPanel {
 			}
 		});
 		sliderHolder.add(s);
-		
-		
-		
-		/*JScrollPane scrollPane = new JScrollPane(sliderHolder);
-		scrollPane.setPreferredSize(sliderHolder.getPreferredSize());
-		
-		add(scrollPane);*/
 		add(sliderHolder);
 	}
 

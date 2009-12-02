@@ -35,11 +35,6 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 
 	public RangeSlider() {
 		setSlider(new Slider());
-		slider.setMajorTickSpacing(10);
-		slider.setMinorTickSpacing(5);
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
-		slider.setSnapToTicks(true);
 		init();
 	}
 	
@@ -58,6 +53,14 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 
 	
 	private void init() {
+
+		slider.setMajorTickSpacing(slider.getMaximum()/10);
+		slider.setMinorTickSpacing(slider.getMaximum()/20);
+		slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		slider.setSnapToTicks(true);
+
+		
 		TitledBorder tb = BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Color.GRAY),
 				title,
