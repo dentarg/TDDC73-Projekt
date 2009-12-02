@@ -13,13 +13,13 @@ public class ProfilePanel extends JPanel {
 
 	private static final long serialVersionUID = -3037636351809756514L;
 
-	private final static String OVERVIEW = "�versikt";
+	private final static String OVERVIEW = "Översikt";
 	private final static String DISLIKES = "Jag gillar inte";
 	private final static String GROUPS = "Grupphantering";
 	private final static String ALLERGIES = "Allergier";
 	private final static String PREFERENCES = "Preferenser";
-	private final static String NUTRITION = "N�ringsv�rden";
-	private final static String WISHLIST = "�nskelista";
+	private final static String NUTRITION = "Näringsvärden";
+	private final static String WISHLIST = "Önskelista";
 
 	private JFrame mainFrame;
 
@@ -69,7 +69,6 @@ public class ProfilePanel extends JPanel {
 	}
 
 	private JComponent createWishlistTab(){
-		JPanel panel = new JPanel();
-		return panel;
+                return new WishlistPanel();
 	}
 }

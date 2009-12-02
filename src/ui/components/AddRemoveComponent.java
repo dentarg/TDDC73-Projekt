@@ -45,6 +45,7 @@ import java.util.List;
 public class AddRemoveComponent extends JPanel {
     private static final String ADD_BUTTON_TEXT = "Lägg till";
     private static final int MAX_COMPLETIONS = 20;
+    private static final int MINIMUM_WIDTH = 250; 
 
     private static final int IMAGE_WIDTH = 50;
     private static final int IMAGE_HEIGHT = 50;
@@ -567,6 +568,22 @@ public class AddRemoveComponent extends JPanel {
 
     public Object getSelectedObject() {
         return selectionList.getSelectedObject();
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        Dimension minimumSize = super.getMinimumSize();
+        minimumSize.width = MINIMUM_WIDTH;
+        return minimumSize;
+    }
+
+    // Hack for GridBagLayout, which ignores the minimum size
+    @Override
+    public Dimension getPreferredSize() {
+        Dimension preferredSize = super.getPreferredSize();
+        if(preferredSize.width < MINIMUM_WIDTH)
+            preferredSize.width = MINIMUM_WIDTH;
+        return preferredSize;
     }
 
     private void notifyObserversAdded(Object o) {
