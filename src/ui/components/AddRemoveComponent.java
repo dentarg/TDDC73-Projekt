@@ -56,7 +56,10 @@ public class AddRemoveComponent extends JPanel {
     private static final int TEXT_REMOVE_BUTTON_PADDING = 30;
     private static final int SELECTION_LIST_TEXT_FIELD_PADDING = 7;
 
-    private static final int ROW_HEIGHT = IMAGE_HEIGHT + IMAGE_VERTICAL_PADDING;
+    private static final int TEXT_LEFT_OFFSET_WITHOUT_ICONS = 1;
+
+    private static final int ROW_HEIGHT_WITH_ICONS = IMAGE_HEIGHT + IMAGE_VERTICAL_PADDING;
+    private static final int TEXT_LEFT_OFFSET_WITH_ICONS = IMAGE_WIDTH + IMAGE_LEFT_PADDING + IMAGE_RIGHT_PADDING;
 
     private static final Color selectionColor = new Color(57, 112, 205);
     private static final Color selectionListBackgroundColor = Color.WHITE;
@@ -107,7 +110,13 @@ public class AddRemoveComponent extends JPanel {
          * Ger index för den rad koordinaten 'point' ligger i höjdled med.
          */
         private int pointToIndex(Point point) {
-            return point.y / ROW_HEIGHT;
+            if(useIcons) {
+                return point.y / ROW_HEIGHT_WITH_ICONS;
+            }
+            else {
+                FontMetrics fm = getFontMetrics(getFont());
+                return point.y / fm.getHeight();
+            }
         }
 
         /**
@@ -156,49 +165,72 @@ public class AddRemoveComponent extends JPanel {
 
         @Override
         public void paintComponent(Graphics g) {
-            final int initialY = ROW_HEIGHT/2;
+            int initialY;
+            int rowHeight;
+            int textLeftOffset;
+
+            if(useIcons) {
+                rowHeight = ROW_HEIGHT_WITH_ICONS;
+                initialY = rowHeight/2;
+                textLeftOffset = TEXT_LEFT_OFFSET_WITH_ICONS;
+            }
+            else {
+                FontMetrics fm = getFontMetrics(getFont());
+                rowHeight = fm.getHeight();
+                initialY = rowHeight - fm.getDescent();
+                textLeftOffset = TEXT_LEFT_OFFSET_WITHOUT_ICONS;
+            }
 
             // Rita markör
             if(selectionIndex != -1) {
                 g.setColor(selectionColor);
 
-                g.fillRect(0, selectionIndex * ROW_HEIGHT,
-                           getSize().width, ROW_HEIGHT);
+                g.fillRect(0, selectionIndex * rowHeight,
+                           getSize().width, rowHeight);
             }
 
             // Rita ikoner och textsträngar
             g.setColor(getForeground());
             for(int i = 0; i < contents.size(); ++i) {
-                if(contents.get(i) instanceof Displayable) {
+                if(useIcons && contents.get(i) instanceof Displayable) {
                     Image image = ((Displayable) contents.get(i)).getImage();
                     
                     if(image != null)
                         g.drawImage( ((Displayable) contents.get(i)).getImage(),
                                      IMAGE_LEFT_PADDING,
-                                     IMAGE_VERTICAL_PADDING/2 + i*ROW_HEIGHT,
+                                     IMAGE_VERTICAL_PADDING/2 + i*rowHeight,
                                      null );
                 }
                 g.drawString(contents.get(i).toString(),
-                             IMAGE_WIDTH + IMAGE_LEFT_PADDING + IMAGE_RIGHT_PADDING,
-                             initialY + i*ROW_HEIGHT);
+                             textLeftOffset,
+                             initialY + i*rowHeight);
             }
         }
 
         @Override
         public Dimension getPreferredSize() {
             Dimension d = new Dimension();
+            FontMetrics fm = getFontMetrics(getFont());
 
-            d.height = contents.size() * ROW_HEIGHT;
+            int textLeftOffset;
+
+            if(useIcons) {
+                d.height = contents.size() * ROW_HEIGHT_WITH_ICONS;
+                textLeftOffset = TEXT_LEFT_OFFSET_WITH_ICONS;
+            }
+            else {
+                d.height = contents.size() * fm.getHeight();
+                textLeftOffset = TEXT_LEFT_OFFSET_WITHOUT_ICONS;
+            }
 
             d.width = 0;
-            FontMetrics fm = getFontMetrics(getFont());
             for(Object row : contents) {
                 int width = fm.stringWidth(row.toString());
                 if(width > d.width)
                     d.width = width;
             }
 
-            d.width += (IMAGE_WIDTH + IMAGE_LEFT_PADDING + IMAGE_RIGHT_PADDING);
+            d.width += textLeftOffset;
 
             return d;
         }
@@ -260,17 +292,15 @@ public class AddRemoveComponent extends JPanel {
                 removeButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         rows.remove(Row.this);
-                        AddRemoveComponent.this.insertSorted(Row.this.object);
 
-                        if(Row.this == selectedRow) {
-                            selectedRow = null;
-                            AddRemoveComponent.this.notifyObserversSelectedObjectRemoved(Row.this.object);
-                        }
+                        if(!createInsteadOfAdding)
+                            AddRemoveComponent.this.insertSorted(Row.this.object);
 
                         layoutListPanel();
                         positionCompletionWindow();
 
-                        AddRemoveComponent.this.notifyObserversRemoved(Row.this.getObject());
+                        AddRemoveComponent.this.notifyObserversRemoved
+                            (Row.this.getObject(), Row.this == selectedRow);
                     }
                 });
 
@@ -291,18 +321,25 @@ public class AddRemoveComponent extends JPanel {
         }
 
         public void add(Object o) {
-            boolean inserted = false;
+            boolean addLast = true;
 
             // Keep contents sorted
             for(int i = 0; i < rows.size(); ++i) {
-                if( o.toString().compareToIgnoreCase(rows.get(i).getObject().toString()) < 0 ) {
+                int order = o.toString().compareToIgnoreCase( rows.get(i).getObject().toString() );
+
+                if(order < 0) {
                     rows.add(i, new Row(o));
-                    inserted = true;
+                    addLast = false;
+                    break;
+                }
+                else if(order == 0) {
+                    // Avoid adding duplicates
+                    addLast = false;
                     break;
                 }
             }
 
-            if(!inserted)
+            if(addLast)
                 rows.add(new Row(o));
 
             layoutListPanel();
@@ -341,6 +378,9 @@ public class AddRemoveComponent extends JPanel {
         }
     }
 
+    private boolean createInsteadOfAdding;
+    private boolean useIcons;
+
     private List<Object> contents;
 
     private List<AddRemoveListener> listeners;
@@ -357,6 +397,13 @@ public class AddRemoveComponent extends JPanel {
     private DocumentListener textChangeListener;
 
     public AddRemoveComponent() {
+        this(false, false);
+    }
+
+    public AddRemoveComponent(boolean useIcons, boolean createInsteadOfAdding) {
+        this.useIcons = useIcons;
+        this.createInsteadOfAdding = createInsteadOfAdding;
+        
         contents = new ArrayList<Object>();
 
         listeners = new ArrayList<AddRemoveListener>();
@@ -406,7 +453,7 @@ public class AddRemoveComponent extends JPanel {
 
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                addToSelectionList();
+                addToSelectionList(textField.getText());
             }
         });
 
@@ -431,7 +478,7 @@ public class AddRemoveComponent extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if(completionList.getSelectedCompletion() == null ||
                    !completionWindow.isVisible()) {
-                    addToSelectionList();
+                    addToSelectionList(textField.getText());
                 }
                 else {
                     Object o = completionList.getSelectedCompletion();
@@ -447,7 +494,8 @@ public class AddRemoveComponent extends JPanel {
                 switch(e.getKeyCode()) {
                     case KeyEvent.VK_DOWN:
                     case KeyEvent.VK_KP_DOWN:
-                        if(!completionWindow.isVisible())
+                        if( !(AddRemoveComponent.this.createInsteadOfAdding ||
+                              completionWindow.isVisible()) )
                             showCompletions(textField.getText());
                         completionList.selectNextRow();
                         break;
@@ -526,9 +574,9 @@ public class AddRemoveComponent extends JPanel {
             listener.objectAdded(o);
     }
 
-    private void notifyObserversRemoved(Object o) {
+    private void notifyObserversRemoved(Object o, boolean wasSelected) {
         for(AddRemoveListener listener : listeners)
-            listener.objectRemoved(o);
+            listener.objectRemoved(o, wasSelected);
     }
 
     private void notifyObserversSelected(Object o) {
@@ -536,27 +584,26 @@ public class AddRemoveComponent extends JPanel {
             listener.objectSelected(o);
     }
 
-    private void notifyObserversSelectedObjectRemoved(Object o) {
-        for(AddRemoveListener listener : listeners)
-            listener.selectedObjectRemoved(o);
-    }
-
-    // selectByString?
-    private void addToSelectionList() {
-        Object selected = null;
-
-        // Is the object in the list?
-        for(Object o : contents) {
-            if( o.toString().compareToIgnoreCase(textField.getText()) == 0 ) {
-                selectionList.add(o);
-                selected = o;
-                break;
-            }
+    private void addToSelectionList(String identifier) {
+        if(createInsteadOfAdding) {
+            selectionList.add(identifier);
         }
+        else {
+            Object selected = null;
 
-        if(selected != null) {
-            contents.remove(selected);
-            notifyObserversAdded(selected);
+            // Is the object in the list?
+            for(Object o : contents) {
+                if( o.toString().compareToIgnoreCase(identifier) == 0 ) {
+                    selectionList.add(o);
+                    selected = o;
+                    break;
+                }
+            }
+
+            if(selected != null) {
+                contents.remove(selected);
+                notifyObserversAdded(selected);
+            }
         }
     }
 
@@ -581,7 +628,8 @@ public class AddRemoveComponent extends JPanel {
      * Hjälpfunktion som anropas då texten i textfältet ändras.
      */
     private void textModified() {
-        showCompletions(textField.getText());
+        if(!createInsteadOfAdding)
+            showCompletions(textField.getText());
     }
 
     /**

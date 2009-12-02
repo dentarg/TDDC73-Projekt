@@ -58,7 +58,7 @@ class TestAddRemoveComponent {
         JFrame frame = new JFrame(frameTitle);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        addRemoveComponent = new AddRemoveComponent();
+        addRemoveComponent = new AddRemoveComponent(false, false);
 
         BufferedImage horseImage = null;
         BufferedImage ballImage = null;
@@ -98,16 +98,17 @@ class TestAddRemoveComponent {
                 System.out.println(o.toString() + " added");
             }
 
-            public void objectRemoved(Object o) {
-                System.out.println(o.toString() + " removed");
+            public void objectRemoved(Object o, boolean wasSelected) {
+                if(wasSelected) {
+                    System.out.println(o.toString() + " removed while selected");
+                }
+                else {
+                    System.out.println(o.toString() + " removed");
+                }
             }
 
             public void objectSelected(Object o) {
                 System.out.println(o.toString() + " selected");
-            }
-
-            public void selectedObjectRemoved(Object o) {
-                System.out.println(o.toString() + " removed while selected");
             }
         });
     }
