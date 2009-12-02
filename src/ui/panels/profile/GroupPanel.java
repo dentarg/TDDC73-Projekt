@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import ui.MainFrame;
 import ui.components.AddRemoveComponent;
 import ui.components.AddRemoveListener;
 
@@ -48,7 +49,7 @@ public class GroupPanel extends JPanel {
 		JPanel groupPanel = new JPanel();		
 		groupPanel.setLayout(new BorderLayout());
 		
-		groupList = new AddRemoveComponent(new JFrame());
+		groupList = new AddRemoveComponent();
 		
 		groupPanel.add(groupList, BorderLayout.NORTH);
 		
@@ -69,7 +70,7 @@ public class GroupPanel extends JPanel {
 		JPanel subjectPanel = new JPanel();
 		subjectPanel.setLayout(new BorderLayout());
 		
-		subjectList = new AddRemoveComponent(new JFrame());
+		subjectList = new AddRemoveComponent();
 		
 		subjectPanel.add(subjectList, BorderLayout.NORTH);
 		
