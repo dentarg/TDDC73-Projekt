@@ -66,7 +66,6 @@ public class SortMethodSelector extends JComboBox implements ActionListener{
 		   groupWin.setVisible(true);
 		   groupWin.addListSelectionListener(new ListSelectionListener() {
 			
-			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				JList list = (JList)e.getSource();
 				
