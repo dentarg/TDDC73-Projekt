@@ -75,7 +75,7 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 			}
 
 			@Override
-			public void objectRemoved(Object o, boolean wasSelected) {
+			public void objectRemoved(Object o) {
 				System.out.println(o);
 				
 			}
@@ -85,6 +85,13 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 				System.out.println(o);
 				
 			}
+
+			@Override
+			public void selectedObjectRemoved(Object o) {
+				System.out.println(o);
+				
+			}
+
 			
 		});
 		Subject s = Session.getInstance().getUser();
