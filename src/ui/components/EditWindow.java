@@ -4,17 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.Frame;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
-import javax.swing.border.TitledBorder;
+
 import javax.swing.event.ListSelectionListener;
 
 import dataObjects.Group;
@@ -22,73 +23,113 @@ import dataObjects.Session;
 import dataObjects.Subject;
 
 
-public class EditWindow extends JWindow implements FocusListener {
+public class EditWindow extends JWindow implements WindowFocusListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1515580483915058715L;
 	private AddRemoveComponent subjectList;
 	private JList groupList;
-	
-	private static EditWindow instance;
-	public static EditWindow getInstance() {
-		if(EditWindow.instance == null) {
-			EditWindow.instance = new EditWindow();
-		}
-		return EditWindow.instance;
-	}
-	
-	private EditWindow() {
-		super();
+
+	public EditWindow(Frame owner) {
+		super(owner);
 		createGUI();
-		setBackground(Color.BLACK);
 		setAlwaysOnTop(true);
-		addFocusListener(this);
-		com.sun.awt.AWTUtilities.setWindowOpacity(this, 0.99f); //since Java 6 Update 10
+		addWindowFocusListener(this);
+		setBackground(Color.GRAY);
+
+		com.sun.awt.AWTUtilities.setWindowOpacity(this, 0.8f);
 		pack();
 	}
-	
+
+	private JPanel createHeader() {
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.BLACK);
+		
+		
+		JLabel p = new JLabel("Välj grupp");
+		p.setFont(new Font("Arial", Font.BOLD, 15));
+		p.setForeground(Color.BLUE);
+		panel.add(p);
+		
+		return panel;
+	}
+
 	private void createGUI() {
+
+		getContentPane().add(createHeader(), BorderLayout.NORTH);
+
 		JPanel subjectPanel = new JPanel();
 		subjectPanel.setLayout(new BorderLayout());
 		groupList = createGroupList();
-		subjectPanel.add(groupList, BorderLayout.NORTH);
+		
+		//subjectPanel.add(groupList, BorderLayout.CENTER);
 		subjectList = new AddRemoveComponent();
-		subjectPanel.add(subjectList, BorderLayout.SOUTH);
-		TitledBorder tb = BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Color.BLACK, 3),
-				"Grupper", 
-				TitledBorder.LEFT, 
-				TitledBorder.CENTER, 
-				new Font("Arial", Font.BOLD, 15));
-		subjectPanel.setBorder(tb);
-		this.getContentPane().add(subjectPanel);
+		subjectList.addAddRemoveListener(new AddRemoveListener() {
+
+			@Override
+			public void objectAdded(Object o) {
+				System.out.println(o);
+				
+			}
+
+			@Override
+			public void objectRemoved(Object o, boolean wasSelected) {
+				System.out.println(o);
+				
+			}
+
+			@Override
+			public void objectSelected(Object o) {
+				System.out.println(o);
+				
+			}
+			
+		});
+		Subject s = Session.getInstance().getUser();
+		List<Group> groups = s.getGroups();
+		for (Group group : groups) {
+			subjectList.add(group.getName());
+			System.out.println(group);
+		}
+		subjectPanel.add(subjectList, BorderLayout.SOUTH); 
+
+		subjectPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
+		subjectPanel.setBackground(Color.BLACK);
+		getContentPane().add(subjectPanel);
 	}
-	
+
 	private JList createGroupList() {
 		Subject s = Session.getInstance().getUser();
-		
+
 		s.createGroup("Familj");
 		s.createGroup("Vänner");
 		s.createGroup("Fest");
-		
+
 		ArrayList<Group> groupNames = s.getGroups();
 		JList list = new JList(groupNames.toArray());
 		list.setPreferredSize(new Dimension(150, s.getGroups().size()*20));
-		
+		list.setBackground(Color.BLACK);
+		list.setForeground(Color.GRAY);
+		list.setSelectionBackground(Color.BLACK);
+		list.setSelectionForeground(Color.WHITE);
+		list.setFocusable(false);
 		return list;
 	}
 
-	@Override
-	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		setVisible(false);
-	}
-	
 	public void addListSelectionListener(ListSelectionListener listener) {
 		groupList.addListSelectionListener(listener);
 	}
-	
+
+	public void windowGainedFocus(WindowEvent e) {
+
+	}
+
+	public void windowLostFocus(WindowEvent e) {
+		setVisible(false);
+
+	}
+
 }
