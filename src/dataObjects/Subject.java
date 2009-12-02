@@ -127,11 +127,12 @@ public class Subject {
     *  @param name
     *  			Name of the group.
     */
-   public void createGroup(String name)
+   public Group createGroup(String name)
 	{
 		Group g = new Group(name);
 		g.addUser(this);
-		this.groups.add(g);		
+		this.groups.add(g);
+		return g;
 	}
 	
    /**
@@ -150,6 +151,10 @@ public class Subject {
 				this.groups.remove(i);
 			}
 		}
+	}
+	
+	public ArrayList<Group> getGroups() {
+		return groups;
 	}
 	
 	public ArrayList<String> getGroupNames()

@@ -59,5 +59,8 @@ public class Group
 		return this.name;
 	}
 	
+	public String toString() {
+		return getName();
+	}
 	
 }
