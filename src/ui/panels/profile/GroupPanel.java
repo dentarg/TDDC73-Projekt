@@ -31,16 +31,12 @@ public class GroupPanel extends JPanel {
 			// Ignore.
 		}
 
-		public void objectRemoved(Object o) {
+		public void objectRemoved(Object o, boolean wasSelected) {
 			// Ignore.
 		}
 
 		public void objectSelected(Object o) {
 			// Show the selected groups members.
-		}
-
-		public void selectedObjectRemoved(Object o) {
-			// Stop showing the removed groups members.
 		}
     }
 	

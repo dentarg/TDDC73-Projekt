@@ -48,6 +48,7 @@ public class SortMethodSelector extends JComboBox implements ActionListener{
 	private final MealSuggestionListModel listModel;
 
 
+
 	/**
 	 * Create a new sort model selector.
 	 * @param model The model to sort.

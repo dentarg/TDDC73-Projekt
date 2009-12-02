@@ -64,23 +64,20 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		subjectPanel.setLayout(new BorderLayout());
 		groupList = createGroupList();
 		
-		//subjectPanel.add(groupList, BorderLayout.CENTER);
-		subjectList = new AddRemoveComponent();
+		subjectPanel.add(groupList, BorderLayout.CENTER);
+		subjectList = new AddRemoveComponent(false, true);
 		subjectList.addAddRemoveListener(new AddRemoveListener() {
 
-			@Override
 			public void objectAdded(Object o) {
 				System.out.println(o);
 				
 			}
 
-			@Override
 			public void objectRemoved(Object o, boolean wasSelected) {
 				System.out.println(o);
 				
 			}
 
-			@Override
 			public void objectSelected(Object o) {
 				System.out.println(o);
 				
@@ -91,7 +88,6 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		List<Group> groups = s.getGroups();
 		for (Group group : groups) {
 			subjectList.add(group.getName());
-			System.out.println(group);
 		}
 		subjectPanel.add(subjectList, BorderLayout.SOUTH); 
 
