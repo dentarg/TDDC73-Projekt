@@ -70,28 +70,15 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 
 			public void objectAdded(Object o) {
 				System.out.println(o);
-				
 			}
 
-			@Override
-			public void objectRemoved(Object o) {
-
+			public void objectRemoved(Object o, boolean wasSelected) {
 				System.out.println(o);
-				
 			}
 
 			public void objectSelected(Object o) {
 				System.out.println(o);
-				
 			}
-
-			@Override
-			public void selectedObjectRemoved(Object o) {
-				System.out.println(o);
-				
-			}
-
-			
 		});
 		Subject s = Session.getInstance().getUser();
 		List<Group> groups = s.getGroups();
