@@ -11,6 +11,7 @@ import dataObjects.Subject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,7 +23,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import ui.components.AddRemoveComponent;
 import ui.components.AddRemoveListener;
@@ -68,7 +71,7 @@ public class DislikePanel extends JPanel {
 
             public void objectAdded(Object o) {
                 user.addRefusedCategory(o.toString());
-                
+
             }
 
             public void objectRemoved(Object o) {
@@ -128,9 +131,18 @@ public class DislikePanel extends JPanel {
     }
 
     public JPanel createAllergyPanel() {
-        JPanel groupPanel = new JPanel();
-        groupPanel.setLayout(new BorderLayout());
-        groupPanel.add(allergyList, BorderLayout.NORTH);
+        JPanel allergyPanel = new JPanel();
+        allergyPanel.setPreferredSize(new Dimension(300, 600));
+        allergyLabel = new JLabel("Här kan du ställa in dina allergier.");
+        allergyLabel.setVerticalAlignment(JLabel.CENTER);
+        allergyLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        allergyLabel.setBorder(lb);
+
+        allergyPanel.setLayout(new FlowLayout());
+        allergyLabel.setPreferredSize(new Dimension(300, 50));
+        allergyPanel.add(allergyLabel);
+        allergyPanel.add(allergyList);
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
@@ -138,16 +150,24 @@ public class DislikePanel extends JPanel {
                 TitledBorder.LEFT,
                 TitledBorder.CENTER,
                 new Font("Arial", Font.BOLD, 15));
-        groupPanel.setBorder(tb);
+        allergyPanel.setBorder(tb);
 
-        return groupPanel;
+        return allergyPanel;
     }
     // Create subjectpanel containing an AddRemoveComponent subjectList.
 
     public JPanel createDislikePanel() {
-        JPanel subjectPanel = new JPanel();
-        subjectPanel.setLayout(new BorderLayout());
-        subjectPanel.add(dislikeList, BorderLayout.NORTH);
+        JPanel dislikePanel = new JPanel();
+        dislikeLabel = new JLabel("<html>Här kan du ställa in <br>ingredienser du inte tycker om.</html>");
+        dislikePanel.setPreferredSize(new Dimension(300, 600));
+        dislikePanel.setLayout(new FlowLayout());
+        dislikeLabel.setVerticalAlignment(JLabel.CENTER);
+        dislikeLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        dislikeLabel.setBorder(lb);
+        dislikeLabel.setPreferredSize(new Dimension(300, 50));
+        dislikePanel.add(dislikeLabel);
+        dislikePanel.add(dislikeList);
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
@@ -155,8 +175,8 @@ public class DislikePanel extends JPanel {
                 TitledBorder.LEFT,
                 TitledBorder.CENTER,
                 new Font("Arial", Font.BOLD, 15));
-        subjectPanel.setBorder(tb);
+        dislikePanel.setBorder(tb);
 
-        return subjectPanel;
+        return dislikePanel;
     }
 }

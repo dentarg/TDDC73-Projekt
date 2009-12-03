@@ -53,6 +53,9 @@ public class ProfileSorter implements RecipeSorter {
         }
     }
 
+    public ProfileSorter() {
+    }
+
     public String toString() {
         return "Sortera efter min profil";
 

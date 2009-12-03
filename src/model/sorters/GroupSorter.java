@@ -71,6 +71,10 @@ public class GroupSorter implements RecipeSorter {
         return group;
     }
 
+    public GroupSorter() {
+    }
+    
+
     @Override
     public String toString() {
         return "Sortera efter grupp";
