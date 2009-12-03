@@ -69,7 +69,6 @@ public class ProfilePanel extends JPanel {
 	}
 
 	private JComponent createWishlistTab(){
-              //  return new WishlistPanel();
-		return new JPanel();
+                return new WishlistPanel();
 	}
 }

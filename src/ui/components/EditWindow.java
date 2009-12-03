@@ -66,7 +66,6 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		
 		subjectPanel.add(groupList, BorderLayout.CENTER);
 		subjectList = new AddRemoveComponent();
-
 		Subject s = Session.getInstance().getUser();
 		List<Group> groups = s.getGroups();
 		for (Group group : groups) {
