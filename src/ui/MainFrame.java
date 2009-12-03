@@ -66,6 +66,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super("Concept UI for mealplanner");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        Session.getInstance().setUser(new Subject("Placeholder"));
         createLoginFrame();
         setEnabled(false);
         createComponents();
@@ -79,7 +80,6 @@ public class MainFrame extends JFrame {
         final JTextField nameField = new JTextField();
         final JButton loginButton = new JButton("Logga in");
         final JLabel loginLabel = new JLabel("Användarnamn:");
-        Session.getInstance().setUser(new Subject("Placeholder"));
 
         Container container = loginFrame.getContentPane();
         container.setLayout(new BorderLayout(5, 5));
