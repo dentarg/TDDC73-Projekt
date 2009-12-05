@@ -30,10 +30,7 @@ public class OverviewPanel extends JPanel {
 	public OverviewPanel()
 	{
 		this.user = Session.getInstance().getUser();
-
-		init();
-		revalidate();
-		repaint();
+		init();		
 	}
 	
 	public OverviewPanel(Subject user) {
