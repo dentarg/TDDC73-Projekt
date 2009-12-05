@@ -2,19 +2,24 @@ package ui.panels.profile;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import mappings.CostMap;
@@ -32,78 +37,166 @@ public class PreferencesPanel extends JPanel implements ActionListener {
 
 	public PreferencesPanel() {
 		this.user = Session.getInstance().getUser();
-		init();
+        setPreferredSize(new Dimension(800, 600));
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(5, 5, 5, 5);
+        add(createPrefPanel(), c);
+        c.gridx = 1;
+        add(createDietPanel(), c);
 	}
+	
+    public JPanel createPrefPanel() {
+        JPanel prefPanel = new JPanel();
+        prefPanel.setPreferredSize(new Dimension(300, 600));      
+        prefPanel.setLayout(new BoxLayout(prefPanel, BoxLayout.PAGE_AXIS));
+        prefPanel.add(createButtonGroup("Kostnad"));
+        prefPanel.add(createButtonGroup("Svårighetsgrad"));
+        prefPanel.add(createButtonGroup("Tillagningstid"));
+        TitledBorder tb = BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                "Preferenser",
+                TitledBorder.LEFT,
+                TitledBorder.CENTER,
+                new Font("Arial", Font.BOLD, 15));
+        prefPanel.setBorder(tb);
+        return prefPanel;
+    }
+    
+    public JPanel createDietPanel() {
+        JPanel dietPanel = new JPanel();
+        JLabel dietLabel = new JLabel("Här kan du ställa in specialkost.");
+        dietPanel.setPreferredSize(new Dimension(300, 600));
+        dietPanel.setLayout(new BoxLayout(dietPanel, BoxLayout.PAGE_AXIS));
+        dietLabel.setVerticalAlignment(JLabel.CENTER);
+        dietLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        dietLabel.setBorder(lb);
+        dietLabel.setPreferredSize(new Dimension(300, 50));
+        dietPanel.add(dietLabel);
+        
+        dietPanel.add(new LifeStylePanel());
 
-	public PreferencesPanel(Subject user) {
-		this.user = user;
-		init();
-	}
+        TitledBorder tb = BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                "Specialkost",
+                TitledBorder.LEFT,
+                TitledBorder.CENTER,
+                new Font("Arial", Font.BOLD, 15));
+        dietPanel.setBorder(tb);
 
+        return dietPanel;
+    }    
+
+    public String translate(String str) {
+    	if(str.equals("low"))
+    		return new String("låg");
+    	if(str.equals("medium"))
+    		return new String("mellan");
+    	if(str.equals("high"))
+    		return new String("hög");
+    	if(str.equals("easy"))
+    		return new String("lätt");
+    	if(str.equals("hard"))
+    		return new String("svår");
+    	if(str.equals("short"))
+    		return new String("kort");    	
+    	
+    	System.out.println("u: " + str);
+    	return new String("unknown word");
+    }
+    
 	public JPanel createButtonGroup(String title) {
-		JPanel groupPanel = new JPanel();
-		ButtonGroup group = new ButtonGroup();
 		// a column in a panel
-		JPanel radioPanel = new JPanel(new GridLayout(0, 1));
-
+		JPanel radioPanel = new JPanel(new GridLayout(0,1));
+		ButtonGroup group = new ButtonGroup();
+		
 		// value is always in the range 1 to 3
 		for(int i=1; i<4; i++) {
-			JRadioButton b = new JRadioButton();
+			JRadioButton button = new JRadioButton();
 			PlanVariables pv = new PlanVariables();
 
 			// use mappings to get button labels from value
 			if(title.equals("Kostnad")) {
 				CostMap map = pv.getCostMap();
-				b.setText(map.getValue(i));
-				b.setActionCommand("cost" + i);
+				button.setText(translate(map.getValue(i)));
+				button.setActionCommand("cost" + i);
 			}
 			else if(title.equals("Svårighetsgrad")) {
 				DifficultyMap map = pv.getDifficultyMap();
-				b.setText(map.getValue(i));
-				b.setActionCommand("difficulty" + i);
+				button.setText(translate(map.getValue(i)));
+				button.setActionCommand("difficulty" + i);
 			}
 			else if(title.equals("Tillagningstid")) {
 				TimeMap map = pv.getTimeMap();
-				b.setText(map.getValue(i));
-				b.setActionCommand("time" + i);
+				button.setText(translate(map.getValue(i)));
+				button.setActionCommand("time" + i);
 			}
-
-			group.add(b);
-			b.addActionListener(this);
-			radioPanel.add(b);
+			group.add(button);
+			button.addActionListener(this);
+			radioPanel.add(button);
 		}
-		groupPanel.add(radioPanel, BorderLayout.LINE_START);
         TitledBorder tb = BorderFactory.createTitledBorder(
-        		BorderFactory.createLineBorder(Color.GRAY),
+        		BorderFactory.createEtchedBorder(),
         		title,
         		TitledBorder.CENTER,
         		TitledBorder.CENTER,
-        		new Font("Arial", Font.BOLD, 15)
+        		new Font("Arial", Font.BOLD, 13)
         );
-        groupPanel.setBorder(tb);
-		return groupPanel;
+        radioPanel.setBorder(tb);
+        return radioPanel;
 	}
 
 	private void init() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-
+		
+		Font headlineFont = new Font("Arial", Font.BOLD, 25);
+				
 		c.anchor 	= GridBagConstraints.FIRST_LINE_START;
-		c.fill 		= GridBagConstraints.HORIZONTAL;
 		c.gridx		= 0;
 		c.gridy		= 0;
+		c.weightx	= 0.5;
+		c.weighty	= 0;
+		JLabel prefHeadline = new JLabel("Preferenser");
+		prefHeadline.setFont(headlineFont);
+		add(prefHeadline, c);
+
+		c.anchor 	= GridBagConstraints.FIRST_LINE_START;
+		c.fill 		= GridBagConstraints.BOTH;
+		c.gridx		= 0;
+		c.gridy		= 1;
 		add(createButtonGroup("Kostnad"), c);
 
 		c.gridx		= 1;
+		c.gridy		= 1;
 		c.anchor 	= GridBagConstraints.PAGE_START;
 		add(createButtonGroup("Svårighetsgrad"), c);
 
 		c.gridx		= 2;
+		c.gridy		= 1;
 		c.anchor 	= GridBagConstraints.FIRST_LINE_END;
 		add(createButtonGroup("Tillagningstid"), c);
 
+		c.gridx		= 0;
+		c.gridy		= 2;
+		c.weighty	= 0;
+		c.fill		= GridBagConstraints.NONE;
+		c.anchor 	= GridBagConstraints.FIRST_LINE_START;
+		JLabel dietHeadline = new JLabel("Specialkost");
+		dietHeadline.setFont(headlineFont);
+		add(dietHeadline, c);
+		
 		c.gridx 	= 0;
-		c.gridy		= 1;
+		c.gridy		= 3;
+		c.gridwidth = 2;
+		c.weighty	= 0.5;
+		c.fill		= GridBagConstraints.BOTH;
 		add(new LifeStylePanel(), c);
 	}
 
@@ -112,15 +205,15 @@ public class PreferencesPanel extends JPanel implements ActionListener {
 		String s = e.getActionCommand();
 		if(s.startsWith("cost")) {
 			int desiredCost = Integer.parseInt(s.substring(s.length()-1));	
-			//user.setDesiredCost(desiredCost);
+			user.setDesiredCost(desiredCost);
 		}
 		else if(s.startsWith("difficulty")){
 			int desiredDifficulty = Integer.parseInt(s.substring(s.length()-1));
-			//user.setDesiredDifficulty(desiredDifficulty);
+			user.setDesiredDifficulty(desiredDifficulty);
 		}
 		else if(s.startsWith("time")){
 			int desiredTime = Integer.parseInt(s.substring(s.length()-1));
-			//user.setDesiredTime(desiredTime);
+			user.setDesiredTime(desiredTime);
 		}
 	}
 }
