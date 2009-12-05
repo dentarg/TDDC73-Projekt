@@ -1,9 +1,7 @@
 package ui.panels.profile;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import mappings.CostMap;
@@ -70,17 +67,32 @@ public class PreferencesPanel extends JPanel implements ActionListener {
     
     public JPanel createDietPanel() {
         JPanel dietPanel = new JPanel();
-        JLabel dietLabel = new JLabel("Här kan du ställa in specialkost.");
-        dietPanel.setPreferredSize(new Dimension(300, 600));
-        dietPanel.setLayout(new BoxLayout(dietPanel, BoxLayout.PAGE_AXIS));
+        JLabel dietLabel = new JLabel("<html>När du väljer en diet så " +
+        		"exkluderas recept som innehåller ingredienser från " +
+        		"ett fördefinierat antal kategorier från " +
+        		"receptförslagen.</html>");
+
         dietLabel.setVerticalAlignment(JLabel.CENTER);
-        dietLabel.setHorizontalAlignment(JLabel.CENTER);
-        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
-        dietLabel.setBorder(lb);
+        dietLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dietLabel.setPreferredSize(new Dimension(300, 50));
-        dietPanel.add(dietLabel);
+
+        dietPanel.setPreferredSize(new Dimension(300, 600));
+        dietPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor 	= GridBagConstraints.FIRST_LINE_START;
+        c.fill		= GridBagConstraints.BOTH;
         
-        dietPanel.add(new DietPanel());
+        c.gridx		= 0;
+        c.gridy		= 0;
+        c.weightx	= 0.5;
+        c.weighty	= 0;
+        dietPanel.add(dietLabel, c);
+
+        c.gridx		= 0;
+        c.gridy		= 1;
+        c.weightx	= 0.5;
+        c.weighty	= 0.5;
+        dietPanel.add(new DietPanel(), c);
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
@@ -150,54 +162,6 @@ public class PreferencesPanel extends JPanel implements ActionListener {
         );
         radioPanel.setBorder(tb);
         return radioPanel;
-	}
-
-	private void init() {
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		
-		Font headlineFont = new Font("Arial", Font.BOLD, 25);
-				
-		c.anchor 	= GridBagConstraints.FIRST_LINE_START;
-		c.gridx		= 0;
-		c.gridy		= 0;
-		c.weightx	= 0.5;
-		c.weighty	= 0;
-		JLabel prefHeadline = new JLabel("Preferenser");
-		prefHeadline.setFont(headlineFont);
-		add(prefHeadline, c);
-
-		c.anchor 	= GridBagConstraints.FIRST_LINE_START;
-		c.fill 		= GridBagConstraints.BOTH;
-		c.gridx		= 0;
-		c.gridy		= 1;
-		add(createButtonGroup("Kostnad"), c);
-
-		c.gridx		= 1;
-		c.gridy		= 1;
-		c.anchor 	= GridBagConstraints.PAGE_START;
-		add(createButtonGroup("Svårighetsgrad"), c);
-
-		c.gridx		= 2;
-		c.gridy		= 1;
-		c.anchor 	= GridBagConstraints.FIRST_LINE_END;
-		add(createButtonGroup("Tillagningstid"), c);
-
-		c.gridx		= 0;
-		c.gridy		= 2;
-		c.weighty	= 0;
-		c.fill		= GridBagConstraints.NONE;
-		c.anchor 	= GridBagConstraints.FIRST_LINE_START;
-		JLabel dietHeadline = new JLabel("Specialkost");
-		dietHeadline.setFont(headlineFont);
-		add(dietHeadline, c);
-		
-		c.gridx 	= 0;
-		c.gridy		= 3;
-		c.gridwidth = 2;
-		c.weighty	= 0.5;
-		c.fill		= GridBagConstraints.BOTH;
-		add(new DietPanel(), c);
 	}
 
 	// update the user model with chosen value

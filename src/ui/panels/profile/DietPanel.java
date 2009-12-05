@@ -1,17 +1,9 @@
 package ui.panels.profile;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -21,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
-import dataObjects.IngredientCategory;
 import dataObjects.Session;
 import dataObjects.Subject;
 
@@ -52,7 +43,8 @@ public class DietPanel extends JPanel implements ActionListener {
 	private Vector<Diet> diets;
 	private Subject user;
 	private Diet oldDiet;
-	private Diet currentDiet;
+	@SuppressWarnings("unused")
+	private Diet currentDiet; //could be used for nicer messages
     
 	public class Diet {
 		private String name;
@@ -69,42 +61,25 @@ public class DietPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	public void newDiet(String name, String[] refusedCategories) {
-		diets.add(new Diet(name, refusedCategories));
-	}
-
     public DietPanel() {
-    	super(new GridBagLayout());
+    	super(new GridLayout(1,2));
     	this.user = Session.getInstance().getUser();
     	this.oldDiet = null;
     	
         diets = new Vector<Diet>();
         String[] nothing 	= {};
         contentList = new JList(nothing);
+        contentList.setBackground(this.getBackground());
         contentList.setSelectionBackground(contentList.getBackground());
         contentList.setSelectionForeground(contentList.getForeground());
-        
-        /*
-         * Diet's is saved in a global list that is used when
-         * creating buttons and viewing the list that belongs to the Diet
-         */
-        
-        newDiet("vegan", veganCategories);
-        newDiet(NO_DIET_NAME, emptyList);
+        contentList.setFocusable(false);
+         // Diet's is saved in a global list that is used when
+         // creating buttons and viewing the list that belongs to the Diet       
+        diets.add((new Diet("vegan", veganCategories)));
+        diets.add((new Diet(NO_DIET_NAME, emptyList)));
 
-		GridBagConstraints c = new GridBagConstraints();      
-        
-		c.gridx 	= 0;
-		c.gridy 	= 0;
-		c.fill		= GridBagConstraints.BOTH;
-		c.weightx	= 0.5;
-        add(createButtons(), c);
-
-		c.gridx 	= 1;
-		c.gridy 	= 0;
-        c.weightx	= 0.5;
-        c.fill		= GridBagConstraints.BOTH;
-        add(showList(contentList), c);
+        add(createButtons());
+        add(showList(contentList));
     }
 
     public JPanel createButtons() {
@@ -123,11 +98,11 @@ public class DietPanel extends JPanel implements ActionListener {
         	radioPanel.add(b);
         }
 		TitledBorder tb = BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Color.GRAY),
-				"Lifestyle",
+				BorderFactory.createEtchedBorder(),
+				"Möjliga dieter",
 				TitledBorder.CENTER,
 				TitledBorder.CENTER,
-				new Font("Arial", Font.BOLD, 15)
+				new Font("Arial", Font.BOLD, 13)
 		);
 		radioPanel.setBorder(tb);
 		return radioPanel;
@@ -137,11 +112,11 @@ public class DietPanel extends JPanel implements ActionListener {
     	JPanel panel = new JPanel();
     	panel.add(list);
 		TitledBorder tb = BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Color.GRAY),
-				"exkluderas",
+				BorderFactory.createEtchedBorder(),
+				"Kategorier som exkluderas",
 				TitledBorder.CENTER,
 				TitledBorder.CENTER,
-				new Font("Arial", Font.BOLD, 15)
+				new Font("Arial", Font.BOLD, 13)
 		);
 		panel.setBorder(tb);
 		return panel;
