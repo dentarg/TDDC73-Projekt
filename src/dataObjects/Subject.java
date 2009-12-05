@@ -50,6 +50,7 @@ public class Subject {
     private Map<String, Preference> preferenceMap;
     private ArrayList<String> refusedCategoriesList;
     private ArrayList<String> refusedIngredientsList;
+    private ArrayList<String> favoriteRecipeList;
     private ArrayList<Group> groups;
 
     /**
@@ -129,6 +130,16 @@ public class Subject {
             return;
         }
         refusedIngredientsList.add(ingredientName);
+    }
+
+    /**
+     * Adds a favorite recipe to the subject.
+     *
+     * @param recipeName
+     *           Name of recipe to add.
+     */
+    public void addFavoriteRecipe(String recipeName) {
+        favoriteRecipeList.add(recipeName);
     }
 
     /**
@@ -344,12 +355,25 @@ public class Subject {
         return refusedIngredientsList;
     }
 
+    /**
+     * Gets the favorite recipies ingredients of a subject.
+     *
+     * @return ArrayList of String.
+     */
+    public ArrayList<String> getFavoriteRecipeList() {
+        return favoriteRecipeList;
+    }
+
     public void removeRefusedCategory(String category) {
         refusedCategoriesList.remove(category);
     }
 
     public void removeRefusedIngredient(String ingredient) {
         refusedIngredientsList.remove(ingredient);
+    }
+
+    public void removeFavoriteRecipe(String recipe) {
+        favoriteRecipeList.remove(recipe);
     }
 
     public void setDesiredAvailability(int desiredAvailability) {

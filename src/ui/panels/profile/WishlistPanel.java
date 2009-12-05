@@ -1,5 +1,11 @@
 package ui.panels.profile;
 
+import dataAccess.RecipeDA;
+
+import dataObjects.Session;
+
+import java.util.ArrayList;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -7,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ui.components.AddRemoveComponent;
+import ui.components.AddRemoveListener;
 
 public class WishlistPanel extends JPanel {
     private static final String helpText =
@@ -16,6 +23,24 @@ public class WishlistPanel extends JPanel {
 
     public WishlistPanel() {
         wishlistList = new AddRemoveComponent(false, false);
+
+        // Goes out to disk and reloads all recipe data, plus makes an extra
+        // copy of the list just to please the type system (AddRemoveComponent
+        // would have been better off using generics and a proper data model).
+        // Hrrrrrrrrrr.......
+        wishlistList.setContents(new ArrayList<Object>(new RecipeDA().getAllRecipes()));
+
+        wishlistList.add(new AddRemoveListener() {
+            public void objectAdded(Object o) {
+                Session.getInstance().getUser().addFavoriteRecipe(o.toString());
+            }
+
+            public void objectRemoved(Object o, boolean wasSelected) {
+                Session.getInstance().getUser().removeFavoriteRecipe(o.toString());
+            }
+
+            public void objectSelected(Object o) {}
+        });
 
         setLayout(new GridBagLayout());
 
