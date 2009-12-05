@@ -1,18 +1,20 @@
 package ui.panels.profile;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneLayout;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 import ui.components.RangeSlider;
+import ui.components.StatusPanel;
 import ui.components.RangeSlider.Slider;
 import dataObjects.Session;
 import dataObjects.Subject;
@@ -38,10 +40,18 @@ public class NutritionPanel extends JPanel {
 	}
 
 	private void init() {
+		setLayout(new BorderLayout());
+		JLabel info =  new JLabel("Här ställer du in näringsvärden du önskar i dina recept. Dessa inställningar kommer att användas när du söker efter recept.");
+		info.setPreferredSize(new Dimension(getWidth(), 50));
+		info.setFont(new Font("Trebucher MS", Font.PLAIN, 12));
+		info.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		info.setAlignmentX(SwingConstants.CENTER);
+		add(info, BorderLayout.PAGE_START);
 		
 		JPanel sliderHolder = new JPanel();
 		sliderHolder.setLayout(new GridLayout(0, 1));
 		
+		add(sliderHolder, BorderLayout.LINE_START);
 		RangeSlider s;
 		Slider slider;
 		s = new RangeSlider("Kalcium (mg)", 0, 1500);
@@ -57,6 +67,7 @@ public class NutritionPanel extends JPanel {
 				if(!s.getValueIsAdjusting()) {
 					user.setMinCalcium(new MilliGramMeasurement(s.getValue()));
 					user.setMaxCalcium(new MilliGramMeasurement(s.getUpperValue()));
+					StatusPanel.getInstance().flash("Önskade kalciumvärden sparat för din profil", StatusPanel.INFO);
 				}
 			}
 		});
@@ -73,6 +84,7 @@ public class NutritionPanel extends JPanel {
 				if(!s.getValueIsAdjusting()) {
 					user.setMinCarbohydrates(new GramMeasurement(s.getValue()));
 					user.setMaxCarbohydrates(new GramMeasurement(s.getUpperValue()));
+					StatusPanel.getInstance().flash("Önskade kolhydratervärden sparat för din profil", StatusPanel.INFO);
 				}
 			}
 		});
@@ -89,6 +101,7 @@ public class NutritionPanel extends JPanel {
 				if(!s.getValueIsAdjusting()) {
 					user.setMinCholesterol(new MilliGramMeasurement(s.getValue()));
 					user.setMaxCholesterol(new MilliGramMeasurement(s.getUpperValue()));
+					StatusPanel.getInstance().flash("Önskade kolesterolvärden sparat för din profil", StatusPanel.INFO);
 				}
 			}
 		});
@@ -105,6 +118,7 @@ public class NutritionPanel extends JPanel {
 				if(!s.getValueIsAdjusting()) {
 					user.setMinEnergyContent(Measurement.createMeasurement("kcal", new Float(s.getValue())));
 					user.setMaxEnergyContent(Measurement.createMeasurement("kcal", new Float(s.getUpperValue())));
+					StatusPanel.getInstance().flash("Önskade energivärden sparat för din profil", StatusPanel.INFO);
 				}
 			}
 		});
@@ -121,6 +135,7 @@ public class NutritionPanel extends JPanel {
 				if(!s.getValueIsAdjusting()) {
 					user.setMinFat(new GramMeasurement(s.getValue()));
 					user.setMaxFat(new GramMeasurement(s.getUpperValue()));
+					StatusPanel.getInstance().flash("Önskade fettvärden sparat för din profil", StatusPanel.INFO);
 				}
 			}
 		});
@@ -137,6 +152,7 @@ public class NutritionPanel extends JPanel {
 				if(!s.getValueIsAdjusting()) {
 					user.setMinProtein(new GramMeasurement(s.getValue()));
 					user.setMaxProtein(new GramMeasurement(s.getUpperValue()));
+					StatusPanel.getInstance().flash("Önskade proteinvärden sparat för din profil", StatusPanel.INFO);
 				}
 			}
 		});
@@ -153,6 +169,7 @@ public class NutritionPanel extends JPanel {
 				if(!s.getValueIsAdjusting()) {
 					user.setMinSodium(new MilliGramMeasurement(s.getValue()));
 					user.setMaxSodium(new MilliGramMeasurement(s.getUpperValue()));
+					StatusPanel.getInstance().flash("Önskade saltvärden sparat för din profil", StatusPanel.INFO);
 				}
 			}
 		});

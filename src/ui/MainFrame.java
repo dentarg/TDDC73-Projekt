@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import model.MealSuggestionListModel;
+import ui.components.StatusPanel;
 import ui.panels.forum.ForumPanel;
 import ui.panels.mealplan.PlannerPanel;
 import ui.panels.profile.ProfilePanel;
@@ -88,10 +89,12 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 if (nameField.getText().compareTo("") != 0) {
                     Session.getInstance().getUser().setName((nameField.getText()));
+                    StatusPanel.getInstance().flash("Välkommen " + nameField.getText(), StatusPanel.INFO);
                     setEnabled(true);
                     loginFrame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
+                	StatusPanel.getInstance().flash("Felaktiga inloggninsuppgifter", StatusPanel.ERROR);
+                	//JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
                 }
             }
         });
@@ -104,10 +107,12 @@ public class MainFrame extends JFrame {
                 if (nameField.getText().compareTo("") != 0) {
                     Session session = Session.getInstance();
                     session.setUser(new Subject(nameField.getText()));
-                    setEnabled(true);
+                    StatusPanel.getInstance().flash("Välkommen " + nameField.getText(), StatusPanel.INFO);
+                     setEnabled(true);
                     loginFrame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
+                	StatusPanel.getInstance().flash("Felaktiga inloggninsuppgifter", StatusPanel.ERROR);
+                    //JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
                 }
             }
         });
