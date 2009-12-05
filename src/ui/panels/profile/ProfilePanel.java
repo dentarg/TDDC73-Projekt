@@ -14,9 +14,8 @@ public class ProfilePanel extends JPanel {
 	private static final long serialVersionUID = -3037636351809756514L;
 
 	private final static String OVERVIEW = "Översikt";
-	private final static String DISLIKES = "Jag gillar inte";
+	private final static String DISLIKES = "Allergier/Ogillar";
 	private final static String GROUPS = "Grupphantering";
-	private final static String ALLERGIES = "Allergier";
 	private final static String PREFERENCES = "Preferenser";
 	private final static String NUTRITION = "Näringsvärden";
 	private final static String WISHLIST = "Önskelista";
@@ -31,7 +30,6 @@ public class ProfilePanel extends JPanel {
 		tabPane.add(OVERVIEW, createOverviewTab());
 		tabPane.add(DISLIKES, createDislikesTab());
 		tabPane.add(GROUPS, createGroupsTab());
-		tabPane.add(ALLERGIES, createAllergiesTab());
 		tabPane.add(PREFERENCES, createPreferencesTab());
 		tabPane.add(NUTRITION, createNutritionTab());
 		tabPane.add(WISHLIST, createWishlistTab());
@@ -46,11 +44,6 @@ public class ProfilePanel extends JPanel {
 
 	private JComponent createDislikesTab(){
 		JPanel panel = new DislikePanel();
-		return panel;
-	}
-
-	private JComponent createAllergiesTab(){
-		JPanel panel = new JPanel();
 		return panel;
 	}
 

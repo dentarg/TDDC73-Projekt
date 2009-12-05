@@ -4,15 +4,31 @@
  */
 package ui.panels.profile;
 
+import dataObjects.IngredientAvailability;
+import dataObjects.IngredientCategory;
+import dataObjects.Session;
+import dataObjects.Subject;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import ui.components.AddRemoveComponent;
+import ui.components.AddRemoveListener;
 
 /**
  *
@@ -20,100 +36,147 @@ import ui.components.AddRemoveComponent;
  */
 public class DislikePanel extends JPanel {
 
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private AddRemoveComponent jTextField1;
-    private AddRemoveComponent jTextField2;
+    private javax.swing.JLabel allergyLabel;
+    private javax.swing.JLabel dislikeLabel;
+    private AddRemoveComponent allergyList;
+    private AddRemoveComponent dislikeList;
     private javax.swing.JSeparator jSeparator1;
-    private List allergyContent = new ArrayList();
     private List dislikeContent = new ArrayList();
+    private List allergyContent = new ArrayList();
+    private Session session = Session.getInstance();
+    private Subject user = session.getUser();
 
     public DislikePanel() {
-        initComponents();
-        initContents(allergyContent, "data/Categories.data");
-        initContents(dislikeContent, "data/Ingredients.data");
-        jTextField1.setContents(allergyContent);
-        jTextField2.setContents(dislikeContent);
+        //   initComponents();
+        allergyList = new AddRemoveComponent();
+        dislikeList = new AddRemoveComponent();
+
+
+        allergyContent = IngredientCategory.getIngredientCategoriesFromFile();
+
+
+        allergyList.setContents(allergyContent);
+
+
+        for (Object x : allergyContent) {
+            IngredientCategory category = (IngredientCategory) x;
+            ArrayList<IngredientAvailability> ingredients = category.getIngredients();
+            for (int i = 0; i < ingredients.size(); i++) {
+                dislikeContent.add(ingredients.get(i));
+            }
+        }
+        dislikeList.setContents(dislikeContent);
+
+        allergyList.addAddRemoveListener(new AddRemoveListener() {
+
+            public void objectAdded(Object o) {
+                user.addRefusedCategory(o.toString());
+
+            }
+
+            public void objectRemoved(Object o) {
+                user.removeRefusedCategory(o.toString());
+            }
+
+            public void objectSelected(Object o) {
+            }
+
+            public void selectedObjectRemoved(Object o) {
+            }
+
+            public void objectRemoved(Object o, boolean wasSelected) {
+            }
+        });
+
+        dislikeList.addAddRemoveListener(new AddRemoveListener() {
+
+            public void objectAdded(Object o) {
+                user.addRefusedIngredient(o.toString());
+            }
+
+            public void objectRemoved(Object o) {
+                user.removeRefusedIngredient(o.toString());
+
+            }
+
+            public void objectSelected(Object o) {
+            }
+
+            public void selectedObjectRemoved(Object o) {
+            }
+
+            public void objectRemoved(Object o, boolean wasSelected) {
+            }
+        });
+
+        setPreferredSize(new Dimension(800, 600));
+        setLayout(
+                new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(5, 5, 5, 5);
+
+        add(createAllergyPanel(), c);
+
+        c.gridx = 1;
+
+        add(createDislikePanel(), c);
 
 
     }
 
-    private void initContents(List contents,String path){
-        InputStream stream = this.getClass().getClassLoader().getResourceAsStream(path);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        String line;
+    public JPanel createAllergyPanel() {
+        JPanel allergyPanel = new JPanel();
+        allergyPanel.setPreferredSize(new Dimension(300, 600));
+        allergyLabel = new JLabel("Här kan du ställa in dina allergier.");
+        allergyLabel.setVerticalAlignment(JLabel.CENTER);
+        allergyLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        allergyLabel.setBorder(lb);
 
-        while (true) {
+        allergyPanel.setLayout(new FlowLayout());
+        allergyLabel.setPreferredSize(new Dimension(300, 50));
+        allergyPanel.add(allergyLabel);
+        allergyPanel.add(allergyList);
 
-                    try {
-                        line = reader.readLine();
-                    } catch (IOException ex) {
-                        break;
-                    }
-                    if (line != null) {
-                        contents.add(line);
-                    }else{
-                        break;
-                    }
-                }
+        TitledBorder tb = BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                "Dina Allergier:",
+                TitledBorder.LEFT,
+                TitledBorder.CENTER,
+                new Font("Arial", Font.BOLD, 15));
+        allergyPanel.setBorder(tb);
+
+        return allergyPanel;
     }
+    // Create subjectpanel containing an AddRemoveComponent subjectList.
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    public JPanel createDislikePanel() {
+        JPanel dislikePanel = new JPanel();
+        dislikeLabel = new JLabel("<html>Här kan du ställa in <br>ingredienser du inte tycker om.</html>");
+        dislikePanel.setPreferredSize(new Dimension(300, 600));
+        dislikePanel.setLayout(new FlowLayout());
+        dislikeLabel.setVerticalAlignment(JLabel.CENTER);
+        dislikeLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        dislikeLabel.setBorder(lb);
+        dislikeLabel.setPreferredSize(new Dimension(300, 50));
+        dislikePanel.add(dislikeLabel);
+        dislikePanel.add(dislikeList);
 
-        jLabel1 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel2 = new javax.swing.JLabel();
+        TitledBorder tb = BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                "Ingredienser du ogillar: ",
+                TitledBorder.LEFT,
+                TitledBorder.CENTER,
+                new Font("Arial", Font.BOLD, 15));
+        dislikePanel.setBorder(tb);
 
-        setPreferredSize(new java.awt.Dimension(800, 600));
-
-        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 0, 18));
-        jLabel1.setText("Dina Allergier:");
-
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
-        jLabel2.setFont(new java.awt.Font("DejaVu Sans", 0, 18));
-        jLabel2.setText("Sånt du ogillar:");
-
-        jTextField1 = new AddRemoveComponent();
-
-
-        jTextField2 = new AddRemoveComponent();
-
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel1)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel2).addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(170, 170, 170)));
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel2)
-                .addComponent(jLabel1))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                .addGap(54, 54, 54).addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62).addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(492, Short.MAX_VALUE)).addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE));
+        return dislikePanel;
     }
-    
 }

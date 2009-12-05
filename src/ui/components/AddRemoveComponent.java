@@ -606,20 +606,19 @@ public class AddRemoveComponent extends JPanel {
             selectionList.add(identifier);
         }
         else {
-            Object selected = null;
-
             // Is the object in the list?
             for(Object o : contents) {
                 if( o.toString().compareToIgnoreCase(identifier) == 0 ) {
                     selectionList.add(o);
-                    selected = o;
+                    contents.remove(o);
+
+                    textField.getDocument().removeDocumentListener(textChangeListener);
+                    textField.setText("");
+                    textField.getDocument().addDocumentListener(textChangeListener);
+
+                    notifyObserversAdded(o);
                     break;
                 }
-            }
-
-            if(selected != null) {
-                contents.remove(selected);
-                notifyObserversAdded(selected);
             }
         }
     }

@@ -1,37 +1,36 @@
 package ui.panels.profile;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+
 import dataObjects.Session;
 import dataObjects.Subject;
 
 public class OverviewPanel extends JPanel {
 
 	/**
-	 * 
+	 * This class is used so the user can get a summary of
+	 * all the preferences made to his/her account.
 	 */
+	
 	private static final long serialVersionUID = -2840460382044622882L;
 	private Subject user;
 	
 	public OverviewPanel()
 	{
 		this.user = Session.getInstance().getUser();
-		/*
-		//Test data
-		this.user = new Subject("John Doe");
-		this.user.addRefusedIngredient("Vatten");
-		this.user.addRefusedIngredient("Allt annat");
-		this.user.addRefusedIngredient("Cider");
-		this.user.createGroup("Vänner");
-		this.user.createGroup("Familj");
-		this.user.createGroup("Fest");
-		*/
-		init();
+		init();		
 	}
 	
 	public OverviewPanel(Subject user) {
@@ -39,51 +38,67 @@ public class OverviewPanel extends JPanel {
 		init();
 	}
 	
+	/**
+	 * This method sets a border and a title to a JPanel.
+	 * @param panel
+	 * 		The panel you want to add the border to.
+	 * @param text
+	 * 		The title to the border.
+	 */
+	private void setBorder(JPanel panel, String text)
+	{
+		TitledBorder tb = BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                text,
+                TitledBorder.LEFT,
+                TitledBorder.CENTER,
+                new Font("Arial", Font.BOLD, 15));	
+		panel.setBorder(tb);
+	}
+	
+	/**
+	 * This method initiates the window with all the panels in a gridLayout.
+	 * It also collects data from the user and represents it visually.
+	 */
 	private void init()
 	{
-		setLayout(new GridLayout(5,1));
-		JPanel top = new JPanel();
+		setLayout(new GridLayout(4,1));
+		setBorder(this, "Din användare:");
 		JPanel user = new JPanel();
 		JPanel preferences = new JPanel();
 		JPanel groups = new JPanel();
 		JPanel personal = new JPanel();		
 
+		//Add cool borders to the to separate panels.
+		setBorder(preferences, "Gillar inte / allergier:");
+		setBorder(groups, "Dina grupper:");
+		setBorder(personal, "Personliga inställningar:");		
+		
 		//Set the layout of the panels.
-		top.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 10));
-		user.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 10));
+		user.setLayout(new BorderLayout());
 		preferences.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 10));
 		groups.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 10));
 		personal.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 10));
 		
 		//Some predefined fonts.
-		Font title = new Font("Arial", Font.BOLD, 20);
+		Font infoText = new Font("Arial", Font.ITALIC, 12);
 		Font label = new Font("Arial", Font.BOLD, 14);
 		
 		/*
-		 * The title of the pane.
+		 * Settings for the visual representation of the user's name and some info.
 		 */
-		JLabel overview = new JLabel("Overview");
-		overview.setFont(title);
-		top.add(overview);
-
-		/*
-		 * Settings for the visual representation of the user's name and picture.
-		 */
-		JLabel nameLabel = new JLabel("Name: ");		
+		JLabel info = new JLabel("Här kan du se inställningar som är gjorda för din användare.");
+		info.setFont(infoText);
+		user.add(info, BorderLayout.PAGE_START);
 		JLabel name = new JLabel(this.user.getName());
-		nameLabel.setFont(label);
-		user.add(nameLabel);
-		user.add(name);
-		
+		name.setFont(label);	
+		user.add(name, BorderLayout.LINE_START);
+				
 		/*
 		 * Settings for the visual representation of the user's food settings.
 		 */
-		JLabel preferencesLabel = new JLabel("Preferenser:   ");
-		preferencesLabel.setFont(label);
-		preferences.add(preferencesLabel);		
-		TextArea prefArea = new TextArea("", 3, 50, TextArea.SCROLLBARS_NONE);
+		TextArea prefArea = new TextArea("", 5, 100, TextArea.SCROLLBARS_NONE);
 		prefArea.setEditable(false);
-		prefArea.setText("Gillar inte/allergier:");
 		ArrayList<String> refList = this.user.getRefusedIngredientsList();
 		printList(prefArea, refList);
 		preferences.add(prefArea);
@@ -91,30 +106,34 @@ public class OverviewPanel extends JPanel {
 		/*
 		 * Settings for the visual representation of the user's groups.
 		 */
-		JLabel groupLabel = new JLabel("Dina grupper: ");
-		groupLabel.setFont(label);
-		TextArea groupArea = new TextArea("", 3, 50, TextArea.SCROLLBARS_NONE);
+		TextArea groupArea = new TextArea("", 5, 100, TextArea.SCROLLBARS_NONE);
 		groupArea.setEditable(false);
 		ArrayList<String> groupList = this.user.getGroupNames();
 		printList(groupArea, groupList);
-		groups.add(groupLabel);
 		groups.add(groupArea);
 		
 		/*
 		 * Settings for the visual representation of the user's personal settings.
 		 */
-		JLabel personalLabel = new JLabel("Personligt:      ");
-		personalLabel.setFont(label);
-		TextArea personalArea = new TextArea("", 2, 50, TextArea.SCROLLBARS_NONE);
+		TextArea nutritions = new TextArea("", 6, 35, TextArea.SCROLLBARS_NONE);
+		nutritions.setEditable(false);
+		nutritions.setText("Kalcium: " + this.user.getMinCalcium() + "-" + this.user.getMaxCalcium());
+		nutritions.append("\nKolhydrater: " + this.user.getMinCarbohydrates() + "-" + this.user.getMaxCarbohydrates());
+		nutritions.append("\nKolesterol: " + this.user.getMinCholesterol() + "-" + this.user.getMaxCholesterol());
+		nutritions.append("\nEnergi: " + this.user.getMinEnergyContent() + "-" + this.user.getMaxEnergyContent());
+		nutritions.append("\nFett: " + this.user.getMinFat() + "-" + this.user.getMaxFat());
+		nutritions.append("\nProtein: " + this.user.getMinProtein() + "-" + this.user.getMaxProtein());
+		nutritions.append("\nSalt: " + this.user.getMinSodium() + "-" + this.user.getMaxSodium());
+		personal.add(nutritions);
+		
+		TextArea personalArea = new TextArea("", 2, 20, TextArea.SCROLLBARS_NONE);
 		personalArea.setEditable(false);
 		personalArea.setText("Kostnad: " + + this.user.getDesiredCost());
 		personalArea.append("\nTid: " + this.user.getDesiredTime());
 		personalArea.append("\nSvårighetsgrad: " + this.user.getDesiredDifficulty());
-		personal.add(personalLabel);
 		personal.add(personalArea);
-		
+				
 		//Add all the panels to the view.
-		add(top);
 		add(user);
 		add(preferences);
 		add(groups);
