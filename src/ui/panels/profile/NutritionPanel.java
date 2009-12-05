@@ -3,6 +3,7 @@ package ui.panels.profile;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -10,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -42,10 +44,11 @@ public class NutritionPanel extends JPanel {
 	private void init() {
 		setLayout(new BorderLayout());
 		JLabel info =  new JLabel("Här ställer du in näringsvärden du önskar i dina recept. Dessa inställningar kommer att användas när du söker efter recept.");
-		info.setPreferredSize(new Dimension(getWidth(), 50));
-		info.setFont(new Font("Trebucher MS", Font.PLAIN, 12));
-		info.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		info.setAlignmentX(SwingConstants.CENTER);
+		info.setVerticalAlignment(JLabel.CENTER);
+		info.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        info.setBorder(lb);
+        info.setPreferredSize(new Dimension(500, 50));
 		add(info, BorderLayout.PAGE_START);
 		
 		JPanel sliderHolder = new JPanel();
