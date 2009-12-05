@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JWindow;
 
 import javax.swing.event.ListSelectionListener;
@@ -40,15 +41,16 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		setBackground(Color.GRAY);
 
 		com.sun.awt.AWTUtilities.setWindowOpacity(this, 0.8f);
+		//setSize(new Dimension(300, 400));
 		pack();
 	}
 
-	private JPanel createHeader() {
+	private JPanel createHeader(String title) {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
 		
 		
-		JLabel p = new JLabel("Välj grupp");
+		JLabel p = new JLabel(title);
 		p.setFont(new Font("Arial", Font.BOLD, 15));
 		p.setForeground(Color.BLUE);
 		panel.add(p);
@@ -58,23 +60,23 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 
 	private void createGUI() {
 
-		getContentPane().add(createHeader(), BorderLayout.NORTH);
+		getContentPane().add(createHeader("Välj grupp"), BorderLayout.NORTH);
 
 		JPanel subjectPanel = new JPanel();
 		subjectPanel.setLayout(new BorderLayout());
-		groupList = createGroupList();
 		
-		subjectPanel.add(groupList, BorderLayout.CENTER);
+		groupList = createGroupList();
+		subjectPanel.add(groupList, BorderLayout.NORTH);
+		
+		subjectPanel.add(new JSeparator());
+		subjectPanel.add(createHeader("Sök efter personer"));
+
 		subjectList = new AddRemoveComponent();
 		Subject s = Session.getInstance().getUser();
-		List<Group> groups = s.getGroups();
-		for (Group group : groups) {
-			subjectList.add(group.getName());
-		}
+		List groups = s.getGroups();
+		subjectList.setContents(groups);
 		subjectPanel.add(subjectList, BorderLayout.SOUTH); 
-
 		subjectPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-
 		subjectPanel.setBackground(Color.BLACK);
 		getContentPane().add(subjectPanel);
 	}
@@ -86,9 +88,10 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		s.createGroup("Vänner");
 		s.createGroup("Fest");
 
-		ArrayList<Group> groupNames = s.getGroups();
-		JList list = new JList(groupNames.toArray());
-		list.setPreferredSize(new Dimension(150, s.getGroups().size()*20));
+		ArrayList<Group> group = s.getGroups();
+		JList list = new JList(group.toArray());
+		
+		list.setPreferredSize(new Dimension(150, group.size()*20));
 		list.setBackground(Color.BLACK);
 		list.setForeground(Color.GRAY);
 		list.setSelectionBackground(Color.BLACK);
