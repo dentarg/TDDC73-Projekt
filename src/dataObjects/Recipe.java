@@ -292,9 +292,12 @@ public class Recipe {
     */
    @Override
    public String toString() {
+       return name;
+       /*
       return "Name: " + name + "\nCategories: " + categoryList
             + "\nDifficulty: " + difficulty + "\nCost: " + cost + "\nTime: "
             + time + "\nEnergy: " + nutrition.getEnergy() + "\nIngredients: "
             + ingredientList;
+            */
    }
 }
