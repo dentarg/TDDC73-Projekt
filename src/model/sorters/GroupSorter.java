@@ -60,7 +60,9 @@ public class GroupSorter implements RecipeSorter {
  */
     public void setGroup(Group group) {
         this.group = group;
-        this.group.addUser(user);
+        if(!user.isMemberOf(this.group)) {
+        	this.group.addUser(user);
+        }
     }
 
     /**
