@@ -5,18 +5,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JWindow;
 
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionListener;
 
 import dataAccess.SubjectDA;
@@ -39,15 +44,12 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		createGUI();
 		setAlwaysOnTop(true);
 		addWindowFocusListener(this);
-		setBackground(Color.GRAY);
-
-		com.sun.awt.AWTUtilities.setWindowOpacity(this, 0.8f);
+		//com.sun.awt.AWTUtilities.setWindowOpacity(this, 0.8f);
 		pack();
 	}
 
 	private JPanel createHeader(String title) {
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.BLACK);
 		
 		JLabel p = new JLabel(title);
 		p.setFont(new Font("Arial", Font.BOLD, 15));
@@ -59,16 +61,22 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 
 	private void createGUI() {
 
-		getContentPane().add(createHeader("Välj grupp"), BorderLayout.NORTH);
-
+	
 		JPanel subjectPanel = new JPanel();
-		subjectPanel.setLayout(new BorderLayout());
-		
+		subjectPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 1;
+		subjectPanel.add(createHeader("Dina grupper"), c);
+	
 		groupList = createGroupList();
-		subjectPanel.add(groupList, BorderLayout.NORTH);
-		
-		subjectPanel.add(new JSeparator());
-		subjectPanel.add(createHeader("Sök efter personer"));
+		c.gridy++;
+		subjectPanel.add(groupList, c);
+
+		c.gridy++;
+		subjectPanel.add(new JSeparator(), c);
+		c.gridy++;
+		subjectPanel.add(createHeader("Sök efter personer"), c);
 
 		subjectList = new AddRemoveComponent();
 		subjectList.addAddRemoveListener(new AddRemoveListener() {
@@ -81,23 +89,31 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 			@Override
 			public void objectRemoved(Object o, boolean wasSelected) {
 				Dimension d = getSize();
-				d.height -= 34;
+				d.height -= 32;
 				setSize(d);
 			}
 			
 			@Override
 			public void objectAdded(Object o) {
 				Dimension d = getSize();
-				d.height += 34;
+				d.height += 32;
 				setSize(d);
 			}
 		});
 		SubjectDA sda = new SubjectDA();
 		List subjects = sda.getAllSubjects();
 		subjectList.setContents(subjects);
-		subjectPanel.add(subjectList, BorderLayout.SOUTH); 
-		subjectPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-		subjectPanel.setBackground(Color.BLACK);
+		c.gridy++;
+		subjectPanel.add(subjectList, c); 
+		subjectPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.BLACK, 2),
+				"Välj sökgrupp",
+				TitledBorder.CENTER,
+				TitledBorder.CENTER,
+				new Font("Arial", Font.BOLD, 15),
+				Color.BLUE));
+				
+				
 		getContentPane().add(subjectPanel);
 	}
 
@@ -110,12 +126,8 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 
 		ArrayList<Group> group = s.getGroups();
 		JList list = new JList(group.toArray());
-		
-		list.setPreferredSize(new Dimension(150, group.size()*20));
-		list.setBackground(Color.BLACK);
-		list.setForeground(Color.GRAY);
-		list.setSelectionBackground(Color.BLACK);
-		list.setSelectionForeground(Color.WHITE);
+		list.setMinimumSize(new Dimension(250, group.size()*20));
+		list.setPreferredSize(new Dimension(250, group.size()*20));
 		list.setFocusable(false);
 		return list;
 	}
