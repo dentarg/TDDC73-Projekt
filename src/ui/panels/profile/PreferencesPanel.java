@@ -80,7 +80,7 @@ public class PreferencesPanel extends JPanel implements ActionListener {
         dietLabel.setPreferredSize(new Dimension(300, 50));
         dietPanel.add(dietLabel);
         
-        dietPanel.add(new LifeStylePanel());
+        dietPanel.add(new DietPanel());
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
@@ -197,7 +197,7 @@ public class PreferencesPanel extends JPanel implements ActionListener {
 		c.gridwidth = 2;
 		c.weighty	= 0.5;
 		c.fill		= GridBagConstraints.BOTH;
-		add(new LifeStylePanel(), c);
+		add(new DietPanel(), c);
 	}
 
 	// update the user model with chosen value
