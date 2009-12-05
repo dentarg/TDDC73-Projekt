@@ -1,8 +1,10 @@
 package ui.components;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -23,16 +25,20 @@ import model.sorters.IgnoreSorter;
 import model.sorters.ProfileSorter;
 import model.sorters.RecipeSorter;
 import dataObjects.Group;
+import dataObjects.Subject;
 import dataObjects.requirements.RequirementManager;
 
 /**
  * Selects the sort method to use when filtering recipes.
  * 
  * @author jernlas
+ * @Editied by mange 2009-12-05
  */
 public class SortMethodSelector extends JComboBox implements ActionListener{
 
 	private static final long             serialVersionUID = 1L;
+
+	private Group tempSearchGroup  = new Group("Sökgrupp");
 
 	private EditWindow groupSelectionWindow;
 	/**
@@ -91,9 +97,29 @@ public class SortMethodSelector extends JComboBox implements ActionListener{
 				}
 			}
 		});
+		groupSelectionWindow.addAddRemoveListener(new AddRemoveListener() {
+			
+			public void objectSelected(Object o) {
+				
+			}
+			
+			public void objectRemoved(Object o, boolean wasSelected) {
+				
+			}
+			
+			public void objectAdded(Object o) {
+				tempSearchGroup.addUser((Subject)o);
+				SearchStringMealSuggestionFilter f = listModel
+					.copyRestrictingLastFilter();
+				GroupSorter gs = (GroupSorter)getSelectedItem();
+				gs.setGroup(tempSearchGroup);
+				f.setSorter(gs);
+				listModel.applyFilter(f);
+			}
+		});
 		Point p = getLocationOnScreen();
 		p.x += this.getWidth() + 5;
-		p.y -= 20;
+		p.y -= 40;
 		groupSelectionWindow.setLocation(p);
 		groupSelectionWindow.toFront();
 		groupSelectionWindow.requestFocusInWindow();

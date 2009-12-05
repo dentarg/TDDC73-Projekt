@@ -19,6 +19,7 @@ import javax.swing.JWindow;
 
 import javax.swing.event.ListSelectionListener;
 
+import dataAccess.SubjectDA;
 import dataObjects.Group;
 import dataObjects.Session;
 import dataObjects.Subject;
@@ -32,7 +33,7 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 	private static final long serialVersionUID = -1515580483915058715L;
 	private AddRemoveComponent subjectList;
 	private JList groupList;
-
+	
 	public EditWindow(Frame owner) {
 		super(owner);
 		createGUI();
@@ -41,14 +42,12 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		setBackground(Color.GRAY);
 
 		com.sun.awt.AWTUtilities.setWindowOpacity(this, 0.8f);
-		//setSize(new Dimension(300, 400));
 		pack();
 	}
 
 	private JPanel createHeader(String title) {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
-		
 		
 		JLabel p = new JLabel(title);
 		p.setFont(new Font("Arial", Font.BOLD, 15));
@@ -72,9 +71,30 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		subjectPanel.add(createHeader("Sök efter personer"));
 
 		subjectList = new AddRemoveComponent();
-		Subject s = Session.getInstance().getUser();
-		List groups = s.getGroups();
-		subjectList.setContents(groups);
+		subjectList.addAddRemoveListener(new AddRemoveListener() {
+			
+			@Override
+			public void objectSelected(Object o) {
+				
+			}
+			
+			@Override
+			public void objectRemoved(Object o, boolean wasSelected) {
+				Dimension d = getSize();
+				d.height -= 34;
+				setSize(d);
+			}
+			
+			@Override
+			public void objectAdded(Object o) {
+				Dimension d = getSize();
+				d.height += 34;
+				setSize(d);
+			}
+		});
+		SubjectDA sda = new SubjectDA();
+		List subjects = sda.getAllSubjects();
+		subjectList.setContents(subjects);
 		subjectPanel.add(subjectList, BorderLayout.SOUTH); 
 		subjectPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		subjectPanel.setBackground(Color.BLACK);
@@ -100,13 +120,18 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		return list;
 	}
 
+	
 	public void addListSelectionListener(ListSelectionListener listener) {
 		groupList.addListSelectionListener(listener);
 	}
 
+	public void addAddRemoveListener(AddRemoveListener listener) {
+		subjectList.addAddRemoveListener(listener);
+	}
 	public void windowGainedFocus(WindowEvent e) {
 
 	}
+	
 
 	public void windowLostFocus(WindowEvent e) {
 		setVisible(false);
