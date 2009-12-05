@@ -66,14 +66,13 @@ public class OverviewPanel extends JPanel {
 	private void init()
 	{
 		setLayout(new GridLayout(4,1));
-
+		setBorder(this, "Din användare:");
 		JPanel user = new JPanel();
 		JPanel preferences = new JPanel();
 		JPanel groups = new JPanel();
 		JPanel personal = new JPanel();		
 
 		//Add cool borders to the to separate panels.
-		setBorder(user, "Din användare:");
 		setBorder(preferences, "Gillar inte / allergier:");
 		setBorder(groups, "Dina grupper:");
 		setBorder(personal, "Personliga inställningar:");		
