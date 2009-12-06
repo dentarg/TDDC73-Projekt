@@ -170,7 +170,7 @@ public class Subject {
             }
         }
     }
-    
+
     public Group getGroup(String name) {
         int length = this.groups.size();
         for (int i = 0; i < length; i++) {
@@ -223,18 +223,15 @@ public class Subject {
     public List<SingleRecipeConstraint> getAllConstraints() {
 
         ArrayList<SingleRecipeConstraint> c = new ArrayList<SingleRecipeConstraint>();
-        
-        c.add(new IngredientConstraint(refusedIngredientsList, false));
-        for(String s:refusedIngredientsList){
-            System.out.println(s);
-        }
 
-        c.add(new CalciumConstraint(minCalcium,maxCalcium));
+        c.add(new IngredientConstraint(refusedIngredientsList, false));
+
+        c.add(new CalciumConstraint(minCalcium, maxCalcium));
         c.add(new SodiumConstraint(minSodium, maxSodium));
         c.add(new EnergyConstraint(minEnergyContent, maxEnergyContent));
         c.add(new CarbonHydratesConstraint(maxCarbohydrates, maxCarbohydrates));
         c.add(new FatConstraint(minFat, maxFat));
-        c.add(new CholestrolConstraint(minCholesterol,maxCholesterol));
+        c.add(new CholestrolConstraint(minCholesterol, maxCholesterol));
         c.add(new ProteinConstraint(minProtein, maxProtein));
 
         return c;

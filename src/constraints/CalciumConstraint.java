@@ -27,7 +27,7 @@ public class CalciumConstraint extends MeasurementConstraint {
     */
    @Override
    public Measurement getCurrentValue(Recipe sa) throws RecipeNotFoundException {
-      return sa.getEnergy();
+      return sa.getCalcium();
    }
 
 }
