@@ -131,6 +131,7 @@ public class SortMethodSelector extends JComboBox implements ActionListener{
 				createGroupSelectionWindow();
 			}
 			if(!groupSelectionWindow.isVisible()) {
+				groupSelectionWindow.updateGroupList();
 				groupSelectionWindow.setVisible(true);
 			}
 		} else {

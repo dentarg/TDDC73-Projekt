@@ -116,17 +116,20 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 
 	private JList createGroupList() {
 		Subject s = Session.getInstance().getUser();
-
-		s.createGroup("Familj");
-		s.createGroup("Vänner");
-		s.createGroup("Fest");
-
 		ArrayList<Group> group = s.getGroups();
+		
 		JList list = new JList(group.toArray());
 		list.setMinimumSize(new Dimension(250, group.size()*20));
 		list.setPreferredSize(new Dimension(250, group.size()*20));
 		list.setFocusable(false);
 		return list;
+	}
+	
+	public void updateGroupList() {
+		Subject s = Session.getInstance().getUser();
+		ArrayList<Group> group = s.getGroups();
+		groupList.setListData(group.toArray());
+		groupList.repaint();
 	}
 
 	
