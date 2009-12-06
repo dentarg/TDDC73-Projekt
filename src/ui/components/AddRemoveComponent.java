@@ -422,6 +422,8 @@ public class AddRemoveComponent extends JPanel {
         completionList = new CompletionList();
         completionWindow = new JWindow(MainFrame.mainFrame);
 
+        completionWindow.setAlwaysOnTop(true);
+
         Container windowPanel = completionWindow.getContentPane();
 
         windowPanel.setLayout(new BorderLayout());
