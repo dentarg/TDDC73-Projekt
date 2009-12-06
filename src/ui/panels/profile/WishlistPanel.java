@@ -26,11 +26,11 @@ public class WishlistPanel extends JPanel {
 
         // Goes out to disk and reloads all recipe data, plus makes an extra
         // copy of the list just to please the type system (AddRemoveComponent
-        // would have been better off using generics and a proper data model).
+        // might have been better off using generics and a proper data model).
         // Hrrrrrrrrrr.......
         wishlistList.setContents(new ArrayList<Object>(new RecipeDA().getAllRecipes()));
 
-        wishlistList.add(new AddRemoveListener() {
+        wishlistList.addAddRemoveListener(new AddRemoveListener() {
             public void objectAdded(Object o) {
                 Session.getInstance().getUser().addFavoriteRecipe(o.toString());
             }
