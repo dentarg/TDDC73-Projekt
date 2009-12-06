@@ -19,6 +19,8 @@ import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
+import ui.components.StatusPanel;
+
 import mappings.CostMap;
 import mappings.DifficultyMap;
 import mappings.TimeMap;
@@ -31,9 +33,12 @@ public class PreferencesPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -9011866376505097065L;
 	private Subject user;
+	private PlanVariables pv;
 
 	public PreferencesPanel() {
-		this.user = Session.getInstance().getUser();
+		this.user 	= Session.getInstance().getUser();
+		this.pv 	= new PlanVariables();
+		
         setPreferredSize(new Dimension(800, 600));
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -67,7 +72,7 @@ public class PreferencesPanel extends JPanel implements ActionListener {
     
     public JPanel createDietPanel() {
         JPanel dietPanel = new JPanel();
-        JLabel dietLabel = new JLabel("<html>När du väljer en diet så " +
+        JLabel dietLabel = new JLabel("<html>När du väljer specialkost så " +
         		"exkluderas recept som innehåller ingredienser från " +
         		"ett fördefinierat antal kategorier från " +
         		"receptförslagen.</html>");
@@ -131,7 +136,6 @@ public class PreferencesPanel extends JPanel implements ActionListener {
 		// value is always in the range 1 to 3
 		for(int i=1; i<4; i++) {
 			JRadioButton button = new JRadioButton();
-			PlanVariables pv = new PlanVariables();
 
 			// use mappings to get button labels from value
 			if(title.equals("Kostnad")) {
@@ -164,20 +168,37 @@ public class PreferencesPanel extends JPanel implements ActionListener {
         return radioPanel;
 	}
 
+	public void flashMsg(String msg) {
+		StatusPanel.getInstance().flash(msg, StatusPanel.INFO);
+	}
+
+	public void flashErrorMsg(String msg) {
+		StatusPanel.getInstance().flash(msg, StatusPanel.ERROR);
+	}	
+	
 	// update the user model with chosen value
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
 		if(s.startsWith("cost")) {
-			int desiredCost = Integer.parseInt(s.substring(s.length()-1));	
+			int desiredCost = Integer.parseInt(s.substring(s.length()-1));
 			user.setDesiredCost(desiredCost);
+			CostMap map = pv.getCostMap();
+			String value = translate(map.getValue(desiredCost));
+			flashMsg("Kostnad ändrad till " + value);
 		}
 		else if(s.startsWith("difficulty")){
 			int desiredDifficulty = Integer.parseInt(s.substring(s.length()-1));
 			user.setDesiredDifficulty(desiredDifficulty);
+			DifficultyMap map = pv.getDifficultyMap();
+			String value = translate(map.getValue(desiredDifficulty));
+			flashMsg("Svårighetsgrad ändrad till " + value);
 		}
 		else if(s.startsWith("time")){
 			int desiredTime = Integer.parseInt(s.substring(s.length()-1));
 			user.setDesiredTime(desiredTime);
+			TimeMap map = pv.getTimeMap();
+			String value = translate(map.getValue(desiredTime));
+			flashMsg("Tillagningstid ändrad till " + value);
 		}
 	}
 }

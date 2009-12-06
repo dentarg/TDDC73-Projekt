@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
+import ui.components.StatusPanel;
+
 import dataObjects.Session;
 import dataObjects.Subject;
 
@@ -38,7 +40,7 @@ public class DietPanel extends JPanel implements ActionListener {
 			"Vilt", "Inälvsmat", "Fläsk", "Fågel", "Skaldjur"};
     String[] emptyList = {};
 
-    private static String NO_DIET_NAME = "Ingen";
+    private static String NO_DIET_NAME = "ingen";
 	private JList contentList;
 	private Vector<Diet> diets;
 	private Subject user;
@@ -99,7 +101,7 @@ public class DietPanel extends JPanel implements ActionListener {
         }
 		TitledBorder tb = BorderFactory.createTitledBorder(
 				BorderFactory.createEtchedBorder(),
-				"Möjliga dieter",
+				"Möjlig specialkost",
 				TitledBorder.CENTER,
 				TitledBorder.CENTER,
 				new Font("Arial", Font.BOLD, 13)
@@ -139,15 +141,28 @@ public class DietPanel extends JPanel implements ActionListener {
     	}
     	oldDiet = diet;
     }
+	
+    public void flashMsg(String msg) {
+		StatusPanel.getInstance().flash(msg, StatusPanel.INFO);
+	}
 
+	public void flashErrorMsg(String msg) {
+		StatusPanel.getInstance().flash(msg, StatusPanel.ERROR);
+	}	
+	
     // View the LifeStyle list depending on which one is selected for the moment
     public void actionPerformed(ActionEvent e) {
     	for (Diet diet : diets) {
-    		if(diet.getName().equals(e.getActionCommand())) {
+    		String name = diet.getName();
+    		if(name.equals(e.getActionCommand())) {
     			// show which categories are excluded
     			contentList.setListData(diet.getRefusedCategories());
     			// exclude categories
     			exclude(diet);
+    			if(name.equals(NO_DIET_NAME))
+    				flashMsg("Du valde att inte ha någon specialkost");
+    			else
+    				flashMsg("Du har valt " + name + " som specialkost");
     		}
 		}
     }
