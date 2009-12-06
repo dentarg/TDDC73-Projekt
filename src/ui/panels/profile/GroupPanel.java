@@ -45,7 +45,10 @@ public class GroupPanel extends JPanel {
 			user.createGroup(currentGroup);
 			subjectList.removeAddRemoveListener(subjectListener);
 			subjectList.clearSelected();
-			subjectList.setSelected(user.getGroup(currentGroup).getMembers());
+			for (dataObjects.Subject subject : user.getGroup(currentGroup).getMembers()) {
+				subjectList.setSelected(subject);
+			}
+			//subjectList.setSelected(user.getGroup(currentGroup).getMembers());
 			subjectList.addAddRemoveListener(subjectListener);
 		}
 
@@ -62,7 +65,10 @@ public class GroupPanel extends JPanel {
 			currentGroup = o.toString();
 			subjectList.removeAddRemoveListener(subjectListener);
 			subjectList.clearSelected();
-			subjectList.setSelected(user.getGroup(currentGroup).getMembers());
+			for (dataObjects.Subject subject : user.getGroup(currentGroup).getMembers()) {
+				subjectList.setSelected(subject);
+			}
+			//subjectList.setSelected(user.getGroup(currentGroup).getMembers());
 			subjectList.addAddRemoveListener(subjectListener);
 		}
     }
