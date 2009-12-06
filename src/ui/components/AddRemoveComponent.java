@@ -346,6 +346,13 @@ public class AddRemoveComponent extends JPanel {
             layoutListPanel();
             positionCompletionWindow();
         }
+        
+        public void clear() {
+        	selectedRow = null;
+        	rows.clear();
+            layoutListPanel();
+            positionCompletionWindow();
+        }
 
         public List<Object> getObjects() {
             List<Object> objects = new ArrayList<Object>();
@@ -546,6 +553,13 @@ public class AddRemoveComponent extends JPanel {
     }
 
     /**
+     * 
+     */
+    public void clearSelected() {
+    	selectionList.clear();
+    }
+    
+    /**
      * Returnerar en lista med alla element som valts.
      */
     public List<Object> getAdded() {
@@ -604,6 +618,7 @@ public class AddRemoveComponent extends JPanel {
     private void addToSelectionList(String identifier) {
         if(createInsteadOfAdding) {
             selectionList.add(identifier);
+            notifyObserversAdded(identifier);
         }
         else {
             // Is the object in the list?

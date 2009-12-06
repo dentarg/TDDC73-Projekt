@@ -1,19 +1,24 @@
 package ui.panels.profile;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import ui.MainFrame;
+import dataAccess.SubjectDA;
+import dataObjects.Session;
+
 import ui.components.AddRemoveComponent;
 import ui.components.AddRemoveListener;
 
@@ -24,34 +29,80 @@ public class GroupPanel extends JPanel {
 	private AddRemoveComponent groupList;
 	private AddRemoveComponent subjectList;
 	
-	// Listener that updates the subjectList depending on what group is chosen.
+	private AddRemoveListener groupListener = new groupListener();
+	private AddRemoveListener subjectListener = new subjectListener();
+	
+	private SubjectDA sda = new SubjectDA();
+	private dataObjects.Session session = Session.getInstance();
+	private dataObjects.Subject user = session.getUser();
+	
+	private String currentGroup = null;
+	
     class groupListener implements AddRemoveListener {
 
 		public void objectAdded(Object o) {
-			// Ignore.
+			currentGroup = o.toString();
+			user.createGroup(currentGroup);
+			subjectList.removeAddRemoveListener(subjectListener);
+			subjectList.clearSelected();
+			subjectList.setSelected(user.getGroup(currentGroup).getMembers());
+			subjectList.addAddRemoveListener(subjectListener);
 		}
 
 		public void objectRemoved(Object o, boolean wasSelected) {
-			// Ignore.
+			user.removeGroup(o.toString());
+			if (wasSelected) {
+				subjectList.removeAddRemoveListener(subjectListener);
+				subjectList.clearSelected();
+				subjectList.addAddRemoveListener(subjectListener);
+			}
 		}
 
 		public void objectSelected(Object o) {
-			// Show the selected groups members.
+			currentGroup = o.toString();
+			subjectList.removeAddRemoveListener(subjectListener);
+			subjectList.clearSelected();
+			subjectList.setSelected(user.getGroup(currentGroup).getMembers());
+			subjectList.addAddRemoveListener(subjectListener);
+		}
+    }
+    
+    class subjectListener implements AddRemoveListener {
+
+		public void objectAdded(Object o) {
+			user.getGroup(currentGroup).addUser((dataObjects.Subject) o);
+		}
+
+		public void objectRemoved(Object o, boolean wasSelected) {
+			user.getGroup(currentGroup).removeUser((dataObjects.Subject) o);
+		}
+
+		public void objectSelected(Object o) {
+			// Ignore.
 		}
     }
 	
 	// Create grouppanel containing an AddRemoveComponent groupList.
 	public JPanel createGroupPanel() {
 		JPanel groupPanel = new JPanel();		
-		groupPanel.setLayout(new BorderLayout());
+		groupPanel.setLayout(new FlowLayout());
+		groupPanel.setPreferredSize(new Dimension(300, 600));
 		
-		groupList = new AddRemoveComponent();
+		JLabel groupLabel = new JLabel("Lägg till och ta bort grupper, välj vilken grupp du vill redigera.");
+        groupLabel.setVerticalAlignment(JLabel.CENTER);
+        groupLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        groupLabel.setBorder(lb);
+        groupLabel.setPreferredSize(new Dimension(300, 50));
+        
+		groupList = new AddRemoveComponent(false, true);
 		
-		groupPanel.add(groupList, BorderLayout.NORTH);
+		groupPanel.add(groupLabel);
+		groupPanel.add(groupList);
 		
         TitledBorder tb = BorderFactory.createTitledBorder(
         		BorderFactory.createLineBorder(Color.GRAY),
-        		"Groups",
+        		"Grupper",
         		TitledBorder.LEFT,
         		TitledBorder.CENTER,
         		new Font("Arial", Font.BOLD, 15)
@@ -64,15 +115,24 @@ public class GroupPanel extends JPanel {
 	// Create subjectpanel containing an AddRemoveComponent subjectList.
 	public JPanel createSubjectPanel() {
 		JPanel subjectPanel = new JPanel();
-		subjectPanel.setLayout(new BorderLayout());
+		subjectPanel.setLayout(new FlowLayout());
+		subjectPanel.setPreferredSize(new Dimension(300, 600));
 		
-		subjectList = new AddRemoveComponent();
+		JLabel subjectLabel = new JLabel("Lägg till och ta bort medlemmar ur gruppen.");
+		subjectLabel.setVerticalAlignment(JLabel.CENTER);
+		subjectLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        subjectLabel.setBorder(lb);
+        subjectLabel.setPreferredSize(new Dimension(300, 50));
 		
-		subjectPanel.add(subjectList, BorderLayout.NORTH);
+		subjectList = new AddRemoveComponent(false, false);
+		
+		subjectPanel.add(subjectLabel);
+		subjectPanel.add(subjectList);
 		
         TitledBorder tb = BorderFactory.createTitledBorder(
         		BorderFactory.createLineBorder(Color.GRAY),
-        		"Members",
+        		"Medlemmar",
         		TitledBorder.LEFT,
         		TitledBorder.CENTER,
         		new Font("Arial", Font.BOLD, 15)
@@ -99,6 +159,10 @@ public class GroupPanel extends JPanel {
 	    c.gridx = 1;
 	    add(createSubjectPanel(), c);
 	    
-	    groupList.addAddRemoveListener(new groupListener());
+		List subjects = sda.getAllSubjects();
+		subjectList.setContents(subjects);
+		
+	    groupList.addAddRemoveListener(groupListener);
+	    subjectList.addAddRemoveListener(subjectListener);
 	}
 }
