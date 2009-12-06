@@ -602,6 +602,13 @@ public class AddRemoveComponent extends JPanel {
         return preferredSize;
     }
 
+    /**
+     * Döljer kompletteringslistan.
+     */
+    public void hideCompletionWindow() {
+        completionWindow.setVisible(false);
+    }
+
     private void notifyObserversAdded(Object o) {
         for(AddRemoveListener listener : listeners)
             listener.objectAdded(o);
@@ -704,13 +711,6 @@ public class AddRemoveComponent extends JPanel {
         positionCompletionWindow();
         completionWindow.setVisible(true);
         completionWindow.toFront();
-    }
-
-    /**
-     * Döljer kompletteringslistan.
-     */
-    private void hideCompletionWindow() {
-        completionWindow.setVisible(false);
     }
 
     /**
