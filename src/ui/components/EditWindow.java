@@ -81,19 +81,16 @@ public class EditWindow extends JWindow implements WindowFocusListener {
 		subjectList = new AddRemoveComponent();
 		subjectList.addAddRemoveListener(new AddRemoveListener() {
 			
-			@Override
 			public void objectSelected(Object o) {
 				
 			}
 			
-			@Override
 			public void objectRemoved(Object o, boolean wasSelected) {
 				Dimension d = getSize();
 				d.height -= 32;
 				setSize(d);
 			}
 			
-			@Override
 			public void objectAdded(Object o) {
 				Dimension d = getSize();
 				d.height += 32;
