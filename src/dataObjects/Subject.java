@@ -84,6 +84,7 @@ public class Subject {
         generatedPreferenceMap = new HashMap<String, Preference>();
         refusedIngredientsList = new ArrayList<String>();
         refusedCategoriesList = new ArrayList<String>();
+        favoriteRecipeList = new ArrayList<String>();
         groups = new ArrayList<Group>();
     }
 
