@@ -169,6 +169,16 @@ public class Subject {
             }
         }
     }
+    
+    public Group getGroup(String name) {
+        int length = this.groups.size();
+        for (int i = 0; i < length; i++) {
+            if (name == this.groups.get(i).getName()) {
+                return this.groups.get(i);
+            }
+        }
+        return null;
+    }
 
     public ArrayList<Group> getGroups() {
         return groups;
