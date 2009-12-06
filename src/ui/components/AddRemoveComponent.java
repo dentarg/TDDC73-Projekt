@@ -626,8 +626,14 @@ public class AddRemoveComponent extends JPanel {
 
     private void addToSelectionList(String identifier) {
         if(createInsteadOfAdding) {
-            selectionList.add(identifier);
-            notifyObserversAdded(identifier);
+            if(!identifier.isEmpty()) {
+                selectionList.add(identifier);
+                notifyObserversAdded(identifier);
+
+                textField.getDocument().removeDocumentListener(textChangeListener);
+                textField.setText("");
+                textField.getDocument().addDocumentListener(textChangeListener);
+            }
         }
         else {
             // Is the object in the list?
