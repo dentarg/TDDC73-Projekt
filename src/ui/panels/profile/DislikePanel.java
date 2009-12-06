@@ -71,11 +71,14 @@ public class DislikePanel extends JPanel {
 
             public void objectAdded(Object o) {
                 user.addRefusedCategory(o.toString());
-
+                IngredientCategory category = (IngredientCategory) o;
+                ArrayList<IngredientAvailability> ingredients = category.getIngredients();
+                for (int i = 0; i < ingredients.size(); i++) {
+                    user.addRefusedIngredient(ingredients.get(i).toString());
+                }
             }
 
             public void objectRemoved(Object o) {
-                user.removeRefusedCategory(o.toString());
             }
 
             public void objectSelected(Object o) {
@@ -85,6 +88,12 @@ public class DislikePanel extends JPanel {
             }
 
             public void objectRemoved(Object o, boolean wasSelected) {
+                user.removeRefusedCategory(o.toString());
+                IngredientCategory category = (IngredientCategory) o;
+                ArrayList<IngredientAvailability> ingredients = category.getIngredients();
+                for (int i = 0; i < ingredients.size(); i++) {
+                    user.removeRefusedIngredient(ingredients.get(i).toString());
+                }
             }
         });
 
@@ -95,8 +104,6 @@ public class DislikePanel extends JPanel {
             }
 
             public void objectRemoved(Object o) {
-                user.removeRefusedIngredient(o.toString());
-
             }
 
             public void objectSelected(Object o) {
@@ -106,6 +113,8 @@ public class DislikePanel extends JPanel {
             }
 
             public void objectRemoved(Object o, boolean wasSelected) {
+                user.removeRefusedIngredient(o.toString());
+
             }
         });
 

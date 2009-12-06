@@ -8,6 +8,7 @@ import constraints.CarbonHydratesConstraint;
 import constraints.CholestrolConstraint;
 import constraints.EnergyConstraint;
 import constraints.FatConstraint;
+import constraints.IngredientConstraint;
 import constraints.ProteinConstraint;
 import constraints.SingleRecipeConstraint;
 import constraints.SodiumConstraint;
@@ -222,8 +223,11 @@ public class Subject {
     public List<SingleRecipeConstraint> getAllConstraints() {
 
         ArrayList<SingleRecipeConstraint> c = new ArrayList<SingleRecipeConstraint>();
-        //c.add(includeIngredients);
-        //c.add(excludeIngredients);
+        
+        c.add(new IngredientConstraint(refusedIngredientsList, false));
+        for(String s:refusedIngredientsList){
+            System.out.println(s);
+        }
 
         c.add(new CalciumConstraint(minCalcium,maxCalcium));
         c.add(new SodiumConstraint(minSodium, maxSodium));
