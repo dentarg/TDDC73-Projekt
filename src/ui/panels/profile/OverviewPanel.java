@@ -7,17 +7,23 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import dataObjects.Session;
 import dataObjects.Subject;
 
-public class OverviewPanel extends JPanel {
+public class OverviewPanel extends JPanel implements Observer {
 
 	/**
 	 * This class is used so the user can get a summary of
@@ -27,14 +33,24 @@ public class OverviewPanel extends JPanel {
 	private static final long serialVersionUID = -2840460382044622882L;
 	private Subject user;
 	
+	private TextArea nutritions, personalArea, prefArea, groupArea;
+	private JLabel name;
+	
 	public OverviewPanel()
 	{
 		this.user = Session.getInstance().getUser();
+		this.user.addObserver(this);
+		this.nutritions = new TextArea("", 6, 35, TextArea.SCROLLBARS_NONE);
+		this.personalArea = new TextArea("", 2, 20, TextArea.SCROLLBARS_NONE);
+		this.prefArea = new TextArea("", 5, 100, TextArea.SCROLLBARS_NONE);
+		this.groupArea = new TextArea("", 5, 100, TextArea.SCROLLBARS_NONE);
+		this.name = new JLabel(this.user.getName());
 		init();		
 	}
 	
 	public OverviewPanel(Subject user) {
 		this.user = user;
+		this.user.addObserver(this);
 		init();
 	}
 	
@@ -84,54 +100,29 @@ public class OverviewPanel extends JPanel {
 		Font infoText = new Font("Arial", Font.ITALIC, 12);
 		Font label = new Font("Arial", Font.BOLD, 14);
 		
-		/*
-		 * Settings for the visual representation of the user's name and some info.
-		 */
 		JLabel info = new JLabel("Här kan du se inställningar som är gjorda för din användare.");
 		info.setFont(infoText);
 		user.add(info, BorderLayout.PAGE_START);
-		JLabel name = new JLabel(this.user.getName());
-		name.setFont(label);	
-		user.add(name, BorderLayout.LINE_START);
-				
-		/*
-		 * Settings for the visual representation of the user's food settings.
-		 */
-		TextArea prefArea = new TextArea("", 5, 100, TextArea.SCROLLBARS_NONE);
-		prefArea.setEditable(false);
+		this.name.setFont(label);	
+		user.add(this.name, BorderLayout.LINE_START);
+	
+		this.prefArea.setEditable(false);
 		ArrayList<String> refList = this.user.getRefusedIngredientsList();
-		printList(prefArea, refList);
-		preferences.add(prefArea);
+		this.printList(this.prefArea, refList);
+		preferences.add(this.prefArea);
 		
-		/*
-		 * Settings for the visual representation of the user's groups.
-		 */
-		TextArea groupArea = new TextArea("", 5, 100, TextArea.SCROLLBARS_NONE);
-		groupArea.setEditable(false);
+		this.groupArea.setEditable(false);
 		ArrayList<String> groupList = this.user.getGroupNames();
-		printList(groupArea, groupList);
-		groups.add(groupArea);
+		printList(this.groupArea, groupList);
+		groups.add(this.groupArea);
 		
-		/*
-		 * Settings for the visual representation of the user's personal settings.
-		 */
-		TextArea nutritions = new TextArea("", 6, 35, TextArea.SCROLLBARS_NONE);
-		nutritions.setEditable(false);
-		nutritions.setText("Kalcium: " + this.user.getMinCalcium() + "-" + this.user.getMaxCalcium());
-		nutritions.append("\nKolhydrater: " + this.user.getMinCarbohydrates() + "-" + this.user.getMaxCarbohydrates());
-		nutritions.append("\nKolesterol: " + this.user.getMinCholesterol() + "-" + this.user.getMaxCholesterol());
-		nutritions.append("\nEnergi: " + this.user.getMinEnergyContent() + "-" + this.user.getMaxEnergyContent());
-		nutritions.append("\nFett: " + this.user.getMinFat() + "-" + this.user.getMaxFat());
-		nutritions.append("\nProtein: " + this.user.getMinProtein() + "-" + this.user.getMaxProtein());
-		nutritions.append("\nSalt: " + this.user.getMinSodium() + "-" + this.user.getMaxSodium());
-		personal.add(nutritions);
+		this.nutritions.setEditable(false);
+		printNutritions();
+		personal.add(this.nutritions);
 		
-		TextArea personalArea = new TextArea("", 2, 20, TextArea.SCROLLBARS_NONE);
-		personalArea.setEditable(false);
-		personalArea.setText("Kostnad: " + + this.user.getDesiredCost());
-		personalArea.append("\nTid: " + this.user.getDesiredTime());
-		personalArea.append("\nSvårighetsgrad: " + this.user.getDesiredDifficulty());
-		personal.add(personalArea);
+		this.personalArea.setEditable(false);
+		printPersonalInfo();
+		personal.add(this.personalArea);
 				
 		//Add all the panels to the view.
 		add(user);
@@ -139,6 +130,25 @@ public class OverviewPanel extends JPanel {
 		add(groups);
 		add(personal);
 	
+	}
+	
+	private void printPersonalInfo()
+	{
+		this.personalArea.setText("Kostnad: " + + this.user.getDesiredCost());
+		this.personalArea.append("\nTid: " + this.user.getDesiredTime());
+		this.personalArea.append("\nSvårighetsgrad: " + this.user.getDesiredDifficulty());
+		
+	}
+	
+	private void printNutritions()
+	{
+		this.nutritions.setText("Kalcium: " + this.user.getMinCalcium() + "-" + this.user.getMaxCalcium());
+		this.nutritions.append("\nKolhydrater: " + this.user.getMinCarbohydrates() + "-" + this.user.getMaxCarbohydrates());
+		this.nutritions.append("\nKolesterol: " + this.user.getMinCholesterol() + "-" + this.user.getMaxCholesterol());
+		this.nutritions.append("\nEnergi: " + this.user.getMinEnergyContent() + "-" + this.user.getMaxEnergyContent());
+		this.nutritions.append("\nFett: " + this.user.getMinFat() + "-" + this.user.getMaxFat());
+		this.nutritions.append("\nProtein: " + this.user.getMinProtein() + "-" + this.user.getMaxProtein());
+		this.nutritions.append("\nSalt: " + this.user.getMinSodium() + "-" + this.user.getMaxSodium());
 	}
 	
 	/**
@@ -150,6 +160,7 @@ public class OverviewPanel extends JPanel {
 	 */
 	private void printList(TextArea area, ArrayList<String> list)
 	{
+		area.setText("");
 		for(int i = 0; i < list.size(); i++)
 		{
 			if(i == list.size()-1)
@@ -162,5 +173,15 @@ public class OverviewPanel extends JPanel {
 			}
 			
 		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		this.user = Session.getInstance().getUser();
+		printNutritions();
+		printPersonalInfo();
+		printList(this.groupArea, this.user.getGroupNames());
+		printList(this.prefArea, this.user.getRefusedIngredientsList());
+		this.name.setText(this.user.getName());
 	}
 }

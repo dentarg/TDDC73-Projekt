@@ -15,16 +15,19 @@ import constraints.SodiumConstraint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import dataObjects.units.GramMeasurement;
 import dataObjects.units.Measurement;
 import dataObjects.units.MilliGramMeasurement;
 import java.util.List;
+import ui.panels.profile.OverviewPanel;
 
 /**
  * Class representing a subject.
  */
-public class Subject {
+public class Subject extends Observable {
 
     private int desiredAvailability;
     private int desiredDifficulty;
@@ -106,6 +109,7 @@ public class Subject {
      */
     public void addPreference(Preference preference) {
         preferenceMap.put(preference.getRecipeName(), preference);
+        changed();
     }
 
     /**
@@ -119,6 +123,7 @@ public class Subject {
             return;
         }
         refusedCategoriesList.add(category);
+        changed();
     }
 
     /**
@@ -132,6 +137,7 @@ public class Subject {
             return;
         }
         refusedIngredientsList.add(ingredientName);
+        changed();
     }
 
     /**
@@ -154,6 +160,7 @@ public class Subject {
         Group g = new Group(name);
         g.addUser(this);
         this.groups.add(g);
+        changed();
         return g;
     }
 
@@ -170,6 +177,7 @@ public class Subject {
                 this.groups.remove(i);
             }
         }
+        changed();
     }
 
     public Group getGroup(String name) {
@@ -338,6 +346,7 @@ public class Subject {
 
     public void setName(String name) {
         this.name = name;
+        changed();
     }
 
     /**
@@ -378,10 +387,12 @@ public class Subject {
 
     public void removeRefusedCategory(String category) {
         refusedCategoriesList.remove(category);
+        changed();
     }
 
     public void removeRefusedIngredient(String ingredient) {
         refusedIngredientsList.remove(ingredient);
+        changed();
     }
 
     public void removeFavoriteRecipe(String recipe) {
@@ -404,14 +415,17 @@ public class Subject {
 
     public void setDesiredCost(int desiredCost) {
         this.desiredCost = desiredCost;
+        changed();
     }
 
     public void setDesiredTime(int desiredTime) {
         this.desiredTime = desiredTime;
+        changed();
     }
 
     public void setDesiredDifficulty(int desiredDifficulty) {
         this.desiredDifficulty = desiredDifficulty;
+        changed();
     }
 
     public void setDesiredDifficulty(String difficulty) {
@@ -424,6 +438,7 @@ public class Subject {
         } else {
             this.desiredDifficulty = -1;
         }
+        changed();
     }
 
     public void setDesiredVariation(int desiredVariation) {
@@ -446,62 +461,82 @@ public class Subject {
 
     public void setMaxCalcium(Measurement maxCalcium) {
         this.maxCalcium = maxCalcium;
+        changed();
     }
 
     public void setMaxCarbohydrates(Measurement maxCarbohydrates) {
         this.maxCarbohydrates = maxCarbohydrates;
+        changed();
     }
 
     public void setMaxCholesterol(Measurement maxCholesterol) {
         this.maxCholesterol = maxCholesterol;
+        changed();
     }
 
     public void setMaxEnergyContent(Measurement maxEnergyContent) {
         this.maxEnergyContent = maxEnergyContent;
+        changed();
     }
 
     public void setMaxFat(Measurement maxFat) {
         this.maxFat = maxFat;
+        changed();
     }
 
     public void setMaxProtein(Measurement maxProtein) {
         this.maxProtein = maxProtein;
+        changed();
     }
 
     public void setMaxSodium(Measurement maxSodium) {
         this.maxSodium = maxSodium;
+        changed();
     }
 
     public void setMinCalcium(Measurement minCalcium) {
         this.minCalcium = minCalcium;
+        changed();
     }
 
     public void setMinCarbohydrates(Measurement minCarbohydrates) {
         this.minCarbohydrates = minCarbohydrates;
+        changed();
     }
 
     public void setMinCholesterol(Measurement minCholesterol) {
         this.minCholesterol = minCholesterol;
+        changed();
     }
 
     public void setMinEnergyContent(Measurement minEnergyContent) {
         this.minEnergyContent = minEnergyContent;
+        changed();
     }
 
     public void setMinFat(Measurement minFat) {
         this.minFat = minFat;
+        changed();
     }
 
     public void setMinProtein(Measurement minProtein) {
         this.minProtein = minProtein;
+        changed();
     }
 
     public void setMinSodium(Measurement minSodium) {
         this.minSodium = minSodium;
+        changed();
     }
 
     @Override
     public String toString() {
         return getName();
+    }
+    
+    public void changed()
+    {
+    	this.setChanged();
+        this.notifyObservers();
     }
 }
