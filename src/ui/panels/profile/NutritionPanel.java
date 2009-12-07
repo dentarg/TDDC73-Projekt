@@ -5,12 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -43,18 +47,28 @@ public class NutritionPanel extends JPanel {
 
 	private void init() {
 		setLayout(new BorderLayout());
-		JLabel info =  new JLabel("Här ställer du in näringsvärden du önskar i dina recept. Dessa inställningar kommer att användas när du söker efter recept.");
-		info.setVerticalAlignment(JLabel.CENTER);
-		info.setHorizontalAlignment(JLabel.CENTER);
-        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
-        info.setBorder(lb);
-        info.setPreferredSize(new Dimension(500, 50));
-		add(info, BorderLayout.PAGE_START);
+		
 		
 		JPanel sliderHolder = new JPanel();
-		sliderHolder.setLayout(new GridLayout(0, 1));
-		
+		sliderHolder.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 		add(sliderHolder, BorderLayout.LINE_START);
+		
+		JLabel info =  new JLabel(
+					"<html><h3>Näringsvärden</h3>" + 
+					"Här ställer du in näringsvärden du " +
+					"önskar i dina recept.<br />Dessa " +
+					"inställningar kommer att användas när " +
+					"du söker efter recept.</html>");
+		info.setVerticalAlignment(JLabel.CENTER); 
+		info.setHorizontalAlignment(JLabel.CENTER);
+        info.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        c.ipadx = c.ipady = 10;
+        c.gridy = 1;
+		sliderHolder.add(info, c);
+		
+        c.ipadx = c.ipady = 0;
+		
 		RangeSlider s;
 		Slider slider;
 		s = new RangeSlider("Kalcium (mg)", 0, 1500);
@@ -74,7 +88,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		sliderHolder.add(s);
+		c.gridy++;
+		sliderHolder.add(s, c);
 		s = new RangeSlider("Kolhydrater (g)", 0, 300);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -91,7 +106,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		sliderHolder.add(s);
+		c.gridy++;
+		sliderHolder.add(s, c);
 		s = new RangeSlider("Kolesterol (mg)", 0, 500);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -108,7 +124,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		sliderHolder.add(s);
+		c.gridy++;
+		sliderHolder.add(s, c);
 		s = new RangeSlider("Energi (kcal)", 0, 5000);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -125,7 +142,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		sliderHolder.add(s);
+		c.gridy++;
+		sliderHolder.add(s, c);
 		s = new RangeSlider("Fett (g)", 0, 50);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -142,7 +160,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		sliderHolder.add(s);
+		c.gridy++;
+		sliderHolder.add(s, c);
 		s = new RangeSlider("Protein (g)", 0, 100);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -159,7 +178,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		sliderHolder.add(s);
+		c.gridy++;
+		sliderHolder.add(s, c);
 		s = new RangeSlider("Salt (mg)", 0, 200);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -176,7 +196,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		sliderHolder.add(s);
+		c.gridy++;
+		sliderHolder.add(s, c);
 		add(sliderHolder);
 	}
 
