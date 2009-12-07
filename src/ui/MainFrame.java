@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeListener;
 
@@ -36,8 +37,7 @@ import javax.swing.event.ChangeListener;
  */
 public class MainFrame extends JFrame {
 
-	public static MainFrame mainFrame;
-	
+    public static MainFrame mainFrame;
     private static final long serialVersionUID = 1L;
 
     /**
@@ -66,11 +66,9 @@ public class MainFrame extends JFrame {
      */
     public MainFrame() {
         super("Concept UI for mealplanner");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        Session.getInstance().setUser(new Subject("Placeholder"));
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         createLoginFrame();
-        setEnabled(false);
-        createComponents();
+        // createComponents();
     }
 
     /**
@@ -81,44 +79,47 @@ public class MainFrame extends JFrame {
         final JTextField nameField = new JTextField();
         final JButton loginButton = new JButton("Logga in");
         final JLabel loginLabel = new JLabel("Användarnamn:");
-
-        Container container = loginFrame.getContentPane();
+        final JLabel statusLabel = new JLabel("Loggar in...");
+        final JPanel container = (JPanel) loginFrame.getContentPane();
         container.setLayout(new BorderLayout(5, 5));
         loginButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ae) {
                 if (nameField.getText().compareTo("") != 0) {
-                    Session.getInstance().getUser().setName((nameField.getText()));
-                    StatusPanel.getInstance().flash("Välkommen " + nameField.getText(), StatusPanel.INFO);
-                    setEnabled(true);
+                    Session session = Session.getInstance();
+                    session.setUser(new Subject(nameField.getText()));
+                    
+                    createComponents();
                     loginFrame.dispose();
                 } else {
-                	StatusPanel.getInstance().flash("Felaktiga inloggninsuppgifter", StatusPanel.ERROR);
-                	//JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
+                    JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
                 }
+
             }
         });
         container.add(loginButton, BorderLayout.SOUTH);
-        container.add(loginLabel, BorderLayout.NORTH);
-        nameField.setPreferredSize(new Dimension(100, 20));
-        nameField.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent ae) {
-                if (nameField.getText().compareTo("") != 0) {
-                    Session session = Session.getInstance();
-                    session.setUser(new Subject(nameField.getText()));
-                    StatusPanel.getInstance().flash("Välkommen " + nameField.getText(), StatusPanel.INFO);
-                     setEnabled(true);
-                    loginFrame.dispose();
-                } else {
-                	StatusPanel.getInstance().flash("Felaktiga inloggninsuppgifter", StatusPanel.ERROR);
-                    //JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
-                }
-            }
-        });
+        container.add(loginLabel, BorderLayout.NORTH);
+        nameField.setPreferredSize(
+                new Dimension(100, 20));
+        nameField.addActionListener(
+                new ActionListener() {
+
+                    public void actionPerformed(ActionEvent ae) {
+                        if (nameField.getText().compareTo("") != 0) {
+                            Session session = Session.getInstance();
+                            session.setUser(new Subject(nameField.getText()));
+                            
+                            createComponents();
+                            loginFrame.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(loginFrame, "Ej giltigt inlog!");
+                        }
+                    }
+                });
         container.add(nameField, BorderLayout.CENTER);
         loginFrame.pack();
-        loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setVisible(true);
         loginFrame.requestFocus();
         loginFrame.setAlwaysOnTop(true);
@@ -132,6 +133,8 @@ public class MainFrame extends JFrame {
     private void createComponents() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+
         } catch (Exception e) {
         }
         setLayout(new BorderLayout());
@@ -148,9 +151,10 @@ public class MainFrame extends JFrame {
         tabbedPane.add("Forum", new ForumPanel());
         contentPane.add(tabbedPane, BorderLayout.CENTER);
         pack();
-
         setVisible(true);
         mainFrame = this;
+
+
     }
 
     /**
@@ -159,7 +163,11 @@ public class MainFrame extends JFrame {
      */
     private JComponent createMealPlanPanel() {
         createFood();
+
+
         return new PlannerPanel(searchMealModel, planMealModel);
+
+
     }
 
     /**
@@ -168,8 +176,11 @@ public class MainFrame extends JFrame {
     private void createFood() {
         RecipeDA recDA = new RecipeDA();
         ArrayList<Recipe> recipes = recDA.getAllRecipes();
+
+
         for (Recipe recipe : recipes) {
             searchMealModel.addRecipe(recipe);
+
         }
     }
 }

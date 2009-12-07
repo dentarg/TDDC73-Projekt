@@ -81,48 +81,27 @@ public class SortMethodSelector extends JComboBox implements ActionListener{
 			public void ancestorAdded(AncestorEvent event) {
 			}
 		});
+		
 		groupSelectionWindow.addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
 				JList list = (JList)e.getSource();
-
 				if(!list.getValueIsAdjusting()) {
 					SearchStringMealSuggestionFilter f = listModel
-					.copyRestrictingLastFilter();
+						.copyRestrictingLastFilter();
 					GroupSorter gs = (GroupSorter)getSelectedItem();
-
 					gs.setGroup((Group)list.getSelectedValue());
 					f.setSorter(gs);
 					listModel.applyFilter(f);
 				}
 			}
-		});
-		groupSelectionWindow.addAddRemoveListener(new AddRemoveListener() {
-			
-			public void objectSelected(Object o) {
-				
-			}
-			
-			public void objectRemoved(Object o, boolean wasSelected) {
-				
-			}
-			
-			public void objectAdded(Object o) {
-				tempSearchGroup.addUser((Subject)o);
-				SearchStringMealSuggestionFilter f = listModel
-					.copyRestrictingLastFilter();
-				GroupSorter gs = (GroupSorter)getSelectedItem();
-				gs.setGroup(tempSearchGroup);
-				f.setSorter(gs);
-				listModel.applyFilter(f);
-			}
-		});
+		}); 
+		
 		Point p = getLocationOnScreen();
 		p.x += this.getWidth() + 5;
 		p.y -= 40;
 		groupSelectionWindow.setLocation(p);
 		groupSelectionWindow.toFront();
-		groupSelectionWindow.requestFocusInWindow();
 	}
 	
 	public void actionPerformed(ActionEvent e) {

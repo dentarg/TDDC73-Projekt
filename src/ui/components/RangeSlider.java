@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -62,7 +63,7 @@ public class RangeSlider extends JPanel implements DocumentListener, ChangeListe
 
 		
 		TitledBorder tb = BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Color.GRAY),
+				BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
 				title,
 				TitledBorder.CENTER,
 				TitledBorder.CENTER,
