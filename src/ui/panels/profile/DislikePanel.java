@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -119,8 +121,7 @@ public class DislikePanel extends JPanel {
         });
 
         setPreferredSize(new Dimension(800, 600));
-        setLayout(
-                new GridBagLayout());
+        setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
         c.fill = GridBagConstraints.BOTH;
@@ -129,7 +130,7 @@ public class DislikePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(5, 5, 5, 5);
-
+        c.anchor = GridBagConstraints.NORTHWEST;
         add(createAllergyPanel(), c);
 
         c.gridx = 1;
@@ -140,18 +141,41 @@ public class DislikePanel extends JPanel {
     }
 
     public JPanel createAllergyPanel() {
+
         JPanel allergyPanel = new JPanel();
+        //GridBagConstraints c = new GridBagConstraints();
         allergyPanel.setPreferredSize(new Dimension(300, 600));
         allergyLabel = new JLabel("Här kan du ställa in dina allergier.");
         allergyLabel.setVerticalAlignment(JLabel.CENTER);
         allergyLabel.setHorizontalAlignment(JLabel.CENTER);
         LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
         allergyLabel.setBorder(lb);
-
-        allergyPanel.setLayout(new FlowLayout());
+        allergyPanel.setLayout(new GridBagLayout());
         allergyLabel.setPreferredSize(new Dimension(300, 50));
-        allergyPanel.add(allergyLabel);
-        allergyPanel.add(allergyList);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+        allergyPanel.add(allergyLabel, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridheight = 3;
+        //  c.anchor = GridBagConstraints.NORTH
+        allergyPanel.add(allergyList, c);
+
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
@@ -169,15 +193,36 @@ public class DislikePanel extends JPanel {
         JPanel dislikePanel = new JPanel();
         dislikeLabel = new JLabel("<html>Här kan du ställa in <br>ingredienser du inte tycker om.</html>");
         dislikePanel.setPreferredSize(new Dimension(300, 600));
-        dislikePanel.setLayout(new FlowLayout());
+        dislikePanel.setLayout(new GridBagLayout());
         dislikeLabel.setVerticalAlignment(JLabel.CENTER);
         dislikeLabel.setHorizontalAlignment(JLabel.CENTER);
         LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
         dislikeLabel.setBorder(lb);
         dislikeLabel.setPreferredSize(new Dimension(300, 50));
-        dislikePanel.add(dislikeLabel);
-        dislikePanel.add(dislikeList);
 
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+        dislikePanel.add(dislikeLabel, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridheight = 3;
+        //  c.anchor = GridBagConstraints.NORTH
+        dislikePanel.add(dislikeList, c);
+        
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
                 "Ingredienser du ogillar: ",
