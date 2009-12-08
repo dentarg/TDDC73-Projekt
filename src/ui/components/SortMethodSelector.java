@@ -85,15 +85,13 @@ public class SortMethodSelector extends JComboBox implements ActionListener{
 		groupSelectionWindow.addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
-				JList list = (JList)e.getSource();
-				if(!list.getValueIsAdjusting()) {
-					SearchStringMealSuggestionFilter f = listModel
-						.copyRestrictingLastFilter();
-					GroupSorter gs = (GroupSorter)getSelectedItem();
-					gs.setGroup((Group)list.getSelectedValue());
-					f.setSorter(gs);
-					listModel.applyFilter(f);
-				}
+				Group group = (Group)e.getSource();
+				SearchStringMealSuggestionFilter f = listModel
+					.copyRestrictingLastFilter();
+				GroupSorter gs = (GroupSorter)getSelectedItem();
+				gs.setGroup(group);
+				f.setSorter(gs);
+				listModel.applyFilter(f);
 			}
 		}); 
 		
@@ -110,7 +108,6 @@ public class SortMethodSelector extends JComboBox implements ActionListener{
 				createGroupSelectionWindow();
 			}
 			if(!groupSelectionWindow.isVisible()) {
-				groupSelectionWindow.updateGroupList();
 				groupSelectionWindow.setVisible(true);
 			}
 		} else {
