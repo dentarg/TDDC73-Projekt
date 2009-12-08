@@ -1,11 +1,11 @@
 package ui.panels.profile;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -27,6 +27,7 @@ public class ProfilePanel extends JPanel implements ActionListener {
 	@SuppressWarnings("unused")
 	private JFrame mainFrame;
 	private JPanel cards; //a panel that uses CardLayout
+	private JScrollPane cardsScrollPane;
 
 	public ProfilePanel(JLabel loggedInUserLabel) {
 		mainFrame = (JFrame)getParent();
@@ -35,6 +36,9 @@ public class ProfilePanel extends JPanel implements ActionListener {
         JPanel buttonsPane = new JPanel(new GridLayout(0,1));
         String buttons[] = { OVERVIEW, DISLIKES, GROUPS, PREFERENCES, 
         		NUTRITION, WISHLIST};
+        
+        buttonsPane.add(loggedInUserLabel);
+        
         for(int i = 0; i < buttons.length; i++) {
             JButton button = new JButton(buttons[i]);
             button.addActionListener(this);
@@ -43,16 +47,22 @@ public class ProfilePanel extends JPanel implements ActionListener {
         
         //Create the "cards" and the panel that contains the "cards"
         cards = new JPanel(new CardLayout());
+        cardsScrollPane = new JScrollPane(cards);
         cards.add(createOverviewTab(), OVERVIEW);
         cards.add(createDislikesTab(), DISLIKES);
         cards.add(createGroupsTab(), GROUPS);
         cards.add(createPreferencesTab(), PREFERENCES);
         cards.add(createNutritionTab(), NUTRITION);
         cards.add(createWishlistTab(), WISHLIST);
+
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
-        add(buttonsPane, BorderLayout.PAGE_START);
-        add(cards, BorderLayout.CENTER);
-		add(loggedInUserLabel, BorderLayout.SOUTH);
+        buttonsPane.setAlignmentX(LEFT_ALIGNMENT);
+        buttonsPane.setAlignmentY(TOP_ALIGNMENT);
+        cardsScrollPane.setAlignmentX(LEFT_ALIGNMENT);
+        cardsScrollPane.setAlignmentY(TOP_ALIGNMENT);
+        add(buttonsPane);
+        add(cardsScrollPane);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -77,7 +87,9 @@ public class ProfilePanel extends JPanel implements ActionListener {
 	}
 
 	private JComponent createNutritionTab(){
-		return new JScrollPane(new NutritionPanel());
+		JPanel panel = new JPanel();
+		panel.add(new JScrollPane(new NutritionPanel()));
+		return panel;
 	}
 
 	private JComponent createWishlistTab(){

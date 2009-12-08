@@ -68,7 +68,7 @@ public class MainFrame extends JFrame {
         super("Concept UI for mealplanner");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         createLoginFrame();
-        // createComponents();
+        //Session.getInstance().setUser(new Subject("blah")); createComponents();
     }
 
     /**
