@@ -6,12 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
 
 public class ProfilePanel extends JPanel implements ActionListener {
 
@@ -33,16 +35,23 @@ public class ProfilePanel extends JPanel implements ActionListener {
 		mainFrame = (JFrame)getParent();
 		
         //Put the buttons in a JPanel to get a nicer look
-        JPanel buttonsPane = new JPanel(new GridLayout(0,1));
+        JPanel menuPane = new JPanel(new GridLayout(0,1));
         String buttons[] = { OVERVIEW, DISLIKES, GROUPS, PREFERENCES, 
         		NUTRITION, WISHLIST};
+		//JList menuList = new JList(buttons);
+        menuPane.add(loggedInUserLabel);
+        //menuPane.add(menuList);
         
-        buttonsPane.add(loggedInUserLabel);
-        
+        ButtonGroup bg = new ButtonGroup();
         for(int i = 0; i < buttons.length; i++) {
-            JButton button = new JButton(buttons[i]);
+        	JToggleButton button;
+        	if(buttons[i].equals(OVERVIEW))
+        		button = new JToggleButton(buttons[i], true);
+        	else
+        		button = new JToggleButton(buttons[i]);
             button.addActionListener(this);
-            buttonsPane.add(button);
+            bg.add(button);
+            menuPane.add(button);
         }
         
         //Create the "cards" and the panel that contains the "cards"
@@ -57,11 +66,11 @@ public class ProfilePanel extends JPanel implements ActionListener {
 
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
-        buttonsPane.setAlignmentX(LEFT_ALIGNMENT);
-        buttonsPane.setAlignmentY(TOP_ALIGNMENT);
+        menuPane.setAlignmentX(LEFT_ALIGNMENT);
+        menuPane.setAlignmentY(TOP_ALIGNMENT);
         cardsScrollPane.setAlignmentX(LEFT_ALIGNMENT);
         cardsScrollPane.setAlignmentY(TOP_ALIGNMENT);
-        add(buttonsPane);
+        add(menuPane);
         add(cardsScrollPane);
 	}
 
