@@ -6,6 +6,7 @@ import java.util.Comparator;
 import dataObjects.Recipe;
 import dataObjects.Session;
 import dataObjects.Subject;
+import java.util.List;
 
 /**
  * Does no sorting at all.
@@ -44,11 +45,26 @@ public class ProfileSorter implements RecipeSorter {
 
             for (SingleRecipeConstraint c : user.getAllConstraints()) {
                 if (c != null) {
-                    val1 += c.valuation(r1);
-                    val2 += c.valuation(r2);
+                    if (c.toString().contains("Ingredient")) {
+                        boolean b = false;
+                        if (c.valuation(r1) != 0) {
+                            val1 = 1000;
+                            b = true;
+                        }
+                        if (c.valuation(r2) != 0) {
+                            val2 = 1000;
+                            b= true;
+                        }
+                        //Should compare break?
+                        if (b) {
+                            break;
+                        }
+                    } else {
+                        val1 += c.valuation(r1);
+                        val2 += c.valuation(r2);
+                    }
                 }
             }
-
             return Math.round((val2 - val1) * -10);
         }
     }
