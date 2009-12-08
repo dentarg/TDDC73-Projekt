@@ -31,6 +31,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import ui.components.AddRemoveComponent;
 import ui.components.AddRemoveListener;
+import ui.components.StatusPanel;
 
 /**
  *
@@ -78,6 +79,7 @@ public class DislikePanel extends JPanel {
                 for (int i = 0; i < ingredients.size(); i++) {
                     user.addRefusedIngredient(ingredients.get(i).toString());
                 }
+                StatusPanel.getInstance().flash("Mat som innehåller " + o.toString() + " kommer nu prioriteras lägre", StatusPanel.INFO);
             }
 
             public void objectRemoved(Object o) {
@@ -96,6 +98,7 @@ public class DislikePanel extends JPanel {
                 for (int i = 0; i < ingredients.size(); i++) {
                     user.removeRefusedIngredient(ingredients.get(i).toString());
                 }
+                StatusPanel.getInstance().flash("Mat som innehåller " + o.toString() + " kommer prioriteras normalt", StatusPanel.INFO);
             }
         });
 
@@ -103,6 +106,8 @@ public class DislikePanel extends JPanel {
 
             public void objectAdded(Object o) {
                 user.addRefusedIngredient(o.toString());
+                StatusPanel.getInstance().flash("Mat som innehåller " + o.toString() + " kommer nu prioriteras lägre", StatusPanel.INFO);
+
             }
 
             public void objectRemoved(Object o) {
@@ -116,6 +121,7 @@ public class DislikePanel extends JPanel {
 
             public void objectRemoved(Object o, boolean wasSelected) {
                 user.removeRefusedIngredient(o.toString());
+                StatusPanel.getInstance().flash("Mat som innehåller " + o.toString() + " kommer prioriteras normalt", StatusPanel.INFO);
 
             }
         });
@@ -222,7 +228,7 @@ public class DislikePanel extends JPanel {
         c.gridheight = 3;
         //  c.anchor = GridBagConstraints.NORTH
         dislikePanel.add(dislikeList, c);
-        
+
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
                 "Ingredienser du ogillar: ",
