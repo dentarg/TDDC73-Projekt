@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -35,7 +36,13 @@ public class NutritionPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 7612894160053221649L;
 	private Subject user;
-
+	
+	private final String info = 
+			"<html>Här ställer du in näringsvärden du " +
+			"önskar i dina recept.<br />Dessa " +
+			"inställningar kommer att användas när " +
+			"du söker efter recept.</html>";
+	
 	public NutritionPanel() {
 		user = Session.getInstance().getUser();
 		init();
@@ -47,36 +54,37 @@ public class NutritionPanel extends JPanel {
 	}
 
 	private void init() {
-		setLayout(new GridBagLayout());
-        setBorder(BorderFactory.createTitledBorder(
-        		BorderFactory.createLineBorder(Color.GRAY),
+        setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        setLayout(new BorderLayout());
+        
+        
+        JPanel p = new JPanel();
+        p.setLayout(new BorderLayout());
+        
+        p.setBorder(BorderFactory.createTitledBorder(
+        		BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
         		"Näringsvärden",
         		TitledBorder.LEFT,
         		TitledBorder.CENTER,
         		new Font("Arial", Font.BOLD, 15)
         ));
-		
+        
+        p.setSize(new Dimension(500, 50));
+        
+        JLabel text = new JLabel(info);
+        text.setVerticalAlignment(JLabel.TOP);
+        text.setHorizontalAlignment(JLabel.LEFT);
+        
+        p.add(text, BorderLayout.PAGE_START);
+        p.add(createSliders(), BorderLayout.LINE_START);
+        
+        add(p, BorderLayout.LINE_START);
+	}
+	
+	private JPanel createSliders() {
 		JPanel sliderHolder = new JPanel();
-		sliderHolder.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		sliderHolder.setLayout(new BoxLayout(sliderHolder, BoxLayout.Y_AXIS));
 		
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		add(sliderHolder, c);
-		
-		JLabel info =  new JLabel(
-					"<html>Här ställer du in näringsvärden du " +
-					"önskar i dina recept.<br />Dessa " +
-					"inställningar kommer att användas när " +
-					"du söker efter recept.</html>");
-		info.setVerticalAlignment(JLabel.CENTER); 
-		info.setHorizontalAlignment(JLabel.CENTER);
-        info.setBorder(BorderFactory.createLineBorder(Color.gray));
-        c.ipadx = c.ipady = 10;
-        c.gridy = 1;
-		sliderHolder.add(info, c);
-		
-        c.ipadx = c.ipady = 0;
 		
 		RangeSlider s;
 		Slider slider;
@@ -97,8 +105,7 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		c.gridy++;
-		sliderHolder.add(s, c);
+		sliderHolder.add(s);
 		s = new RangeSlider("Kolhydrater (g)", 0, 300);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -115,8 +122,7 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		c.gridy++;
-		sliderHolder.add(s, c);
+		sliderHolder.add(s);
 		s = new RangeSlider("Kolesterol (mg)", 0, 500);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -133,8 +139,7 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		c.gridy++;
-		sliderHolder.add(s, c);
+		sliderHolder.add(s);
 		s = new RangeSlider("Energi (kcal)", 0, 5000);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -151,8 +156,7 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		c.gridy++;
-		sliderHolder.add(s, c);
+		sliderHolder.add(s);
 		s = new RangeSlider("Fett (g)", 0, 50);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -169,8 +173,7 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		c.gridy++;
-		sliderHolder.add(s, c);
+		sliderHolder.add(s);
 		s = new RangeSlider("Protein (g)", 0, 100);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -187,8 +190,7 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		c.gridy++;
-		sliderHolder.add(s, c);
+		sliderHolder.add(s);
 		s = new RangeSlider("Salt (mg)", 0, 200);
 		slider = s.getSlider();
 		slider.setPreferredSize(d);
@@ -205,9 +207,8 @@ public class NutritionPanel extends JPanel {
 				}
 			}
 		});
-		c.gridy++;
-		sliderHolder.add(s, c);
-		add(sliderHolder);
+		sliderHolder.add(s);
+		return sliderHolder;
 	}
 
 	
