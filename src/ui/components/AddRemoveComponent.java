@@ -117,7 +117,6 @@ public class AddRemoveComponent extends JPanel {
             });
 
             addMouseWheelListener(new MouseWheelListener() {
-                @Override
                 public void mouseWheelMoved(MouseWheelEvent e) {
                     if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
                         if(scrollOffset + e.getWheelRotation() * e.getScrollAmount() > contents.size() - MAX_VISIBLE_COMPLETIONS)
@@ -135,7 +134,6 @@ public class AddRemoveComponent extends JPanel {
             });
 
             scrollBar.addAdjustmentListener(new AdjustmentListener() {
-                @Override
                 public void adjustmentValueChanged(AdjustmentEvent e) {
                     scrollOffset = e.getValue();
                     CompletionList.this.repaint();

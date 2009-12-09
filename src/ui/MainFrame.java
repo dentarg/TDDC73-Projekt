@@ -154,7 +154,6 @@ public class MainFrame extends JFrame {
         tabbedPane.add("Forum", new ForumPanel());
 
         tabbedPane.addChangeListener(new ChangeListener() {
-            @Override
             public void stateChanged(ChangeEvent e) {
                 AddRemoveComponent.hideCompletionWindows();
             }
