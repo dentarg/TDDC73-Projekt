@@ -78,7 +78,7 @@ public class DislikePanel extends JPanel {
                 IngredientCategory category = (IngredientCategory) o;
                 ArrayList<IngredientAvailability> ingredients = category.getIngredients();
                 for (int i = 0; i < ingredients.size(); i++) {
-                    user.addRefusedIngredient(ingredients.get(i).toString());
+                    user.addAllergyIngredient(ingredients.get(i).toString());
                 }
                 StatusPanel.getInstance().flash("Mat som innehåller " + o.toString() + " kommer nu prioriteras lägre", StatusPanel.INFO);
             }
@@ -97,7 +97,7 @@ public class DislikePanel extends JPanel {
                 IngredientCategory category = (IngredientCategory) o;
                 ArrayList<IngredientAvailability> ingredients = category.getIngredients();
                 for (int i = 0; i < ingredients.size(); i++) {
-                    user.removeRefusedIngredient(ingredients.get(i).toString());
+                    user.removeAllergyIngredient(ingredients.get(i).toString());
                 }
                 StatusPanel.getInstance().flash("Mat som innehåller " + o.toString() + " kommer prioriteras normalt", StatusPanel.INFO);
             }
