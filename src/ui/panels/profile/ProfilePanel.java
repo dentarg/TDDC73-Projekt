@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 
+import ui.components.AddRemoveComponent;
+
 public class ProfilePanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -3037636351809756514L;
@@ -75,6 +77,8 @@ public class ProfilePanel extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+        AddRemoveComponent.hideCompletionWindows();
+
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)e.getActionCommand());
 	}

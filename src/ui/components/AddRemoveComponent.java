@@ -226,8 +226,6 @@ public class AddRemoveComponent extends JPanel {
             scrollOffset = 0;
 
             if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
-                System.out.println("!setContents");
-
                 Dimension preferredSize = scrollBar.getPreferredSize();
 
                 final int textLeftOffset = useIcons ?
@@ -307,10 +305,8 @@ public class AddRemoveComponent extends JPanel {
                       + getPreferredTextWidth();
             d.height = getListHeight();
 
-            if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
-                System.out.println("!getPreferredSize");
+            if(contents.size() > MAX_VISIBLE_COMPLETIONS)
                 d.width += scrollBar.getPreferredSize().width; 
-            }
 
             return d;
         }
@@ -465,6 +461,8 @@ public class AddRemoveComponent extends JPanel {
         }
     }
 
+    private static ArrayList<AddRemoveComponent> instances = new ArrayList<AddRemoveComponent>();
+
     private boolean createInsteadOfAdding;
     private boolean useIcons;
 
@@ -490,6 +488,8 @@ public class AddRemoveComponent extends JPanel {
     public AddRemoveComponent(boolean useIcons, boolean createInsteadOfAdding) {
         this.useIcons = useIcons;
         this.createInsteadOfAdding = createInsteadOfAdding;
+
+        instances.add(this);
         
         contents = new ArrayList<Object>();
 
@@ -508,7 +508,7 @@ public class AddRemoveComponent extends JPanel {
 	JPanel completionWindowPanel = new JPanel();
 	completionWindow.setContentPane(completionWindowPanel);
 
-	//completionWindowPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+	completionWindowPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 	completionWindowPanel.setBackground(Color.white);
 
         completionWindowPanel.setLayout(new BorderLayout());
@@ -705,6 +705,14 @@ public class AddRemoveComponent extends JPanel {
      */
     public void hideCompletionWindow() {
         completionWindow.setVisible(false);
+    }
+
+    /**
+     * Döljer kompletterings för samtliga AddRemoveComponent-instanser
+     */
+    public static void hideCompletionWindows() {
+        for(AddRemoveComponent c : instances)
+            c.hideCompletionWindow();
     }
 
     private void notifyObserversAdded(Object o) {

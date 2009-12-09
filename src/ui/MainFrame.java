@@ -28,7 +28,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import ui.components.AddRemoveComponent;
 
 /**
  * The main frame of the application.
@@ -149,6 +152,14 @@ public class MainFrame extends JFrame {
         tabbedPane.addChangeListener(loggedInUserLabel);
         tabbedPane.add("Min profil", new ProfilePanel(loggedInUserLabel));
         tabbedPane.add("Forum", new ForumPanel());
+
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                AddRemoveComponent.hideCompletionWindows();
+            }
+        });
+
         contentPane.add(tabbedPane, BorderLayout.CENTER);
         pack();
         setVisible(true);
