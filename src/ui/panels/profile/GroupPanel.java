@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -22,21 +23,21 @@ import dataObjects.Session;
 import ui.components.AddRemoveComponent;
 import ui.components.AddRemoveListener;
 
-
-
 public class GroupPanel extends JPanel {
 	
 	private AddRemoveComponent groupList;
 	private AddRemoveComponent subjectList;
 	
+	private JPanel groupPanel;
+	private JPanel subjectPanel;
+	
 	private AddRemoveListener groupListener = new groupListener();
 	private AddRemoveListener subjectListener = new subjectListener();
 	
-	private SubjectDA sda = new SubjectDA();
 	private dataObjects.Session session = Session.getInstance();
 	private dataObjects.Subject user = session.getUser();
 	
-	private String currentGroup = null;
+	private String currentGroup;
 	
     class groupListener implements AddRemoveListener {
 
@@ -88,23 +89,39 @@ public class GroupPanel extends JPanel {
 		}
     }
 	
-	// Create grouppanel containing an AddRemoveComponent groupList.
 	public JPanel createGroupPanel() {
 		JPanel groupPanel = new JPanel();		
-		groupPanel.setLayout(new FlowLayout());
+		groupPanel.setLayout(new GridBagLayout());
 		groupPanel.setPreferredSize(new Dimension(300, 600));
 		
-		JLabel groupLabel = new JLabel("L‰gg till och ta bort grupper, v‰lj vilken grupp du vill redigera.");
+		JLabel groupLabel = new JLabel("<html>L√§gg till och ta bort grupper, v√§lj vilken grupp du vill redigera.</html>");
         groupLabel.setVerticalAlignment(JLabel.CENTER);
         groupLabel.setHorizontalAlignment(JLabel.CENTER);
         LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
         groupLabel.setBorder(lb);
         groupLabel.setPreferredSize(new Dimension(300, 50));
-        
-		groupList = new AddRemoveComponent(false, true);
 		
-		groupPanel.add(groupLabel);
-		groupPanel.add(groupList);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+        groupPanel.add(groupLabel, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridheight = 3;
+        groupPanel.add(groupList, c);
 		
         TitledBorder tb = BorderFactory.createTitledBorder(
         		BorderFactory.createLineBorder(Color.GRAY),
@@ -118,23 +135,39 @@ public class GroupPanel extends JPanel {
         return groupPanel;
 	}
 	
-	// Create subjectpanel containing an AddRemoveComponent subjectList.
 	public JPanel createSubjectPanel() {
 		JPanel subjectPanel = new JPanel();
-		subjectPanel.setLayout(new FlowLayout());
+		subjectPanel.setLayout(new GridBagLayout());
 		subjectPanel.setPreferredSize(new Dimension(300, 600));
 		
-		JLabel subjectLabel = new JLabel("L‰gg till och ta bort medlemmar ur gruppen.");
+		JLabel subjectLabel = new JLabel("<html>L√§gg till och ta bort medlemmar ur gruppen.</html>");
 		subjectLabel.setVerticalAlignment(JLabel.CENTER);
 		subjectLabel.setHorizontalAlignment(JLabel.CENTER);
         LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
         subjectLabel.setBorder(lb);
         subjectLabel.setPreferredSize(new Dimension(300, 50));
 		
-		subjectList = new AddRemoveComponent(false, false);
-		
-		subjectPanel.add(subjectLabel);
-		subjectPanel.add(subjectList);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+        subjectPanel.add(subjectLabel, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridheight = 3;
+        subjectPanel.add(subjectList, c);
 		
         TitledBorder tb = BorderFactory.createTitledBorder(
         		BorderFactory.createLineBorder(Color.GRAY),
@@ -148,25 +181,30 @@ public class GroupPanel extends JPanel {
         return subjectPanel;
 	}
 
-	// Create the main grouppanel, containing smaller group- and subjectpanels.
 	public GroupPanel() {
 		setPreferredSize(new Dimension(800, 600));
+		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		setLayout(new GridBagLayout());
+		
+		groupList = new AddRemoveComponent(false, true);
+		subjectList = new AddRemoveComponent(false, false);
+		
+		groupPanel = createGroupPanel();
+		subjectPanel = createSubjectPanel();
+		
 	    GridBagConstraints c = new GridBagConstraints();
-	    
 	    c.fill = GridBagConstraints.BOTH;
 	    c.weightx = 0.5;
 	    c.weighty = 0.5;
 	    c.gridx = 0;
 	    c.gridy = 0;
 	    c.insets = new Insets(5, 5, 5, 5);
-	    add(createGroupPanel(), c);
+	    add(groupPanel, c);
 	    
 	    c.gridx = 1;
-	    add(createSubjectPanel(), c);
+	    add(subjectPanel, c);
 	    
-		List subjects = sda.getAllSubjects();
-		subjectList.setContents(subjects);
+		subjectList.setContents(session.getSubjects());
 		
 	    groupList.addAddRemoveListener(groupListener);
 	    subjectList.addAddRemoveListener(subjectListener);

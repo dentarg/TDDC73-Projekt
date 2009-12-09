@@ -27,6 +27,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import ui.components.AddRemoveComponent;
@@ -126,6 +127,7 @@ public class DislikePanel extends JPanel {
             }
         });
 
+        setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         setPreferredSize(new Dimension(800, 600));
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -185,7 +187,7 @@ public class DislikePanel extends JPanel {
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
-                "Dina Allergier:",
+                "Dina Allergier.",
                 TitledBorder.LEFT,
                 TitledBorder.CENTER,
                 new Font("Arial", Font.BOLD, 15));
@@ -193,11 +195,10 @@ public class DislikePanel extends JPanel {
 
         return allergyPanel;
     }
-    // Create subjectpanel containing an AddRemoveComponent subjectList.
 
     public JPanel createDislikePanel() {
         JPanel dislikePanel = new JPanel();
-        dislikeLabel = new JLabel("<html>Här kan du ställa in <br>ingredienser du inte tycker om.</html>");
+        dislikeLabel = new JLabel("<html>Här kan du ställa in ingredienser du inte tycker om.</html>");
         dislikePanel.setPreferredSize(new Dimension(300, 600));
         dislikePanel.setLayout(new GridBagLayout());
         dislikeLabel.setVerticalAlignment(JLabel.CENTER);
@@ -231,7 +232,7 @@ public class DislikePanel extends JPanel {
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
-                "Ingredienser du ogillar: ",
+                "Ingredienser du ogillar.",
                 TitledBorder.LEFT,
                 TitledBorder.CENTER,
                 new Font("Arial", Font.BOLD, 15));

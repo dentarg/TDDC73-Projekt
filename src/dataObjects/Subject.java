@@ -158,7 +158,6 @@ public class Subject extends Observable {
      */
     public Group createGroup(String name) {
         Group g = new Group(name);
-        g.addUser(this);
         this.groups.add(g);
         changed();
         return g;
