@@ -218,7 +218,7 @@ public class Subject extends Observable {
             ArrayList<Subject> userList = group.getMembers();
             int numberOfMembers = group.getNumberOfMembers();
 
-            for (int j = 0; i < numberOfMembers; j++) {
+            for (int j = 0; j < numberOfMembers; j++) {
                 if (this == userList.get(j)) {
                     return true;
                 }
