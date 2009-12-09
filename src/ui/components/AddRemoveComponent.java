@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -110,6 +112,23 @@ public class AddRemoveComponent extends JPanel {
                 public void mouseExited(MouseEvent e) {
                     selectionIndex = -1;
                     repaint();
+                }
+            });
+
+            addMouseWheelListener(new MouseWheelListener() {
+                @Override
+                public void mouseWheelMoved(MouseWheelEvent e) {
+                    if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
+                        if(scrollOffset + e.getWheelRotation() * e.getScrollAmount() > contents.size() - MAX_VISIBLE_COMPLETIONS)
+                            scrollOffset = contents.size() - MAX_VISIBLE_COMPLETIONS;
+                        else if(scrollOffset + e.getWheelRotation() * e.getScrollAmount() < 0)
+                            scrollOffset = 0;
+                        else
+                            scrollOffset += e.getWheelRotation() * e.getScrollAmount();
+
+                        scrollBar.setValue(scrollOffset);
+                        CompletionList.this.repaint();
+                    }
                 }
             });
 
