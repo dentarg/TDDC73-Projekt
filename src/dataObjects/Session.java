@@ -4,6 +4,8 @@
  */
 package dataObjects;
 
+import java.util.List;
+
 /**
  *  A singelton class that contains the
  *  current user.
@@ -14,6 +16,8 @@ public class Session {
 //current user
 
     Subject user = null;
+    List subjects = null;
+    
 //only session
     private static Session instance = null;
 
@@ -43,10 +47,26 @@ public class Session {
     }
 
     /**
+     * Sets the current subjects
+     * @param subjects  List the subject
+     */
+    public void setSubjects(List subjects) {
+        this.subjects = subjects;
+    }
+    
+    /**
      * Gets the user in this Session
      * @return  Subject current user;
      */
     public Subject getUser() {
         return user;
+    }
+    
+    /**
+     * Gets the subjects in this Session
+     * @return  List current subjects;
+     */
+    public List getSubjects() {
+        return subjects;
     }
 }
