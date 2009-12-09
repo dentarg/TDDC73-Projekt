@@ -7,6 +7,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -33,6 +35,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
@@ -44,7 +48,7 @@ import java.util.List;
 
 public class AddRemoveComponent extends JPanel {
     private static final String ADD_BUTTON_TEXT = "Lägg till";
-    private static final int MAX_COMPLETIONS = 20;
+    private static final int MAX_VISIBLE_COMPLETIONS = 20;
     private static final int MINIMUM_WIDTH = 250; 
 
     private static final int IMAGE_WIDTH = 50;
@@ -69,9 +73,20 @@ public class AddRemoveComponent extends JPanel {
         private List<Object> contents;
 
         int selectionIndex;
+        int scrollOffset;
+
+        JScrollBar scrollBar;
 
         public CompletionList() {
             selectionIndex = -1;
+            scrollOffset = 0;
+
+            setLayout(null);
+
+            scrollBar = new JScrollBar(JScrollBar.VERTICAL);
+            add(scrollBar);
+
+            scrollBar.setVisible(false);
 
             addMouseMotionListener(new MouseMotionListener() {
                 public void mouseDragged(MouseEvent e) {
@@ -97,6 +112,14 @@ public class AddRemoveComponent extends JPanel {
                     repaint();
                 }
             });
+
+            scrollBar.addAdjustmentListener(new AdjustmentListener() {
+                @Override
+                public void adjustmentValueChanged(AdjustmentEvent e) {
+                    scrollOffset = e.getValue();
+                    CompletionList.this.repaint();
+                }
+            });
         }
 
         /**
@@ -112,11 +135,50 @@ public class AddRemoveComponent extends JPanel {
          */
         private int pointToIndex(Point point) {
             if(useIcons) {
-                return point.y / ROW_HEIGHT_WITH_ICONS;
+                return scrollOffset + point.y/ROW_HEIGHT_WITH_ICONS;
             }
             else {
                 FontMetrics fm = getFontMetrics(getFont());
-                return point.y / fm.getHeight();
+                return scrollOffset + point.y/fm.getHeight();
+            }
+        }
+
+        private int getPreferredTextWidth() {
+            FontMetrics fm = getFontMetrics(getFont());
+
+            int maxWidth = 0;
+            for(Object row : contents) {
+                int width = fm.stringWidth(row.toString());
+                if(width > maxWidth)
+                    maxWidth = width;
+            }
+
+            return Math.max(maxWidth, AddRemoveComponent.this.textField.getSize().width);
+        }
+
+        private int getListHeight() {
+            FontMetrics fm = getFontMetrics(getFont());
+
+            if(useIcons)
+                return Math.min(contents.size(), MAX_VISIBLE_COMPLETIONS) *
+                       ROW_HEIGHT_WITH_ICONS;
+            else
+                return Math.min(contents.size(), MAX_VISIBLE_COMPLETIONS) *
+                       fm.getHeight();
+        }
+
+        private void ensureSelectionIsVisible() {
+            if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
+                final int offsetOnScreen = selectionIndex - scrollOffset;
+
+                if(offsetOnScreen < 0) {
+                    scrollOffset += offsetOnScreen;
+                    scrollBar.setValue(scrollOffset);
+                }
+                else if(offsetOnScreen >= MAX_VISIBLE_COMPLETIONS) {
+                    scrollOffset += offsetOnScreen - MAX_VISIBLE_COMPLETIONS + 1;
+                    scrollBar.setValue(scrollOffset);
+                }
             }
         }
 
@@ -134,6 +196,7 @@ public class AddRemoveComponent extends JPanel {
         public void selectNextRow() {
             selectionIndex = (selectionIndex + 1) % contents.size();
 
+            ensureSelectionIsVisible();
             repaint();
         }
 
@@ -148,6 +211,7 @@ public class AddRemoveComponent extends JPanel {
                 --selectionIndex;
             }
 
+            ensureSelectionIsVisible();
             repaint();
         }
 
@@ -159,6 +223,29 @@ public class AddRemoveComponent extends JPanel {
 
             this.contents = contents;
             selectionIndex = 0;
+            scrollOffset = 0;
+
+            if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
+                System.out.println("!setContents");
+
+                Dimension preferredSize = scrollBar.getPreferredSize();
+
+                final int textLeftOffset = useIcons ?
+                    TEXT_LEFT_OFFSET_WITH_ICONS : TEXT_LEFT_OFFSET_WITHOUT_ICONS;
+
+                scrollBar.setBounds(textLeftOffset + getPreferredTextWidth(), 0,
+                                    preferredSize.width, getListHeight());
+
+                scrollBar.setValues(0,                       // Value
+                                    MAX_VISIBLE_COMPLETIONS, // Extent
+                                    0,                       // Min
+                                    contents.size());        // Max
+
+                scrollBar.setVisible(true);
+            }
+            else {
+                scrollBar.setVisible(false);
+            }
 
             revalidate();
             repaint();
@@ -186,23 +273,26 @@ public class AddRemoveComponent extends JPanel {
             if(selectionIndex != -1) {
                 g.setColor(selectionColor);
 
-                g.fillRect(0, selectionIndex * rowHeight,
+                g.fillRect(0, (selectionIndex - scrollOffset) * rowHeight,
                            getSize().width, rowHeight);
             }
 
             // Rita ikoner och textsträngar
             g.setColor(getForeground());
-            for(int i = 0; i < contents.size(); ++i) {
+
+            final int upto = Math.min(contents.size(), MAX_VISIBLE_COMPLETIONS);
+
+            for(int i = 0; i < upto; ++i) {
                 if(useIcons && contents.get(i) instanceof Displayable) {
-                    Image image = ((Displayable) contents.get(i)).getImage();
+                    Image image = ((Displayable) contents.get(scrollOffset + i)).getImage();
                     
                     if(image != null)
-                        g.drawImage( ((Displayable) contents.get(i)).getImage(),
+                        g.drawImage( ((Displayable) contents.get(scrollOffset + i)).getImage(),
                                      IMAGE_LEFT_PADDING,
                                      IMAGE_VERTICAL_PADDING/2 + i*rowHeight,
                                      null );
                 }
-                g.drawString(contents.get(i).toString(),
+                g.drawString(contents.get(scrollOffset + i).toString(),
                              textLeftOffset,
                              initialY + i*rowHeight);
             }
@@ -213,25 +303,14 @@ public class AddRemoveComponent extends JPanel {
             Dimension d = new Dimension();
             FontMetrics fm = getFontMetrics(getFont());
 
-            int textLeftOffset;
+            d.width = (useIcons ? TEXT_LEFT_OFFSET_WITH_ICONS : TEXT_LEFT_OFFSET_WITHOUT_ICONS)
+                      + getPreferredTextWidth();
+            d.height = getListHeight();
 
-            if(useIcons) {
-                d.height = contents.size() * ROW_HEIGHT_WITH_ICONS;
-                textLeftOffset = TEXT_LEFT_OFFSET_WITH_ICONS;
+            if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
+                System.out.println("!getPreferredSize");
+                d.width += scrollBar.getPreferredSize().width; 
             }
-            else {
-                d.height = contents.size() * fm.getHeight();
-                textLeftOffset = TEXT_LEFT_OFFSET_WITHOUT_ICONS;
-            }
-
-            d.width = 0;
-            for(Object row : contents) {
-                int width = fm.stringWidth(row.toString());
-                if(width > d.width)
-                    d.width = width;
-            }
-
-            d.width += textLeftOffset;
 
             return d;
         }
@@ -424,14 +503,17 @@ public class AddRemoveComponent extends JPanel {
 
         completionWindow.setAlwaysOnTop(true);
 
-	JPanel windowPanel = new JPanel();
-	completionWindow.setContentPane(windowPanel);
+        JScrollPane completionWindowScrollPane = new JScrollPane(completionList);
 
-	windowPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-	windowPanel.setBackground(Color.white);
+	JPanel completionWindowPanel = new JPanel();
+	completionWindow.setContentPane(completionWindowPanel);
 
-        windowPanel.setLayout(new BorderLayout());
-        windowPanel.add(completionList, BorderLayout.CENTER);
+	//completionWindowPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+	completionWindowPanel.setBackground(Color.white);
+
+        completionWindowPanel.setLayout(new BorderLayout());
+        completionWindowPanel.add(completionList, BorderLayout.CENTER);
+        //completionWindowPanel.add(completionWindowScrollPane, BorderLayout.CENTER);
 
         //
         // Initialisera övriga komponenter
@@ -464,6 +546,15 @@ public class AddRemoveComponent extends JPanel {
         c = new GridBagConstraints();
         c.gridx = 1; c.gridy = 1;
         add(addButton, c);
+
+        // Registrera lyssnare
+        textField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(!AddRemoveComponent.this.createInsteadOfAdding)
+                    showCompletions(textField.getText());
+            }
+        });
 
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -509,9 +600,12 @@ public class AddRemoveComponent extends JPanel {
                     case KeyEvent.VK_DOWN:
                     case KeyEvent.VK_KP_DOWN:
                         if( !(AddRemoveComponent.this.createInsteadOfAdding ||
-                              completionWindow.isVisible()) )
+                              completionWindow.isVisible()) ) {
                             showCompletions(textField.getText());
-                        completionList.selectNextRow();
+                        }
+                        else {
+                            completionList.selectNextRow();
+                        }
                         break;
 
                     case KeyEvent.VK_UP:
@@ -712,11 +806,13 @@ public class AddRemoveComponent extends JPanel {
     private void showCompletionWindow() {
         completionWindow.pack();
         
+        /*
         Dimension completionWindowSize = completionWindow.getSize();
         if(completionWindowSize.width < textField.getSize().width) {
             completionWindowSize.width = textField.getSize().width;
             completionWindow.setSize(completionWindowSize);
         }
+        */
 
         positionCompletionWindow();
         completionWindow.setVisible(true);
