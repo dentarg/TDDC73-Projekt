@@ -84,7 +84,7 @@ public class ProfilePanel extends JPanel implements ActionListener {
 	}
 	
 	private JComponent createOverviewTab(){
-		return new OverviewPanel();
+		return new HtmlOverviewPanel();
 	}
 
 	private JComponent createDislikesTab(){
