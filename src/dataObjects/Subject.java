@@ -53,6 +53,7 @@ public class Subject extends Observable {
     private String name;
     private Map<String, Preference> preferenceMap;
     private ArrayList<String> refusedCategoriesList;
+    private ArrayList<String> allergyIngredientList;
     private ArrayList<String> refusedIngredientsList;
     private ArrayList<String> favoriteRecipeList;
     private ArrayList<Group> groups;
@@ -88,7 +89,20 @@ public class Subject extends Observable {
         refusedIngredientsList = new ArrayList<String>();
         refusedCategoriesList = new ArrayList<String>();
         favoriteRecipeList = new ArrayList<String>();
+        allergyIngredientList = new ArrayList<String>();
         groups = new ArrayList<Group>();
+    }
+
+    /**
+     * Adds an allergy ingredient
+     * @param ingredientName  Name of the ingredient
+     */
+    public void addAllergyIngredient(String ingredientName) {
+        if (allergyIngredientList.contains(ingredientName)) {
+            return;
+        }
+        allergyIngredientList.add(ingredientName);
+        changed();
     }
 
     /**
@@ -232,7 +246,14 @@ public class Subject extends Observable {
 
         ArrayList<SingleRecipeConstraint> c = new ArrayList<SingleRecipeConstraint>();
 
-        c.add(new IngredientConstraint(refusedIngredientsList, false));
+        ArrayList<String> tempList = refusedCategoriesList;
+
+        for (String s : allergyIngredientList) {
+            tempList.add(s);
+        }
+
+
+        c.add(new IngredientConstraint(tempList, false));
 
         c.add(new CalciumConstraint(minCalcium, maxCalcium));
         c.add(new SodiumConstraint(minSodium, maxSodium));
@@ -394,6 +415,11 @@ public class Subject extends Observable {
         changed();
     }
 
+    public void removeAllergyIngredient(String ingredient) {
+        allergyIngredientList.remove(ingredient);
+        changed();
+    }
+
     public void removeFavoriteRecipe(String recipe) {
         favoriteRecipeList.remove(recipe);
     }
@@ -532,10 +558,9 @@ public class Subject extends Observable {
     public String toString() {
         return getName();
     }
-    
-    public void changed()
-    {
-    	this.setChanged();
+
+    public void changed() {
+        this.setChanged();
         this.notifyObservers();
     }
 }
