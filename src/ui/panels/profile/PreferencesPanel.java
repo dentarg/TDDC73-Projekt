@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import ui.components.StatusPanel;
@@ -45,24 +46,20 @@ public class PreferencesPanel extends JPanel implements ActionListener {
     public PreferencesPanel() {
         this.user   = Session.getInstance().getUser();
         this.pv     = new PlanVariables();
-
+        
+        setPreferredSize(new Dimension(800, 600));
         setLayout(new GridBagLayout());
-
+        
         GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
         c.gridx = 0;
         c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
-        c.weighty = 1.0;
-        //c.insets = new Insets(5, 5, 5, 5);
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.NORTHWEST;
         add(createPrefPanel(), c);
-        
-        c = new GridBagConstraints();
         c.gridx = 1;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
-        c.weighty = 1.0;
         add(createDietPanel(), c);
     }
     

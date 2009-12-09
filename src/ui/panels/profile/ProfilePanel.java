@@ -1,10 +1,17 @@
 package ui.panels.profile;
 
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
@@ -14,6 +21,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import ui.components.AddRemoveComponent;
 
@@ -55,7 +64,7 @@ public class ProfilePanel extends JPanel implements ActionListener {
             bg.add(button);
             menuPane.add(button);
         }
-        
+                
         //Create the "cards" and the panel that contains the "cards"
         cards = new JPanel(new CardLayout());
         cardsScrollPane = new JScrollPane(cards);
@@ -67,6 +76,9 @@ public class ProfilePanel extends JPanel implements ActionListener {
         cards.add(createWishlistTab(), WISHLIST);
 
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+        cards.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        menuPane.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         
         menuPane.setAlignmentX(LEFT_ALIGNMENT);
         menuPane.setAlignmentY(TOP_ALIGNMENT);
@@ -84,7 +96,30 @@ public class ProfilePanel extends JPanel implements ActionListener {
 	}
 	
 	private JComponent createOverviewTab(){
-		return new HtmlOverviewPanel();
+        setLayout(new GridBagLayout());
+        
+        JPanel testPanel = new JPanel();
+        testPanel.setLayout(new GridBagLayout());
+        
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0; c.gridy = 0;
+        c.weightx = 0.5; c.weighty = 0.06;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        add(testPanel, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0; c.gridy = 1;
+        c.weightx = 1.0; c.weighty = 1.0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.fill = GridBagConstraints.BOTH;
+        testPanel.add(new HtmlOverviewPanel(), c);
+        
+		return testPanel;
 	}
 
 	private JComponent createDislikesTab(){

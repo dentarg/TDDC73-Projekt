@@ -41,7 +41,7 @@ public class HtmlOverviewPanel extends JPanel implements Observer {
 		this.user = Session.getInstance().getUser();
 		this.user.addObserver(this);
 		this.overview = new JLabel();
-		setBorder(this, "Din användare:");
+		setBorder(this, "Din användare");
 		init();		
 	}
 	
@@ -49,7 +49,7 @@ public class HtmlOverviewPanel extends JPanel implements Observer {
 		this.user = user;
 		this.user.addObserver(this);
 		this.overview = new JLabel();
-		setBorder(this, "Din användare:");
+		setBorder(this, "Din användare");
 		init();
 	}
 	
@@ -78,7 +78,7 @@ public class HtmlOverviewPanel extends JPanel implements Observer {
 	private void init()
 	{
 		setLayout(new BorderLayout());
-		this.refusedCategories = listToString(this.user.getRefusedCategoriesList(), "Inga mat kategorier listade.");
+		this.refusedCategories = listToString(this.user.getRefusedCategoriesList(), "Inga matkategorier listade.");
 		this.refusedIngredients = listToString(this.user.getRefusedIngredientsList(), "Inga ingredienser listade.");
 		this.groups = listToString(this.user.getGroupNames(), "Du har inte skapat några grupper.");
 		String difficulty = calcVal(this.user.getDesiredDifficulty());

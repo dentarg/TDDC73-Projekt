@@ -116,7 +116,6 @@ public class GroupPanel extends JPanel {
     
 	public GroupPanel() {
 		setPreferredSize(new Dimension(800, 600));
-		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		setLayout(new GridBagLayout());
 		
 		groupList = new AddRemoveComponent(false, true);

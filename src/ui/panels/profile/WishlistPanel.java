@@ -48,7 +48,6 @@ public class WishlistPanel extends JPanel {
             public void objectSelected(Object o) {}
         });
         
-        setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         setLayout(new GridBagLayout());
         
         JPanel testPanel = new JPanel();
