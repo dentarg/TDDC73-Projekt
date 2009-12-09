@@ -81,6 +81,26 @@ class TestAddRemoveComponent {
         contents.add(new ListItem(smileImage, "Olle"));
         contents.add(new ListItem(horseImage, "Kalle"));
         contents.add(new ListItem(smileImage, "Kent"));
+        contents.add(new ListItem(smileImage, "1"));
+        contents.add(new ListItem(smileImage, "2"));
+        contents.add(new ListItem(smileImage, "3"));
+        contents.add(new ListItem(smileImage, "4"));
+        contents.add(new ListItem(smileImage, "5"));
+        contents.add(new ListItem(smileImage, "6"));
+        contents.add(new ListItem(smileImage, "7"));
+        contents.add(new ListItem(smileImage, "8"));
+        contents.add(new ListItem(smileImage, "9"));
+        contents.add(new ListItem(smileImage, "10"));
+        contents.add(new ListItem(smileImage, "11"));
+        contents.add(new ListItem(smileImage, "12"));
+        contents.add(new ListItem(smileImage, "13"));
+        contents.add(new ListItem(smileImage, "14"));
+        contents.add(new ListItem(smileImage, "15"));
+        contents.add(new ListItem(smileImage, "16"));
+        contents.add(new ListItem(smileImage, "17"));
+        contents.add(new ListItem(smileImage, "18"));
+        contents.add(new ListItem(smileImage, "19"));
+        contents.add(new ListItem(smileImage, "20"));
 
         addRemoveComponent.setContents(contents);
 

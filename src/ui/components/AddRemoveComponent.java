@@ -61,6 +61,7 @@ public class AddRemoveComponent extends JPanel {
     private static final int IMAGE_RIGHT_PADDING = 5;
 
     private static final int TEXT_REMOVE_BUTTON_PADDING = 30;
+    private static final int SELECTION_LIST_ROW_PADDING = 4;
     private static final int SELECTION_LIST_TEXT_FIELD_PADDING = 7;
 
     private static final int TEXT_LEFT_OFFSET_WITHOUT_ICONS = 1;
@@ -69,7 +70,7 @@ public class AddRemoveComponent extends JPanel {
     private static final int TEXT_LEFT_OFFSET_WITH_ICONS = IMAGE_WIDTH + IMAGE_LEFT_PADDING + IMAGE_RIGHT_PADDING;
 
     private static final Color selectionColor = new Color(57, 112, 205);
-    private static final Color selectionListBackgroundColor = Color.WHITE;
+    private static final Color selectionListBackgroundColor = Color.white;
 
     class CompletionList extends JComponent {
         private List<Object> contents;
@@ -127,6 +128,7 @@ public class AddRemoveComponent extends JPanel {
                             scrollOffset += e.getWheelRotation() * e.getScrollAmount();
 
                         scrollBar.setValue(scrollOffset);
+                        selectionIndex = pointToIndex(e.getPoint());
                         CompletionList.this.repaint();
                     }
                 }
@@ -462,16 +464,13 @@ public class AddRemoveComponent extends JPanel {
         private void layoutListPanel() {
             removeAll();
 
-            for(Row row : rows)
-                add(row);
-
-            /*
-            if(rows.size() > 0) {
+            if(rows.size() > 0)
                 add(rows.get(0));
-            }
-            for(int i = 0; i < rows.size(); ++i)
+
+            for(int i = 1; i < rows.size(); ++i) {
+                add( Box.createVerticalStrut(SELECTION_LIST_ROW_PADDING) );
                 add(rows.get(i));
-            */
+            }
 
             add( Box.createVerticalStrut(SELECTION_LIST_TEXT_FIELD_PADDING) );
 
