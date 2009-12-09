@@ -46,34 +46,17 @@ public class GroupPanel extends JPanel {
 			for (dataObjects.Subject subject : user.getGroup(currentGroup).getMembers()) {
 				subjectList.setSelected(subject);
 			}
-	        TitledBorder tb = BorderFactory.createTitledBorder(
-	        		BorderFactory.createLineBorder(Color.GRAY),
-	        		currentGroup,
-	        		TitledBorder.LEFT,
-	        		TitledBorder.CENTER,
-	        		new Font("Arial", Font.BOLD, 15)
-	        );
-	        subjectPanel.setBorder(tb);
-			subjectList.setVisible(true);
-			subjectPanel.revalidate();
+			updateSubjectPanel(true);
 			subjectList.addAddRemoveListener(subjectListener);
 		}
 
 		public void objectRemoved(Object o, boolean wasSelected) {
 			user.removeGroup(o.toString());
-			if (wasSelected) {
+			if (wasSelected || o.toString().equals(currentGroup)) {
 				subjectList.removeAddRemoveListener(subjectListener);
 				subjectList.clearSelected();
-		        TitledBorder tb = BorderFactory.createTitledBorder(
-		        		BorderFactory.createLineBorder(Color.GRAY),
-		        		"Ingen grupp vald",
-		        		TitledBorder.LEFT,
-		        		TitledBorder.CENTER,
-		        		new Font("Arial", Font.BOLD, 15)
-		        );
-		        subjectPanel.setBorder(tb);
-				subjectList.setVisible(false);
-				subjectPanel.revalidate();
+				currentGroup = "Ingen grupp vald";
+				updateSubjectPanel(false);
 				subjectList.addAddRemoveListener(subjectListener);
 			}
 		}
@@ -85,16 +68,7 @@ public class GroupPanel extends JPanel {
 			for (dataObjects.Subject subject : user.getGroup(currentGroup).getMembers()) {
 				subjectList.setSelected(subject);
 			}
-	        TitledBorder tb = BorderFactory.createTitledBorder(
-	        		BorderFactory.createLineBorder(Color.GRAY),
-	        		currentGroup,
-	        		TitledBorder.LEFT,
-	        		TitledBorder.CENTER,
-	        		new Font("Arial", Font.BOLD, 15)
-	        );
-	        subjectPanel.setBorder(tb);
-	        subjectList.setVisible(true);
-			subjectPanel.revalidate();
+			updateSubjectPanel(true);
 			subjectList.addAddRemoveListener(subjectListener);
 		}
     }
@@ -188,9 +162,9 @@ public class GroupPanel extends JPanel {
 	}
 	
 	public JPanel createSubjectPanel() {
-		JPanel newPanel = new JPanel();
-		newPanel.setLayout(new GridBagLayout());
-		newPanel.setPreferredSize(new Dimension(300, 600));
+		JPanel subjectPanel = new JPanel();
+		subjectPanel.setLayout(new GridBagLayout());
+		subjectPanel.setPreferredSize(new Dimension(300, 600));
 		
 		JLabel subjectLabel = new JLabel("<html>Här kan du lägga till och " +
 				"ta bort användare ur gruppen.</html>");
@@ -207,7 +181,7 @@ public class GroupPanel extends JPanel {
         c.weighty = 0;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(5, 5, 5, 5);
-        newPanel.add(subjectLabel, c);
+        subjectPanel.add(subjectLabel, c);
 
         c = new GridBagConstraints();
         c.gridx = 0;
@@ -217,7 +191,7 @@ public class GroupPanel extends JPanel {
         c.weightx = 1;
         c.weighty = 1;
         c.gridheight = 3;
-        newPanel.add(subjectList, c);
+        subjectPanel.add(subjectList, c);
         subjectList.setVisible(false);
 		
         TitledBorder tb = BorderFactory.createTitledBorder(
@@ -227,8 +201,21 @@ public class GroupPanel extends JPanel {
         		TitledBorder.CENTER,
         		new Font("Arial", Font.BOLD, 15)
         );
-        newPanel.setBorder(tb);
+        subjectPanel.setBorder(tb);
         
-        return newPanel;
+        return subjectPanel;
+	}
+	
+	public void updateSubjectPanel(boolean visible) {
+        TitledBorder tb = BorderFactory.createTitledBorder(
+        		BorderFactory.createLineBorder(Color.GRAY),
+        		currentGroup,
+        		TitledBorder.LEFT,
+        		TitledBorder.CENTER,
+        		new Font("Arial", Font.BOLD, 15)
+        );
+        subjectPanel.setBorder(tb);
+		subjectList.setVisible(visible);
+		subjectPanel.revalidate();
 	}
 }
