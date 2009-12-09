@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import ui.components.StatusPanel;
@@ -39,6 +40,7 @@ public class PreferencesPanel extends JPanel implements ActionListener {
 		this.user 	= Session.getInstance().getUser();
 		this.pv 	= new PlanVariables();
 		
+		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         setPreferredSize(new Dimension(800, 600));
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -50,6 +52,7 @@ public class PreferencesPanel extends JPanel implements ActionListener {
         c.insets = new Insets(5, 5, 5, 5);
         add(createPrefPanel(), c);
         c.gridx = 1;
+        c.insets = new Insets(5, 5, 5, 5);
         add(createDietPanel(), c);
 	}
 	
@@ -76,6 +79,7 @@ public class PreferencesPanel extends JPanel implements ActionListener {
         		"exkluderas recept som innehåller ingredienser från " +
         		"ett fördefinierat antal kategorier från " +
         		"receptförslagen.</html>");
+        dietLabel.setBorder(BorderFactory.createLineBorder(Color.gray));
 
         dietLabel.setVerticalAlignment(JLabel.CENTER);
         dietLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -90,13 +94,15 @@ public class PreferencesPanel extends JPanel implements ActionListener {
         c.gridx		= 0;
         c.gridy		= 0;
         c.weightx	= 0.5;
-        c.weighty	= 0;
+        c.weighty	= 0.04;
+        c.insets = new Insets(5, 5, 5, 5);
         dietPanel.add(dietLabel, c);
 
         c.gridx		= 0;
         c.gridy		= 1;
         c.weightx	= 0.5;
         c.weighty	= 0.5;
+        c.insets = new Insets(5, 5, 5, 5);
         dietPanel.add(new DietPanel(), c);
 
         TitledBorder tb = BorderFactory.createTitledBorder(

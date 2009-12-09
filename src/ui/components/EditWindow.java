@@ -256,9 +256,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 				}
 			});
 
-			SubjectDA sda = new SubjectDA();
-			List subjects = sda.getAllSubjects();
-			subjectList.setContents(subjects);
+			subjectList.setContents(Session.getInstance().getSubjects());
 			content.add(subjectList, BorderLayout.CENTER);
 			content.add(createButtonPanel(), BorderLayout.PAGE_END);
 			return content;

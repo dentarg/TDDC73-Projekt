@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -46,23 +47,31 @@ public class NutritionPanel extends JPanel {
 	}
 
 	private void init() {
-		setLayout(new BorderLayout());
-		
+		setLayout(new GridBagLayout());
+        setBorder(BorderFactory.createTitledBorder(
+        		BorderFactory.createLineBorder(Color.GRAY),
+        		"Näringsvärden",
+        		TitledBorder.LEFT,
+        		TitledBorder.CENTER,
+        		new Font("Arial", Font.BOLD, 15)
+        ));
 		
 		JPanel sliderHolder = new JPanel();
 		sliderHolder.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		add(sliderHolder, BorderLayout.LINE_START);
+		
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		add(sliderHolder, c);
 		
 		JLabel info =  new JLabel(
-					"<html><h3>Näringsvärden</h3>" + 
-					"Här ställer du in näringsvärden du " +
+					"<html>Här ställer du in näringsvärden du " +
 					"önskar i dina recept.<br />Dessa " +
 					"inställningar kommer att användas när " +
 					"du söker efter recept.</html>");
 		info.setVerticalAlignment(JLabel.CENTER); 
 		info.setHorizontalAlignment(JLabel.CENTER);
-        info.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        info.setBorder(BorderFactory.createLineBorder(Color.gray));
         c.ipadx = c.ipady = 10;
         c.gridy = 1;
 		sliderHolder.add(info, c);

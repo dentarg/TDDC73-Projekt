@@ -1,4 +1,4 @@
-package ui.components;
+﻿package ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -102,14 +102,12 @@ public class AddRemoveComponent extends JPanel {
             });
 
             addMouseListener(new MouseAdapter() {
-                @Override
                 public void mouseReleased(MouseEvent e) {
                     Object o = getSelectedCompletion();
                     if(o != null)
                         AddRemoveComponent.this.updateText(o);
                 }
 
-                @Override
                 public void mouseExited(MouseEvent e) {
                     selectionIndex = -1;
                     repaint();
@@ -117,7 +115,6 @@ public class AddRemoveComponent extends JPanel {
             });
 
             addMouseWheelListener(new MouseWheelListener() {
-                @Override
                 public void mouseWheelMoved(MouseWheelEvent e) {
                     if(contents.size() > MAX_VISIBLE_COMPLETIONS) {
                         if(scrollOffset + e.getWheelRotation() * e.getScrollAmount() > contents.size() - MAX_VISIBLE_COMPLETIONS)
@@ -135,7 +132,6 @@ public class AddRemoveComponent extends JPanel {
             });
 
             scrollBar.addAdjustmentListener(new AdjustmentListener() {
-                @Override
                 public void adjustmentValueChanged(AdjustmentEvent e) {
                     scrollOffset = e.getValue();
                     CompletionList.this.repaint();
@@ -485,6 +481,7 @@ public class AddRemoveComponent extends JPanel {
     private boolean useIcons;
 
     private List<Object> contents;
+    private List<Object> tempremoved;
 
     private List<AddRemoveListener> listeners;
 
@@ -510,6 +507,7 @@ public class AddRemoveComponent extends JPanel {
         instances.add(this);
         
         contents = new ArrayList<Object>();
+        tempremoved = new ArrayList<Object>();
 
         listeners = new ArrayList<AddRemoveListener>();
 
@@ -658,6 +656,7 @@ public class AddRemoveComponent extends JPanel {
 
         selectionList.add(o);
         contents.remove(o);
+        tempremoved.add(o);
 
         notifyObserversAdded(o);
     }
@@ -675,6 +674,8 @@ public class AddRemoveComponent extends JPanel {
      */
     public void clearSelected() {
     	selectionList.clear();
+    	contents.addAll(tempremoved);
+    	tempremoved.clear();
     }
     
     /**

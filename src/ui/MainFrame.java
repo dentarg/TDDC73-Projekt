@@ -1,4 +1,4 @@
-package ui;
+﻿package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -19,6 +20,7 @@ import ui.panels.mealplan.PlannerPanel;
 import ui.panels.profile.ProfilePanel;
 import ui.panels.profile.loggedInUserLabel;
 import dataAccess.RecipeDA;
+import dataAccess.SubjectDA;
 import dataObjects.Recipe;
 import dataObjects.Session;
 import dataObjects.Subject;
@@ -85,6 +87,11 @@ public class MainFrame extends JFrame {
         final JLabel statusLabel = new JLabel("Loggar in...");
         final JPanel container = (JPanel) loginFrame.getContentPane();
         container.setLayout(new BorderLayout(5, 5));
+        
+		SubjectDA sda = new SubjectDA();
+        Session session = Session.getInstance();
+        session.setSubjects(sda.getAllSubjects());
+        
         loginButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ae) {
@@ -154,7 +161,6 @@ public class MainFrame extends JFrame {
         tabbedPane.add("Forum", new ForumPanel());
 
         tabbedPane.addChangeListener(new ChangeListener() {
-            @Override
             public void stateChanged(ChangeEvent e) {
                 AddRemoveComponent.hideCompletionWindows();
             }
