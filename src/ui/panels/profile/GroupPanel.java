@@ -3,12 +3,10 @@ package ui.panels.profile;
 import java.awt.Color;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -17,7 +15,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import dataAccess.SubjectDA;
 import dataObjects.Session;
 
 import ui.components.AddRemoveComponent;
@@ -37,7 +34,7 @@ public class GroupPanel extends JPanel {
 	private dataObjects.Session session = Session.getInstance();
 	private dataObjects.Subject user = session.getUser();
 	
-	private String currentGroup;
+	private String currentGroup = "Ingen grupp vald";
 	
     class groupListener implements AddRemoveListener {
 
@@ -49,7 +46,16 @@ public class GroupPanel extends JPanel {
 			for (dataObjects.Subject subject : user.getGroup(currentGroup).getMembers()) {
 				subjectList.setSelected(subject);
 			}
-			//subjectList.setSelected(user.getGroup(currentGroup).getMembers());
+	        TitledBorder tb = BorderFactory.createTitledBorder(
+	        		BorderFactory.createLineBorder(Color.GRAY),
+	        		currentGroup,
+	        		TitledBorder.LEFT,
+	        		TitledBorder.CENTER,
+	        		new Font("Arial", Font.BOLD, 15)
+	        );
+	        subjectPanel.setBorder(tb);
+			subjectList.setVisible(true);
+			subjectPanel.revalidate();
 			subjectList.addAddRemoveListener(subjectListener);
 		}
 
@@ -58,6 +64,16 @@ public class GroupPanel extends JPanel {
 			if (wasSelected) {
 				subjectList.removeAddRemoveListener(subjectListener);
 				subjectList.clearSelected();
+		        TitledBorder tb = BorderFactory.createTitledBorder(
+		        		BorderFactory.createLineBorder(Color.GRAY),
+		        		"Ingen grupp vald",
+		        		TitledBorder.LEFT,
+		        		TitledBorder.CENTER,
+		        		new Font("Arial", Font.BOLD, 15)
+		        );
+		        subjectPanel.setBorder(tb);
+				subjectList.setVisible(false);
+				subjectPanel.revalidate();
 				subjectList.addAddRemoveListener(subjectListener);
 			}
 		}
@@ -69,7 +85,16 @@ public class GroupPanel extends JPanel {
 			for (dataObjects.Subject subject : user.getGroup(currentGroup).getMembers()) {
 				subjectList.setSelected(subject);
 			}
-			//subjectList.setSelected(user.getGroup(currentGroup).getMembers());
+	        TitledBorder tb = BorderFactory.createTitledBorder(
+	        		BorderFactory.createLineBorder(Color.GRAY),
+	        		currentGroup,
+	        		TitledBorder.LEFT,
+	        		TitledBorder.CENTER,
+	        		new Font("Arial", Font.BOLD, 15)
+	        );
+	        subjectPanel.setBorder(tb);
+	        subjectList.setVisible(true);
+			subjectPanel.revalidate();
 			subjectList.addAddRemoveListener(subjectListener);
 		}
     }
@@ -88,102 +113,9 @@ public class GroupPanel extends JPanel {
 			// Ignore.
 		}
     }
-	
-	public JPanel createGroupPanel() {
-		JPanel groupPanel = new JPanel();		
-		groupPanel.setLayout(new GridBagLayout());
-		groupPanel.setPreferredSize(new Dimension(300, 600));
-		
-		JLabel groupLabel = new JLabel("<html>Lägg till och ta bort grupper, välj vilken grupp du vill redigera.</html>");
-        groupLabel.setVerticalAlignment(JLabel.CENTER);
-        groupLabel.setHorizontalAlignment(JLabel.CENTER);
-        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
-        groupLabel.setBorder(lb);
-        groupLabel.setPreferredSize(new Dimension(300, 50));
-		
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1.0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 5, 5, 5);
-        groupPanel.add(groupLabel, c);
-
-        c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.insets = new Insets(5, 5, 5, 5);
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.gridheight = 3;
-        groupPanel.add(groupList, c);
-		
-        TitledBorder tb = BorderFactory.createTitledBorder(
-        		BorderFactory.createLineBorder(Color.GRAY),
-        		"Grupper",
-        		TitledBorder.LEFT,
-        		TitledBorder.CENTER,
-        		new Font("Arial", Font.BOLD, 15)
-        );
-        groupPanel.setBorder(tb);
-        
-        return groupPanel;
-	}
-	
-	public JPanel createSubjectPanel() {
-		JPanel subjectPanel = new JPanel();
-		subjectPanel.setLayout(new GridBagLayout());
-		subjectPanel.setPreferredSize(new Dimension(300, 600));
-		
-		JLabel subjectLabel = new JLabel("<html>Lägg till och ta bort medlemmar ur gruppen.</html>");
-		subjectLabel.setVerticalAlignment(JLabel.CENTER);
-		subjectLabel.setHorizontalAlignment(JLabel.CENTER);
-        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
-        subjectLabel.setBorder(lb);
-        subjectLabel.setPreferredSize(new Dimension(300, 50));
-		
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1.0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 5, 5, 5);
-        subjectPanel.add(subjectLabel, c);
-
-        c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.insets = new Insets(5, 5, 5, 5);
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.gridheight = 3;
-        subjectPanel.add(subjectList, c);
-		
-        TitledBorder tb = BorderFactory.createTitledBorder(
-        		BorderFactory.createLineBorder(Color.GRAY),
-        		"Medlemmar",
-        		TitledBorder.LEFT,
-        		TitledBorder.CENTER,
-        		new Font("Arial", Font.BOLD, 15)
-        );
-        subjectPanel.setBorder(tb);
-        
-        return subjectPanel;
-	}
-
+    
 	public GroupPanel() {
 		setPreferredSize(new Dimension(800, 600));
-		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		setLayout(new GridBagLayout());
 		
 		groupList = new AddRemoveComponent(false, true);
@@ -208,5 +140,95 @@ public class GroupPanel extends JPanel {
 		
 	    groupList.addAddRemoveListener(groupListener);
 	    subjectList.addAddRemoveListener(subjectListener);
+	}
+	
+	public JPanel createGroupPanel() {
+		JPanel groupPanel = new JPanel();		
+		groupPanel.setLayout(new GridBagLayout());
+		groupPanel.setPreferredSize(new Dimension(300, 600));
+		
+		JLabel groupLabel = new JLabel("<html>Här kan du lägga till " +
+				"grupper igenom att skriva in ett namn, eller ändra " +
+				"existerande grupper och ta bort dem.</html>");
+        groupLabel.setVerticalAlignment(JLabel.CENTER);
+        groupLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        groupLabel.setBorder(lb);
+        groupLabel.setPreferredSize(new Dimension(300, 50));
+		
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+        groupPanel.add(groupLabel, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridheight = 3;
+        groupPanel.add(groupList, c);
+		
+        TitledBorder tb = BorderFactory.createTitledBorder(
+        		BorderFactory.createLineBorder(Color.GRAY),
+        		"Grupper",
+        		TitledBorder.LEFT,
+        		TitledBorder.CENTER,
+        		new Font("Arial", Font.BOLD, 15)
+        );
+        groupPanel.setBorder(tb);
+        
+        return groupPanel;
+	}
+	
+	public JPanel createSubjectPanel() {
+		JPanel newPanel = new JPanel();
+		newPanel.setLayout(new GridBagLayout());
+		newPanel.setPreferredSize(new Dimension(300, 600));
+		
+		JLabel subjectLabel = new JLabel("<html>Här kan du lägga till och " +
+				"ta bort användare ur gruppen.</html>");
+		subjectLabel.setVerticalAlignment(JLabel.CENTER);
+		subjectLabel.setHorizontalAlignment(JLabel.CENTER);
+        LineBorder lb = (LineBorder) BorderFactory.createLineBorder(Color.gray);
+        subjectLabel.setBorder(lb);
+        subjectLabel.setPreferredSize(new Dimension(300, 50));
+		
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 5, 5, 5);
+        newPanel.add(subjectLabel, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridheight = 3;
+        newPanel.add(subjectList, c);
+        subjectList.setVisible(false);
+		
+        TitledBorder tb = BorderFactory.createTitledBorder(
+        		BorderFactory.createLineBorder(Color.GRAY),
+        		currentGroup,
+        		TitledBorder.LEFT,
+        		TitledBorder.CENTER,
+        		new Font("Arial", Font.BOLD, 15)
+        );
+        newPanel.setBorder(tb);
+        
+        return newPanel;
 	}
 }

@@ -127,7 +127,6 @@ public class DislikePanel extends JPanel {
             }
         });
 
-        setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         setPreferredSize(new Dimension(800, 600));
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -187,7 +186,7 @@ public class DislikePanel extends JPanel {
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
-                "Dina Allergier.",
+                "Dina Allergier",
                 TitledBorder.LEFT,
                 TitledBorder.CENTER,
                 new Font("Arial", Font.BOLD, 15));
@@ -232,7 +231,7 @@ public class DislikePanel extends JPanel {
 
         TitledBorder tb = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
-                "Ingredienser du ogillar.",
+                "Ingredienser du ogillar",
                 TitledBorder.LEFT,
                 TitledBorder.CENTER,
                 new Font("Arial", Font.BOLD, 15));

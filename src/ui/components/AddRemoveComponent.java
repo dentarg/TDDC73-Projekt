@@ -656,7 +656,9 @@ public class AddRemoveComponent extends JPanel {
 
         selectionList.add(o);
         contents.remove(o);
-        tempremoved.add(o);
+        if (!tempremoved.contains(o)) {
+            tempremoved.add(o);
+        }
 
         notifyObserversAdded(o);
     }
@@ -766,6 +768,9 @@ public class AddRemoveComponent extends JPanel {
                 if( o.toString().compareToIgnoreCase(identifier) == 0 ) {
                     selectionList.add(o);
                     contents.remove(o);
+                    if (!tempremoved.contains(o)) {
+                        tempremoved.add(o);
+                    }
 
                     textField.getDocument().removeDocumentListener(textChangeListener);
                     textField.setText("");

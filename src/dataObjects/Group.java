@@ -24,10 +24,9 @@ public class Group
 
 	public void removeUser(Subject user)
 	{
-		int length = this.members.size();
-		for(int i = 0; i<length; i++)
+		for(int i = 0; i < members.size(); i++)
 		{
-			if(user == this.members.get(i))
+			if(user.equals(members.get(i)))
 			{
 				this.members.remove(i);
 			}

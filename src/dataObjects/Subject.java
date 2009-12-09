@@ -184,12 +184,11 @@ public class Subject extends Observable {
      * 			Name of the group.
      */
     public void removeGroup(String name) {
-        int length = this.groups.size();
-        for (int i = 0; i < length; i++) {
-            if (name == this.groups.get(i).getName()) {
-                this.groups.remove(i);
-            }
-        }
+        for (int i = 0; i < groups.size(); i++) {
+			if (name.equals(groups.get(i).getName())) {
+				groups.remove(i);
+			}
+		}
         changed();
     }
 
@@ -232,7 +231,7 @@ public class Subject extends Observable {
             ArrayList<Subject> userList = group.getMembers();
             int numberOfMembers = group.getNumberOfMembers();
 
-            for (int j = 0; j < numberOfMembers; j++) {
+            for (int j = 0; i < numberOfMembers; j++) {
                 if (this == userList.get(j)) {
                     return true;
                 }
