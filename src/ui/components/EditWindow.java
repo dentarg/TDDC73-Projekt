@@ -41,7 +41,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 	private ArrayList<ListSelectionListener> listSelectionListeners = new ArrayList<ListSelectionListener>();
 	private Dimension minSize = new Dimension(190, 140);
 	private Dimension maxSize = new Dimension(310, 280);
-
+	
 	public EditWindow(Frame owner) {
 		super(owner);
 		createGUI();
@@ -62,7 +62,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 
 		p.add(groupList, BorderLayout.PAGE_START);
 		p.add(userList, BorderLayout.CENTER); 
-
+		
 		getContentPane().add(p);
 	}
 
@@ -81,6 +81,8 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 
 	private class GroupList extends JPanel implements Observer {
 
+		private JButton sortButton;
+		private JLabel noGroupsText = new JLabel("Du har inga grupper för tillfället, detta ställer du in under Min Profil");
 		private JList groupList;
 
 		public GroupList() {
@@ -92,15 +94,20 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 			add(new JLabel("<html><h3>Sortera efter dina grupper</h3></html>"), BorderLayout.PAGE_START);
 
 			ArrayList<Group> group = s.getGroups();
-			/*s.createGroup("Familj");
-			s.createGroup("Vänner");*/
+			
 			groupList = new JList(group.toArray());
 			groupList.setFocusable(false);
 			groupList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			
+			add(noGroupsText, BorderLayout.LINE_START);
+			
 			add(groupList, BorderLayout.CENTER);
 			add(createButtonPanel(), BorderLayout.PAGE_END);
 			s.addObserver(this);
-
+			noGroupsText.setVisible(group.size() == 0);
+			groupList.setVisible(group.size() != 0);
+			sortButton.setEnabled(group.size() != 0);
 		}
 
 		private JPanel createButtonPanel() {
@@ -112,7 +119,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 				}
 			});
 
-			JButton sortButton = new JButton("Sortera");
+			sortButton= new JButton("Sortera");
 
 			sortButton.addActionListener(new ActionListener() {
 
@@ -144,25 +151,33 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 			Subject s = Session.getInstance().getUser();
 			ArrayList<Group> groups = s.getGroups();
 			if(groups != null) {
-				boolean added = groupList.getComponentCount() < groups.size(); 
+				boolean added = groupList.getComponentCount() < groups.size();
 				groupList.setListData(groups.toArray());
 				groupList.repaint();
 				groupList.revalidate();
 				int size = 18;
-				EditWindow.this.setSize(EditWindow.this.getWidth(), EditWindow.this.getHeight()+size);
-				EditWindow.this.maxSize.height += size;
-				EditWindow.this.minSize.height += size;
-
+				
+				int numGroups = groups.size();
+				
+				sortButton.setEnabled(numGroups != 0);
+				noGroupsText.setVisible(numGroups == 0);
+				groupList.setVisible(numGroups != 0);
+				if(numGroups > 1) {
+					EditWindow.this.setSize(EditWindow.this.getWidth(), EditWindow.this.getHeight()+size);
+					EditWindow.this.maxSize.height += size;
+					EditWindow.this.minSize.height += size;
+				}
+				
 				
 			}
 		}
 	}
-
 	private class UserList extends JPanel {
 
 		private Group tempGroup;
 		private AddRemoveComponent subjectList;
-
+		private JButton sortButton;
+		
 		public UserList() {
 			setLayout(new BorderLayout());
 			setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -175,7 +190,8 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 
 		private JLabel createToggleLink() {
 			JLabel title = new JLabel("Visa avancerat");
-			title.setForeground(Color.GRAY);
+			title.setForeground(Color.BLUE);
+			title.setHorizontalAlignment(JLabel.RIGHT);
 			title.addMouseListener(new MouseListener() {
 				public void mouseReleased(MouseEvent e) {
 					Dimension d = EditWindow.this.getSize();
@@ -187,7 +203,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 							if(d.width < maxSize.width)  d.width  += 2;
 							EditWindow.this.setSize(d);
 							try {
-								Thread.sleep(2);
+								Thread.sleep(1);
 							} catch (InterruptedException e1) {
 							}	
 						}
@@ -198,7 +214,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 							if(d.width > minSize.width)  d.width  -= 2;
 							EditWindow.this.setSize(d);
 							try {
-								Thread.sleep(2);
+								Thread.sleep(1);
 							} catch (InterruptedException e1) {
 							}	
 						}
@@ -208,7 +224,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 					((JComponent)e.getSource()).setForeground(Color.RED);
 				}
 				public void mouseExited(MouseEvent e) {
-					((JComponent)e.getSource()).setForeground(Color.GRAY);
+					((JComponent)e.getSource()).setForeground(Color.BLUE);
 				}
 				public void mouseEntered(MouseEvent e) {
 					((JComponent)e.getSource()).setForeground(Color.BLACK);
@@ -234,12 +250,10 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 					int size = -32;
 					EditWindow.this.setSize(EditWindow.this.getWidth(), EditWindow.this.getHeight()+size);
 					EditWindow.this.maxSize.height += size;
-					
-
-
 					if(tempGroup != null) {
 						tempGroup.removeUser((Subject)o);
 					}
+					sortButton.setEnabled(subjectList.getSelectionItemCount() != 0);
 				}
 				public void objectAdded(Object o) {
 					int size = 32;
@@ -253,12 +267,17 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 						tempGroup = s.createGroup("Temporär sökgrupp");
 					}
 					tempGroup.addUser((Subject)o);
+					sortButton.setEnabled(subjectList.getSelectionItemCount() != 0);
+
+					
 				}
 			});
-
-			subjectList.setContents(Session.getInstance().getSubjects());
+			List subjects = Session.getInstance().getSubjects();
+			subjectList.setContents(subjects);
 			content.add(subjectList, BorderLayout.CENTER);
 			content.add(createButtonPanel(), BorderLayout.PAGE_END);
+			sortButton.setEnabled(subjectList.getSelectionItemCount() != 0);
+			
 			return content;
 		}
 
@@ -271,7 +290,7 @@ public class EditWindow extends JWindow implements WindowFocusListener{
 				}
 			});
 
-			JButton sortButton = new JButton("Sortera");
+			sortButton = new JButton("Sortera");
 			sortButton.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
