@@ -88,14 +88,13 @@ public class HtmlOverviewPanel extends JPanel implements Observer {
 		this.overview.setText(
 				"<html>" +
 				"<h2>Namn: </h2><b>" + this.user.getName() + "</b><br>" +
+				 
+					"<h2>Allergier (kategorier) </h2>" + this.refusedCategories + 
+					"<h2>Ogillar (ingredienser): </h2>" + this.refusedIngredients + 
 				
-				"<h2>Allergier / ogillar: </h2>" + 
-					"<h3>Kategorier: </h3>" + this.refusedCategories + 
-					"<h3>Ingredienser: </h3>" + this.refusedIngredients + 
+				"<h2>Dina grupper </h2>" + this.groups +
 				
-				"<h2>Dina grupper: </h2>" + this.groups +
-				
-				"<h2>Dina preferenser: </h2>" +
+				"<h2>Näringsvärden </h2>" +
 				"<b>Kalcium: </b>" + this.user.getMinCalcium() + "-" + this.user.getMaxCalcium() + "<br>" +
 				"<b>Kolhydrater: </b>" + this.user.getMinCarbohydrates() + "-" + this.user.getMaxCarbohydrates() + "<br>" +
 				"<b>Kolesterol: </b>" + this.user.getMinCholesterol() + "-" + this.user.getMaxCholesterol() + "<br>" +
@@ -104,6 +103,7 @@ public class HtmlOverviewPanel extends JPanel implements Observer {
 				"<b>Protein: </b>" + this.user.getMinProtein() + "-" + this.user.getMaxProtein() + "<br>" +
 				"<b>Salt: </b>" + this.user.getMinSodium() + "-" + this.user.getMaxSodium() + "<br><br>" +
 					
+				"<h2>Preferenser </h2>" +
 				"<b>Kostnad: </b>" + cost + "<br>" +
 				"<b>Svårighetsgrad: </b>" + difficulty + "<br>" +
 				"<b>Tilllagningstid: </b>" + time + "<br>" +
