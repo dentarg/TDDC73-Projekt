@@ -246,7 +246,9 @@ public class Subject extends Observable {
 
         ArrayList<SingleRecipeConstraint> c = new ArrayList<SingleRecipeConstraint>();
 
-        ArrayList<String> tempList = refusedCategoriesList;
+
+        ArrayList<String> tempList = refusedIngredientsList;
+        
 
         for (String s : allergyIngredientList) {
             tempList.add(s);
